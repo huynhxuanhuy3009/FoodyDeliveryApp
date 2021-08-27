@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, StyleSheet, SafeAreaView, Text, Image, TouchableOpacity, TextInput, Dimensions, VirtualizedList} from 'react-native';
+import {View, StyleSheet, SafeAreaView, Text,Alert,  Image, TouchableOpacity, TextInput, Dimensions, VirtualizedList} from 'react-native';
 import {Icon} from 'native-base';
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
-
+import Users from '../model/Users'
 import {AuthContext} from '../componets/context'
 
 const { width, height } = Dimensions.get("window");
@@ -42,8 +42,25 @@ const Login = ({navigation}) => {
 
 
 
-    const loginHandle = (username, password) => {
-        signIn(username, password);
+    const loginHandle = (userName, password) => {
+        const foundUser = Users.filter( item => {
+            return userName == item.username && password == item.password;
+        } );
+
+        if ( data.username.length == 0 || data.password.length == 0 ) {
+            Alert.alert('Wrong Input!', 'Username or password field cannot be empty.', [
+                {text: 'Okay'}
+            ]);
+            return;
+        }
+
+        if ( foundUser.length == 0 ) {
+            Alert.alert('Invalid User!', 'Username or password is incorrect.', [
+                {text: 'Okay'}
+            ]);
+            return;
+        }
+        signIn(foundUser);
     }
 
 

@@ -60,7 +60,7 @@ const App = () => {
         signIn: async(userName, password) =>{
             let userToken;
             userToken = null;
-            if ( userName == 'huyhuynh' && password == '3009'){
+            if ( userName == 'huyhuynh' && password == '300999'){
                 try{
                     userToken = 'dasdf';
                     await AsyncStorage.setItem('userToken', userToken)

@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { Restaurant, OrderDelivery, Login, Register,ForgotPassword} from './screens';
+import { Restaurant, OrderDelivery,Cart ,Login, Register,ForgotPassword} from './screens';
 import RootStackScreen from './screens/RootStackScreen';
 import { AuthContext } from './componets/context';
 import Tabs from './navigation/tabs';
@@ -120,6 +120,7 @@ const App = () => {
                         <Stack.Screen name="ForgotPassword" component={ForgotPassword}/> */}
                         <Stack.Screen name="Home" component={Tabs} />
                         <Stack.Screen name="Restaurant" component={Restaurant} />
+                        <Stack.Screen name="Cart" component={Cart} />
                         <Stack.Screen name="OrderDelivery" component={OrderDelivery} />
                     </Stack.Navigator>
                 )

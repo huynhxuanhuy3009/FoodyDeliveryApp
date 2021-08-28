@@ -33,6 +33,13 @@ const Login = ({navigation}) => {
         }
     }
 
+    const updateSecureTextEntry = () => {
+        setData({
+            ...data,
+            secureTextEntry: !data.secureTextEntry
+        });
+    }
+
     const handlePasswordChange = (val) => {
         setData({
             ...data,
@@ -83,21 +90,47 @@ const Login = ({navigation}) => {
                 <TextInput
                     style={[
                         styles.textinput,
-                        {marginTop:50}
+                        {marginTop:50, borderWidth:0.7}
                     ]}
                     placeholder='Username'
                     onChangeText={(val) => textInputChange(val)}
 
                 />
+                <View
+                    style={[styles.textinput],[styles.eyepassword]}
+                >
                 <TextInput
                      style={[
                         styles.textinput,
-                        {marginTop:30, marginBottom:30}
+                        {                        
+                            marginRight:10,
+                            width:width*0.74, 
+                            borderRightWidth:0,
+                        }
                     ]}
                     placeholder='Password'
                     secureTextEntry={data.secureTextEntry ? true : false}
                     onChangeText= {(val) => handlePasswordChange(val)}
                 />
+                
+                <TouchableOpacity
+                    onPress={updateSecureTextEntry}
+                    style={{justifyContent:'center',paddingRight:25}}
+                >
+                    {
+                        data.secureTextEntry ? 
+                        <Icon
+                            name= "eye-off"
+                            size={20}
+                        />
+                        :
+                        <Icon
+                            name= "eye"
+                            size={20}
+                        />
+                    }
+                </TouchableOpacity>
+                </View>
 
                 {/* Nut button login */}
                 <TouchableOpacity
@@ -113,7 +146,7 @@ const Login = ({navigation}) => {
                     onPress = {() => navigation.navigate('Register')}
                     style={[
                         styles.button,
-                        {backgroundColor:COLORS.secondary,borderWidth:0.1}
+                        {backgroundColor:COLORS.secondary,borderWidth:0.1, borderRadius:2}
                     ]}
                 >          
                     <Text style={{...FONTS.h1,color:COLORS.primary, fontSize:15}}>SIGN UP</Text>
@@ -176,6 +209,15 @@ const styles = StyleSheet.create({
         borderRadius:5,
         borderWidth:0.5,
         paddingLeft:10,
+    },
+    eyepassword:{
+        flexDirection:'row', 
+        alignItems:'center', 
+        borderWidth:0.5, 
+        height:height*0.07,
+        marginTop:30, 
+        marginBottom:30,
+        borderRadius:5
     },
     button:{
         width:width*0.9,

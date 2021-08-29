@@ -1,16 +1,25 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, Text, SafeAreaView, TouchableOpacity,Dimensions, FlatList} from 'react-native';
-import {Icon} from 'native-base';
-import { icons, images, SIZES, COLORS, FONTS } from '../constants';
+import React, { useState } from "react";
+import {
+    View,
+    StyleSheet,
+    Text,
+    SafeAreaView,
+    TouchableOpacity,
+    Dimensions,
+    FlatList,
+    Image,
+    NativeModules,
+} from "react-native";
+import { Icon, ListItem } from "native-base";
+import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 
-const {width, height} = Dimensions.get('window');
-const Cart = ({navigation}) => {
-
+const { width, height } = Dimensions.get("window");
+const Cart = ({ navigation }) => {
     //fake data
     const restaurantData = [
         {
             id: 1,
-            name: "ByProgrammers Burger",
+            name: "Burger",
             rating: 4.8,
             categories: [5, 7],
             // priceRating: affordable,
@@ -22,24 +31,26 @@ const Cart = ({navigation}) => {
             },
             courier: {
                 avatar: images.avatar_1,
-                name: "Amy"
+                name: "Amy",
             },
             menu: [
                 {
                     menuId: 1,
                     name: "Crispy Chicken Burger",
                     photo: images.crispy_chicken_burger,
-                    description: "Burger with crispy chicken, cheese and lettuce",
+                    description:
+                        "Burger with crispy chicken, cheese and lettuce",
                     calories: 200,
-                    price: 10
+                    price: 10,
                 },
                 {
                     menuId: 2,
                     name: "Crispy Chicken Burger with Honey Mustard",
                     photo: images.honey_mustard_chicken_burger,
-                    description: "Crispy Chicken Burger with Honey Mustard Coleslaw",
+                    description:
+                        "Crispy Chicken Burger with Honey Mustard Coleslaw",
                     calories: 250,
-                    price: 15
+                    price: 15,
                 },
                 {
                     menuId: 3,
@@ -47,13 +58,13 @@ const Cart = ({navigation}) => {
                     photo: images.baked_fries,
                     description: "Crispy Baked French Fries",
                     calories: 194,
-                    price: 8
-                }
-            ]
+                    price: 8,
+                },
+            ],
         },
         {
             id: 2,
-            name: "ByProgrammers Pizza",
+            name: "Pizza",
             rating: 4.8,
             categories: [2, 4, 6],
             // priceRating: expensive,
@@ -65,24 +76,26 @@ const Cart = ({navigation}) => {
             },
             courier: {
                 avatar: images.avatar_2,
-                name: "Jackson"
+                name: "Jackson",
             },
             menu: [
                 {
                     menuId: 4,
                     name: "Hawaiian Pizza",
                     photo: images.hawaiian_pizza,
-                    description: "Canadian bacon, homemade pizza crust, pizza sauce",
+                    description:
+                        "Canadian bacon, homemade pizza crust, pizza sauce",
                     calories: 250,
-                    price: 15
+                    price: 15,
                 },
                 {
                     menuId: 5,
                     name: "Tomato & Basil Pizza",
                     photo: images.pizza,
-                    description: "Fresh tomatoes, aromatic basil pesto and melted bocconcini",
+                    description:
+                        "Fresh tomatoes, aromatic basil pesto and melted bocconcini",
                     calories: 250,
-                    price: 20
+                    price: 20,
                 },
                 {
                     menuId: 6,
@@ -90,7 +103,7 @@ const Cart = ({navigation}) => {
                     photo: images.tomato_pasta,
                     description: "Pasta with fresh tomatoes",
                     calories: 100,
-                    price: 10
+                    price: 10,
                 },
                 {
                     menuId: 7,
@@ -98,13 +111,13 @@ const Cart = ({navigation}) => {
                     photo: images.salad,
                     description: "Finely chopped lettuce, tomatoes, cucumbers",
                     calories: 100,
-                    price: 10
-                }
-            ]
+                    price: 10,
+                },
+            ],
         },
         {
             id: 3,
-            name: "ByProgrammers Hotdogs",
+            name: "Hotdogs",
             rating: 4.8,
             categories: [3],
             // priceRating: expensive,
@@ -116,7 +129,7 @@ const Cart = ({navigation}) => {
             },
             courier: {
                 avatar: images.avatar_3,
-                name: "James"
+                name: "James",
             },
             menu: [
                 {
@@ -125,13 +138,13 @@ const Cart = ({navigation}) => {
                     photo: images.chicago_hot_dog,
                     description: "Fresh tomatoes, all beef hot dogs",
                     calories: 100,
-                    price: 20
-                }
-            ]
+                    price: 20,
+                },
+            ],
         },
         {
             id: 4,
-            name: "ByProgrammers Sushi",
+            name: "Sushi",
             rating: 4.8,
             categories: [8],
             // priceRating: expensive,
@@ -143,22 +156,23 @@ const Cart = ({navigation}) => {
             },
             courier: {
                 avatar: images.avatar_4,
-                name: "Ahmad"
+                name: "Ahmad",
             },
             menu: [
                 {
                     menuId: 9,
                     name: "Sushi sets",
                     photo: images.sushi,
-                    description: "Fresh salmon, sushi rice, fresh juicy avocado",
+                    description:
+                        "Fresh salmon, sushi rice, fresh juicy avocado",
                     calories: 100,
-                    price: 50
-                }
-            ]
+                    price: 50,
+                },
+            ],
         },
         {
             id: 5,
-            name: "ByProgrammers Cuisine",
+            name: "Cuisine",
             rating: 4.8,
             categories: [1, 2],
             // priceRating: affordable,
@@ -170,7 +184,7 @@ const Cart = ({navigation}) => {
             },
             courier: {
                 avatar: images.avatar_4,
-                name: "Muthu"
+                name: "Muthu",
             },
             menu: [
                 {
@@ -179,7 +193,7 @@ const Cart = ({navigation}) => {
                     photo: images.kolo_mee,
                     description: "Noodles with char siu",
                     calories: 200,
-                    price: 5
+                    price: 5,
                 },
                 {
                     menuId: 11,
@@ -187,7 +201,7 @@ const Cart = ({navigation}) => {
                     photo: images.sarawak_laksa,
                     description: "Vermicelli noodles, cooked prawns",
                     calories: 300,
-                    price: 8
+                    price: 8,
                 },
                 {
                     menuId: 12,
@@ -195,7 +209,7 @@ const Cart = ({navigation}) => {
                     photo: images.nasi_lemak,
                     description: "A traditional Malay rice dish",
                     calories: 300,
-                    price: 8
+                    price: 8,
                 },
                 {
                     menuId: 13,
@@ -203,15 +217,13 @@ const Cart = ({navigation}) => {
                     photo: images.nasi_briyani_mutton,
                     description: "A traditional Indian rice dish with mutton",
                     calories: 300,
-                    price: 8
+                    price: 8,
                 },
-
-            ]
+            ],
         },
         {
-
             id: 6,
-            name: "ByProgrammers Dessets",
+            name: "Dessets",
             rating: 4.9,
             categories: [9, 10],
             // priceRating: affordable,
@@ -223,7 +235,7 @@ const Cart = ({navigation}) => {
             },
             courier: {
                 avatar: images.avatar_1,
-                name: "Jessie"
+                name: "Jessie",
             },
             menu: [
                 {
@@ -232,7 +244,7 @@ const Cart = ({navigation}) => {
                     photo: images.teh_c_peng,
                     description: "Three Layer Teh C Peng",
                     calories: 100,
-                    price: 2
+                    price: 2,
                 },
                 {
                     menuId: 13,
@@ -240,7 +252,7 @@ const Cart = ({navigation}) => {
                     photo: images.ice_kacang,
                     description: "Shaved Ice with red beans",
                     calories: 100,
-                    price: 3
+                    price: 3,
                 },
                 {
                     menuId: 14,
@@ -248,81 +260,228 @@ const Cart = ({navigation}) => {
                     photo: images.kek_lapis,
                     description: "Layer cakes",
                     calories: 300,
-                    price: 20
-                }
-            ]
+                    price: 20,
+                },
+            ],
+        },
+    ];
 
+    const [restaurents, setRestaurents] = useState(restaurantData);
+    const [itemMenu, setItemMenu] = useState(null);
+    const [orderItems, setOrderItems] = useState([]);
+
+    // tăng giảm số lượng
+    function editOrder(action, menuId, price) {
+        let orderList = orderItems.slice()
+        let item = orderList.filter(a => a.menuId == menuId)
+
+        if (action == "+") {
+            if (item.length > 0) {
+                let newQty = item[0].qty + 1
+                item[0].qty = newQty
+                item[0].total = item[0].qty * price
+            } else {
+                const newItem = {
+                    menuId: menuId,
+                    qty: 1,
+                    price: price,
+                    total: price
+                }
+                orderList.push(newItem)
+            }
+
+            setOrderItems(orderList)
+        } else {
+            if (item.length > 0) {
+                if (item[0]?.qty > 0) {
+                    let newQty = item[0].qty - 1
+                    item[0].qty = newQty
+                    item[0].total = newQty * price
+                }
+            }
+
+            setOrderItems(orderList)
+        }
+    }
+
+    // số lượng
+    function getOrderQty(menuId) {
+        let orderItem = orderItems.filter(a => a.menuId == menuId)
+
+        if (orderItem.length > 0) {
+            return orderItem[0].qty
         }
 
+        return 0
+    }
 
-    ]
-
-    const [restaurents, setRestaurents] = useState(restaurantData)
     // header của cart
     function renderHeaderCart() {
-        return(
-            <View 
-                style={{
-                    height:height*0.1,
-                    backgroundColor:COLORS.primary, 
-                    flexDirection:'row',
-                }}>
-                    <TouchableOpacity
-                        onPress = {() => navigation.navigate('Home')}
+        return (
+            <View style={{ flexDirection: 'row', height: 50 }}>
+                <TouchableOpacity
+                    style={{
+                        width: 50,
+                        paddingLeft: SIZES.padding * 2,
+                        justifyContent: 'center'
+                    }}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Image
+                        source={icons.back}
+                        resizeMode="contain"
                         style={{
-                            paddingLeft:SIZES.padding * 2,
-                            justifyContent:'center'
+                            width: 30,
+                            height: 30
+                        }}
+                    />
+                </TouchableOpacity>
+
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <View
+                        style={{
+                            width: '70%',
+                            height: "100%",
+                            backgroundColor: COLORS.lightGray3,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: SIZES.radius
                         }}
                     >
-                        <Icon
-                            name='arrow-back-sharp'
-                            type='Ionicons'
-                            style={{
-                                width:30,
-                                height:30, 
-                                color:COLORS.lightGray2, 
-                            }}
-                        />
-                    </TouchableOpacity>
-                    <Text 
+                        <Text style={{ ...FONTS.h3 }}>Cart</Text>
+                    </View>
+                </View>
+
+                <TouchableOpacity
+                    style={{
+                        width: 50,
+                        paddingRight: SIZES.padding * 2,
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Image
+                        source={icons.basket}
+                        resizeMode="contain"
                         style={{
-                            ...FONTS.h1,
-                            paddingLeft:100,
-                            alignSelf:'center', 
-                            color:COLORS.lightGray2
+                            width: 30,
+                            height: 30
                         }}
-                    >
-                        Cart
-                    </Text>
-             </View>
-        );
-    }
-
-   
-
-    function renderItemsCart() {
-        const renderItem = ({item}) => (  
-                <View>
-                    <Text style={{color:'red'}}>{item.name}</Text>
-                </View>       
-        );       
-                 
-        return(
-            <FlatList
-                data={restaurents}
-                keyExtractor= {item =>`${item.id}`}
-                renderItem={renderItem}
-            />
+                    />
+                </TouchableOpacity>
+            </View>
         )
     }
+
+    //body cart
+    function renderItemsCart() {
+        const renderItem = ({ item }) => (
+            <ListItem
+                style={{
+                    flexDirection: "row",
+                }}
+            >
+                {/* image */}
+                <View
+                    style={{
+                        width: width * 0.3,
+                    }}
+                >
+                    <Image
+                        source={item.photo}
+                        style={{
+                            width: width * 0.2,
+                            height: height * 0.1,
+                        }}
+                    />
+                </View>
+                {/* infomation item */}
+                <View
+                    style={{
+                        width: width * 0.5,
+                        height:height*0.07,
+                        justifyContent:'space-between',
+                                  
+                    }}
+                >
+                    <Text style={{ ...FONTS.h4,}}>{item.name}</Text>
+                    <Text style={{ ...FONTS.h4,}}>{`Price: ${item.rating}`}</Text>
+                </View>
+                {/* button + - so luong */}
+                <View
+                    style={{
+                        position: "absolute",
+                        width: width*1.65,
+                        height: 50,
+                        justifyContent: "center",
+                        alignItems:'center',
+                        flexDirection: "row",
+                    }}
+                >
+                    <TouchableOpacity
+                        style={{
+                            width: 30,
+                            backgroundColor: COLORS.white,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderTopLeftRadius: 25,
+                            borderBottomLeftRadius: 25,
+                        }}
+                        onPress={() => editOrder("-", item.menuId, item.price)}
+                    >
+                        <Text style={{ ...FONTS.body2 }}>-</Text>
+                    </TouchableOpacity>
+
+                    <View
+                        style={{
+                            width: 30,
+                            backgroundColor: COLORS.white,
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Text style={{ ...FONTS.h3 }}>
+                            {getOrderQty(item.menuId)}
+                        </Text>
+                    </View>
+
+                    <TouchableOpacity
+                        style={{
+                            width: 30,
+                            backgroundColor: COLORS.white,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderTopRightRadius: 25,
+                            borderBottomRightRadius: 25,
+                        }}
+                        onPress={() => editOrder("+", item.menuId, item.price)}
+                    >
+                        <Text style={{ ...FONTS.body2 }}>+</Text>
+                    </TouchableOpacity>
+                </View>
+            </ListItem>
+        );
+
+        return (
+            <FlatList
+                data={restaurents}
+                keyExtractor={(item) => `${item.id}`}
+                renderItem={renderItem}
+            />
+        );
+    }
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.container}>
             {renderHeaderCart()}
             {renderItemsCart()}
         </SafeAreaView>
     );
-}
+};
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.lightGray2
+    }
+});
 
 export default Cart;

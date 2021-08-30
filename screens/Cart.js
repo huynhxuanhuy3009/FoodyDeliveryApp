@@ -11,6 +11,7 @@ import {
     NativeModules,
 } from "react-native";
 import { Icon, ListItem } from "native-base";
+import { SwipeListView } from "react-native-swipe-list-view";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 
 const { width, height } = Dimensions.get("window");
@@ -272,58 +273,58 @@ const Cart = ({ navigation }) => {
 
     // tăng giảm số lượng
     function editOrder(action, menuId, price) {
-        let orderList = orderItems.slice()
-        let item = orderList.filter(a => a.menuId == menuId)
+        let orderList = orderItems.slice();
+        let item = orderList.filter((a) => a.menuId == menuId);
 
         if (action == "+") {
             if (item.length > 0) {
-                let newQty = item[0].qty + 1
-                item[0].qty = newQty
-                item[0].total = item[0].qty * price
+                let newQty = item[0].qty + 1;
+                item[0].qty = newQty;
+                item[0].total = item[0].qty * price;
             } else {
                 const newItem = {
                     menuId: menuId,
                     qty: 1,
                     price: price,
-                    total: price
-                }
-                orderList.push(newItem)
+                    total: price,
+                };
+                orderList.push(newItem);
             }
 
-            setOrderItems(orderList)
+            setOrderItems(orderList);
         } else {
             if (item.length > 0) {
                 if (item[0]?.qty > 0) {
-                    let newQty = item[0].qty - 1
-                    item[0].qty = newQty
-                    item[0].total = newQty * price
+                    let newQty = item[0].qty - 1;
+                    item[0].qty = newQty;
+                    item[0].total = newQty * price;
                 }
             }
 
-            setOrderItems(orderList)
+            setOrderItems(orderList);
         }
     }
 
     // số lượng
     function getOrderQty(menuId) {
-        let orderItem = orderItems.filter(a => a.menuId == menuId)
+        let orderItem = orderItems.filter((a) => a.menuId == menuId);
 
         if (orderItem.length > 0) {
-            return orderItem[0].qty
+            return orderItem[0].qty;
         }
 
-        return 0
+        return 0;
     }
 
     // header của cart
     function renderHeaderCart() {
         return (
-            <View style={{ flexDirection: 'row', height: 50 }}>
+            <View style={{ flexDirection: "row", height: 50 }}>
                 <TouchableOpacity
                     style={{
                         width: 50,
                         paddingLeft: SIZES.padding * 2,
-                        justifyContent: 'center'
+                        justifyContent: "center",
                     }}
                     onPress={() => navigation.goBack()}
                 >
@@ -332,20 +333,26 @@ const Cart = ({ navigation }) => {
                         resizeMode="contain"
                         style={{
                             width: 30,
-                            height: 30
+                            height: 30,
                         }}
                     />
                 </TouchableOpacity>
 
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                <View
+                    style={{
+                        flex: 1,
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
                     <View
                         style={{
-                            width: '70%',
+                            width: "70%",
                             height: "100%",
                             backgroundColor: COLORS.lightGray3,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderRadius: SIZES.radius
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderRadius: SIZES.radius,
                         }}
                     >
                         <Text style={{ ...FONTS.h3 }}>Cart</Text>
@@ -356,7 +363,7 @@ const Cart = ({ navigation }) => {
                     style={{
                         width: 50,
                         paddingRight: SIZES.padding * 2,
-                        justifyContent: 'center'
+                        justifyContent: "center",
                     }}
                 >
                     <Image
@@ -364,22 +371,18 @@ const Cart = ({ navigation }) => {
                         resizeMode="contain"
                         style={{
                             width: 30,
-                            height: 30
+                            height: 30,
                         }}
                     />
                 </TouchableOpacity>
             </View>
-        )
+        );
     }
 
     //body cart
     function renderItemsCart() {
         const renderItem = ({ item }) => (
-            <ListItem
-                style={{
-                    flexDirection: "row",
-                }}
-            >
+            <ListItem style={[styles.rowFront, { flexDirection: "row" }]}>
                 {/* image */}
                 <View
                     style={{
@@ -398,29 +401,43 @@ const Cart = ({ navigation }) => {
                 <View
                     style={{
                         width: width * 0.5,
-                        height:height*0.07,
-                        justifyContent:'space-between',
-                                  
+                        height: height * 0.07,
+                        justifyContent: "space-between",
                     }}
                 >
-                    <Text style={{ ...FONTS.h4,}}>{item.name}</Text>
-                    <Text style={{ ...FONTS.h4,}}>{`Price: ${item.rating}`}</Text>
+                    <Text style={{ ...FONTS.h4 }}>{item.name}</Text>
+                    <Text
+                        style={{ ...FONTS.h4 }}
+                    >{`Price: ${item.rating}`}</Text>
                 </View>
-                {/* button + - so luong */}
+                {/* button + - so luong, xoa item */}
+
+                <TouchableOpacity
+                    style={{
+                        // backgroundColor:'red',
+                        marginBottom: 50,
+                        marginLeft: 30,
+                    }}
+                >
+                    <Icon name="highlight-remove" type="MaterialIcons" />
+                </TouchableOpacity>
+
                 <View
                     style={{
                         position: "absolute",
-                        width: width*1.65,
+                        width: width * 1.65,
                         height: 50,
                         justifyContent: "center",
-                        alignItems:'center',
+                        alignItems: "center",
                         flexDirection: "row",
+                        paddingTop: 30,
+                        // backgroundColor:'red',
                     }}
                 >
                     <TouchableOpacity
                         style={{
                             width: 30,
-                            backgroundColor: COLORS.white,
+                            backgroundColor: COLORS.darkgray,
                             alignItems: "center",
                             justifyContent: "center",
                             borderTopLeftRadius: 25,
@@ -428,13 +445,13 @@ const Cart = ({ navigation }) => {
                         }}
                         onPress={() => editOrder("-", item.menuId, item.price)}
                     >
-                        <Text style={{ ...FONTS.body2 }}>-</Text>
+                        <Text style={{ ...FONTS.h3 }}>-</Text>
                     </TouchableOpacity>
 
                     <View
                         style={{
                             width: 30,
-                            backgroundColor: COLORS.white,
+                            backgroundColor: COLORS.secondary,
                             alignItems: "center",
                             justifyContent: "center",
                         }}
@@ -447,7 +464,7 @@ const Cart = ({ navigation }) => {
                     <TouchableOpacity
                         style={{
                             width: 30,
-                            backgroundColor: COLORS.white,
+                            backgroundColor: COLORS.darkgray,
                             alignItems: "center",
                             justifyContent: "center",
                             borderTopRightRadius: 25,
@@ -455,7 +472,7 @@ const Cart = ({ navigation }) => {
                         }}
                         onPress={() => editOrder("+", item.menuId, item.price)}
                     >
-                        <Text style={{ ...FONTS.body2 }}>+</Text>
+                        <Text style={{ ...FONTS.h3 }}>+</Text>
                     </TouchableOpacity>
                 </View>
             </ListItem>
@@ -466,13 +483,90 @@ const Cart = ({ navigation }) => {
                 data={restaurents}
                 keyExtractor={(item) => `${item.id}`}
                 renderItem={renderItem}
+                // renderHiddenItem={renderHiddenItem}
             />
+        );
+    }
+
+    //total cart
+    function renderTotalCart() {
+        return (
+            <View
+                style={[
+                    styles.rowFront,
+                    {
+                        marginTop: 20,
+                        paddingHorizontal: width * 0.05,
+                        paddingVertical: height * 0.02,
+                        height: 180,
+                        justifyContent: "space-between",
+                    },
+                ]}
+            >
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    }}
+                >
+                    <View>
+                        <Text style={{ ...FONTS.h4, color: "#B47929" }}>
+                            Subtotal
+                        </Text>
+                        <Text style={{ ...FONTS.h4, color: "#B47929",paddingVertical:5}}>
+                            Discount
+                        </Text>
+                        <Text style={{ ...FONTS.h2, color: COLORS.primary }}>
+                            Total
+                        </Text>
+                    </View>
+                    <View>
+                        <Text
+                            style={{
+                                ...FONTS.h4,
+                                color: "#B47929",
+                                alignSelf: "flex-end",
+                            }}
+                        >
+                            $18000
+                        </Text>
+                        <Text
+                            style={{
+                                ...FONTS.h4,
+                                color: "#B47929",
+                                alignSelf: "flex-end",
+                                paddingVertical:5
+                            }}
+                        >
+                            10%
+                        </Text>
+                        <Text style={{ ...FONTS.h2, color: COLORS.primary }}>
+                            $20000
+                        </Text>
+                    </View>
+                </View>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('CheckOuts')}
+                    style={{
+                        marginHorizontal:width*0.15,
+                        height:40,
+                        backgroundColor:'#0CC255',
+                        justifyContent:'center',
+                        alignItems:'center', 
+                        borderWidth:0.5,
+                        borderRadius:20,
+                    }}
+                >
+                    <Text style={{color:'white', ...FONTS.h4}}>PROCEED TO PAY</Text>
+                </TouchableOpacity>
+            </View>
         );
     }
     return (
         <SafeAreaView style={styles.container}>
             {renderHeaderCart()}
             {renderItemsCart()}
+            {renderTotalCart()}
         </SafeAreaView>
     );
 };
@@ -480,8 +574,20 @@ const Cart = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray2
-    }
+        backgroundColor: COLORS.lightGray2,
+    },
+    rowFront: {
+        backgroundColor: "#FFF",
+        borderRadius: 5,
+        height: 110,
+        margin: 3,
+        marginBottom: 15,
+        shadowColor: "#999",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+    },
 });
 
 export default Cart;

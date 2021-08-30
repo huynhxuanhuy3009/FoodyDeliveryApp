@@ -14,8 +14,7 @@ import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 import { AuthContext } from "../componets/context";
 
 const Home = ({ navigation }) => {
-    // dđể tạm signout
-    const {signOut} = React.useContext(AuthContext);
+    
     // Dummy Datas
 
     const initialCurrentLocation = {
@@ -368,8 +367,7 @@ const Home = ({ navigation }) => {
                         paddingLeft: SIZES.padding * 2,
                         justifyContent: 'center'
                     }}
-                    // ĐỂ TẠM LOGOUT VÀO ĐÂY
-                    onPress={() => signOut()}
+
                 >
                     <Image
                         source={icons.nearby}

@@ -8,6 +8,7 @@ import Cart from './Cart'
 import CheckOuts from './CheckOuts'
 import OrderPlaced from './OrderPlaced'
 import OrderDelivery from './OrderDelivery'
+import User from './User'
 
 
 
@@ -21,4 +22,5 @@ export {
     CheckOuts,
     OrderPlaced, 
     OrderDelivery, 
+    User,
 }

@@ -121,8 +121,13 @@ const OrderPlaced = ({ navigation }) => {
     }
     return (
         <SafeAreaView>
-            {renderHeader()}
-            {renderOrderPlaced()}
+            
+                {renderHeader()}
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Home')}
+            >
+                {renderOrderPlaced()}
+            </TouchableOpacity>
         </SafeAreaView>
     );
 };

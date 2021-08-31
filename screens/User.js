@@ -6,7 +6,7 @@ import {Icon} from 'native-base';
 import { AuthContext } from "../componets/context";
 
 const {width, height} = Dimensions.get('window');
-const User = () => {
+const User = ({navigation}) => {
     // dđể tạm signout
     const {signOut} = React.useContext(AuthContext);
     function renderEdit() {
@@ -31,6 +31,7 @@ const User = () => {
                 />
                 <Text style={{ ...FONTS.h4, color: "#B47929" }}>Your profile is 80% completed.</Text>
                 <TouchableOpacity
+                    onPress={() => navigation.navigate('EditProfile')}
                     style={{
                         width:180,
                         flexDirection:'row', 
@@ -55,7 +56,10 @@ const User = () => {
                     paddingHorizontal:width*0.05
                 }}
             >
-                <TouchableOpacity style={styles.rowFront}>
+                <TouchableOpacity 
+                    onPress={() => navigation.navigate('ManageAddress')}
+                    style={styles.rowFront}
+                >
                     <View style={{width:40,paddingLeft:5}}>
                         <Icon
                             name="home"
@@ -91,7 +95,10 @@ const User = () => {
                         />
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.rowFront}>
+                <TouchableOpacity 
+                    onPress={() => navigation.navigate('Settings')}
+                    style={styles.rowFront}
+                >
                     <View style={{width:40,paddingLeft:5}}>
                         <Icon
                             name="player-settings"
@@ -114,6 +121,7 @@ const User = () => {
                     onPress={() => signOut()}
                     style={{
                         flexDirection:'row',
+                        marginTop:20,
                         marginHorizontal:width*0.27,
                         height:40,
                         backgroundColor:COLORS.primary,

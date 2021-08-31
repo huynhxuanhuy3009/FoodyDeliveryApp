@@ -395,6 +395,7 @@ const Home = ({ navigation }) => {
                 </View>
 
                 <TouchableOpacity
+                    onPress={() => navigation.navigate('Cart')}
                     style={{
                         width: 50,
                         paddingRight: SIZES.padding * 2,

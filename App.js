@@ -5,7 +5,18 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { Restaurant, OrderDelivery,Cart,CheckOuts, OrderPlaced, User,EditProfile, ManageAddress, Settings, Login, Register,ForgotPassword} from './screens';
+import { Restaurant, 
+         OrderDelivery,
+         Cart,
+         Payment01,
+         Payment02,
+         Payment03,
+         CheckOuts, 
+         OrderPlaced, 
+         User,
+         EditProfile, 
+         ManageAddress, 
+         Settings, Login, Register,ForgotPassword} from './screens';
 import RootStackScreen from './screens/RootStackScreen';
 import { AuthContext } from './componets/context';
 import Tabs from './navigation/tabs';
@@ -118,6 +129,9 @@ const App = () => {
                         <Stack.Screen name="Home" component={Tabs} />
                         <Stack.Screen name="Restaurant" component={Restaurant} />
                         <Stack.Screen name="Cart" component={Cart} />
+                        <Stack.Screen name="Payment01" component={Payment01} />
+                        <Stack.Screen name="Payment02" component={Payment02} />
+                        <Stack.Screen name="Payment03" component={Payment03} />
                         <Stack.Screen name="CheckOuts" component={CheckOuts}/>
                         <Stack.Screen name="OrderPlaced" component={OrderPlaced}/>
                         <Stack.Screen name="OrderDelivery" component={OrderDelivery} />

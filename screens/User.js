@@ -22,11 +22,11 @@ const User = ({navigation}) => {
                 }}
             >
                 <Image
-                    source={images.avatar_2}
+                    source={images.avatar_Thao}
                     style={{
-                        width:width*0.25,
-                        height:height*0.15, 
-                        borderRadius: 25
+                        width:width*0.40,
+                        height:height*0.2,
+                        borderRadius: 80
                     }}
                 />
                 <Text style={{ ...FONTS.h4, color: "#B47929" }}>Your profile is 80% completed.</Text>

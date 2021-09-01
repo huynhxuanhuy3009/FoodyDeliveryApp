@@ -1,4 +1,5 @@
 
+const avatar_Thao = require("../assets/images/avatar_Thao.jpg");
 const avatar_1 = require("../assets/images/avatar-1.jpg");
 const avatar_2 = require("../assets/images/avatar-2.jpg");
 const avatar_3 = require("../assets/images/avatar-3.jpg");
@@ -30,6 +31,7 @@ const teh_c_peng = require("../assets/images/teh-c-peng.jpg");
 const tomato_pasta = require("../assets/images/tomato-pasta.jpg");
 
 export default {
+    avatar_Thao,
     avatar_1,
     avatar_2,
     avatar_3,

@@ -510,13 +510,13 @@ const Cart = ({ navigation }) => {
                     }}
                 >
                     <View>
-                        <Text style={{ ...FONTS.h4, color: "#B47929" }}>
+                        <Text style={{ ...FONTS.h4, color:'black' }}>
                             Subtotal
                         </Text>
-                        <Text style={{ ...FONTS.h4, color: "#B47929",paddingVertical:5}}>
+                        <Text style={{ ...FONTS.h4,  color:'black' ,paddingVertical:5}}>
                             Discount
                         </Text>
-                        <Text style={{ ...FONTS.h2, color: COLORS.primary }}>
+                        <Text style={{ ...FONTS.h2,  color:'black'  }}>
                             Total
                         </Text>
                     </View>
@@ -524,7 +524,7 @@ const Cart = ({ navigation }) => {
                         <Text
                             style={{
                                 ...FONTS.h4,
-                                color: "#B47929",
+                                color:'black',
                                 alignSelf: "flex-end",
                             }}
                         >
@@ -533,20 +533,20 @@ const Cart = ({ navigation }) => {
                         <Text
                             style={{
                                 ...FONTS.h4,
-                                color: "#B47929",
+                                color:'black',
                                 alignSelf: "flex-end",
                                 paddingVertical:5
                             }}
                         >
                             10%
                         </Text>
-                        <Text style={{ ...FONTS.h2, color: COLORS.primary }}>
+                        <Text style={{ ...FONTS.h2, color:'black', }}>
                             $20000
                         </Text>
                     </View>
                 </View>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('CheckOuts')}
+                    onPress={() => navigation.navigate('Payment01')}
                     style={{
                         marginHorizontal:width*0.15,
                         height:40,

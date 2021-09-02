@@ -86,10 +86,10 @@ const CheckOuts = ({ navigation }) => {
                     justifyContent: "space-around",
                 }}
             >
-                <Text style={{ ...FONTS.h4, color: "#B47929" }}>
+                <Text style={{ ...FONTS.h4, color: COLORS.darkgray }}>
                     Total Price
                 </Text>
-                <Text style={{ ...FONTS.h1, color: COLORS.primary }}>
+                <Text style={{ ...FONTS.h1, color: 'black' }}>
                     $613.75
                 </Text>
                 <TextInput
@@ -116,7 +116,7 @@ const CheckOuts = ({ navigation }) => {
                     placeholder="Card Holder"
                 />
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('OrderPlaced')}
+                    onPress={() => navigation.navigate('Payment03')}
                     style={{
                         marginHorizontal:width*0.15,
                         height:40,

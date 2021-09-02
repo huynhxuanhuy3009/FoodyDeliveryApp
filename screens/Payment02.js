@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     View,
     StyleSheet,
@@ -17,6 +17,7 @@ import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 const { width, height } = Dimensions.get("window");
 
 const Payment02 = ({navigation}) => {
+    
     function renderHeader() {
         return (
             <View
@@ -179,11 +180,12 @@ const Payment02 = ({navigation}) => {
                     <Text style={{ ...FONTS.h3 }}>PAYMENTS</Text>  
                     <TouchableOpacity
                         onPress={() => navigation.navigate('CheckOuts')} 
+                        onChan
                         style={{
                             flexDirection:'row',
                             justifyContent:'space-between', 
                             alignItems:'center',
-                            backgroundColor:COLORS.darkgray,
+                            backgroundColor: COLORS.darkgray,
                             height:50, 
                             borderWidth: 0.5,
                             borderRadius: 5,

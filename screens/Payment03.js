@@ -290,14 +290,14 @@ const Payment03 = ({navigation}) => {
                     style={{
                         marginHorizontal:width*0.15,
                         height:40,
-                        backgroundColor:COLORS.primary,
+                        backgroundColor:'#0CC255',
                         justifyContent:'center',
                         alignItems:'center', 
                         borderWidth:0.5,
                         borderRadius:20,
                     }}
                 >
-                    <Text style={{color:'white', ...FONTS.h4}}>Back Menu</Text>
+                    <Text style={{color:'white', ...FONTS.h4}}>Check Out</Text>
                 </TouchableOpacity>
             </View>
         );

@@ -4,13 +4,14 @@ import {
     Image,
     TouchableOpacity
 } from 'react-native';
+import {Icon} from 'native-base';
 import { createBottomTabNavigator, BottomTabBar } from "@react-navigation/bottom-tabs"
 import Svg, { Path } from 'react-native-svg';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 
-import { Home, OrderPlaced, User } from "../screens"
+import { Home, Restaurant, User , Cart} from "../screens"
 
-import { COLORS, icons } from "../constants"
+import { COLORS, icons, images } from "../constants"
 
 const Tab = createBottomTabNavigator();
 
@@ -166,12 +167,12 @@ const Tabs = () => {
             />
 
             <Tab.Screen
-                name="Like"
-                component={Home}
+                name="Cart"
+                component={Cart}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={icons.like}
+                            source={icons.cart}
                             resizeMode="contain"
                             style={{
                                 width: 25,
@@ -210,6 +211,28 @@ const Tabs = () => {
                     )
                 }}
             />
+             {/* <Tab.Screen
+                name="Restaurant"
+                component={Restaurant}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <Image
+                            source={icons.user}
+                            resizeMode="contain"
+                            style={{
+                                width: 25,
+                                height: 25,
+                                tintColor: focused ? COLORS.primary : COLORS.secondary
+                            }}
+                        />
+                    ),
+                    tabBarButton: (props) => (
+                        <TabBarCustomButton
+                            {...props}
+                        />
+                    )
+                }}
+            /> */}
         </Tab.Navigator>
     )
 }

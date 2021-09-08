@@ -10,9 +10,10 @@ import {
     Image,
     NativeModules,
 } from "react-native";
-import { Icon, ListItem } from "native-base";
-import { SwipeListView } from "react-native-swipe-list-view";
+import { Icon, ListItem, Tab } from "native-base";
+import tabs from "../navigation/tabs";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
+import Tabs from "../navigation/tabs";
 
 const { width, height } = Dimensions.get("window");
 const Cart = ({ navigation }) => {
@@ -495,10 +496,11 @@ const Cart = ({ navigation }) => {
                 style={[
                     styles.rowFront,
                     {
-                        marginTop: 20,
+                        marginTop: 10,
+                        marginBottom:60,
                         paddingHorizontal: width * 0.05,
-                        paddingVertical: height * 0.02,
-                        height: 180,
+                        paddingVertical: height * 0.035,
+                        height: 160,
                         justifyContent: "space-between",
                     },
                 ]}
@@ -562,11 +564,17 @@ const Cart = ({ navigation }) => {
             </View>
         );
     }
+    function renderTabs() {
+        return(
+            <Tabs/>
+        );
+    }
     return (
         <SafeAreaView style={styles.container}>
             {renderHeaderCart()}
             {renderItemsCart()}
             {renderTotalCart()}
+            {/* {renderTabs()} */}
         </SafeAreaView>
     );
 };

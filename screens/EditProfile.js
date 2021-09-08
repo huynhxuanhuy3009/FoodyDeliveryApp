@@ -1,25 +1,20 @@
-
-import { Title } from 'native-base';
-import React from 'react';
-import {View,Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, Dimensions, TextInput, Alert} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View,Text, StyleSheet, SafeAreaView, TouchableOpacity, Image, Dimensions,FlatList, TextInput, Alert} from 'react-native';
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
-
 const{width, height} = Dimensions.get('window');
-const EditProfile = ({navigation}) => {
 
-    const notification = () => Alert.alert(
-        'Success !','edit Profile?'[
-            {
-                text: "cancel",
-                style: 'cancel'
-            },
-            {
-                text: "OK",
-                style: 'destructive'
-            }
-            
-        ]
-    )
+
+const EditProfile = ({navigation}) => {
+    const productURL = "https://foody-backend.herokuapp.com/products";
+    const [data, setData] = useState([])
+
+    useEffect(() => { 
+        fetch(productURL)
+        .then(response => response.json())
+        .then((reponseJson) => setData(reponseJson))
+        .catch((error) => alert(error))
+    })
+
     function renderHeaderEditProfile() {
         return (
             <View style={{ flexDirection: "row", height: 50 }}>
@@ -73,55 +68,27 @@ const EditProfile = ({navigation}) => {
             </View>
         );
     }
-    function renderUpdateProfile() {
-        
+    
+    const renderItem = ({item}) => (
+        <View>       
+               <Text>{item.title}</Text>      
+        </View>
+    );
+
+
+    function renderProduct(){
         return(
-            <View style={{alignItems:'center'}}>
-                <Text 
-                    style={{
-                        ...FONTS.h1,
-                        color:COLORS.primary,
-                        paddingTop:SIZES.padding*15,
-                                          
-                    }}
-                >
-                    Update your account
-                </Text>
-                <TextInput
-                    style={[
-                        styles.textinput,
-                    ]}
-                    placeholder='Name'
-                />
-                <TextInput
-                    style={[
-                        styles.textinput,
-                    ]}
-                    placeholder='Email'
-                />
-                <TextInput
-                    style={[
-                        styles.textinput,
-                    ]}
-                    placeholder='Phone Number'
-                />
-                <TouchableOpacity
-                    title='update thanh cong'
-                    onPress={() => notification()}
-                    style={[
-                        styles.button,
-                        {backgroundColor:COLORS.primary,borderWidth:0.1},
-                    ]}
-                >          
-                    <Text style={{...FONTS.h1,color:COLORS.white, fontSize:15}}>UPDATE</Text>
-                </TouchableOpacity>
-            </View>
+            <FlatList 
+                data={data}
+                keyExtractor={({id}, key) => id}
+                renderItem = {renderItem}
+            />
         );
     }
     return (
         <SafeAreaView style={styles.container}>
             {renderHeaderEditProfile()}
-            {renderUpdateProfile()}
+            {renderProduct()}
         </SafeAreaView>
     );
 }
@@ -131,22 +98,93 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.lightGray2
     }, 
-    textinput:{
-        width:width*0.9,
-        height:height*0.07,
-        borderRadius:5,
-        borderWidth:0.5,
-        paddingLeft:10,
-        marginTop:25,
-    },
-    button:{
-        width:width*0.9,
-        height:height*0.06,
-        borderRadius:5,
-        marginTop:20,
-        alignItems:'center',
-        justifyContent:'center'
-    },
 })
 
 export default EditProfile;
+
+// ===================================================================
+// PHẦN NÀY LÀ CỦA USER BỎ ĐI 
+//===================================================================
+{/* <TouchableOpacity 
+                    onPress={() => navigation.navigate('ManageAddress')}
+                    style={styles.rowFront}
+                >
+                    <View style={{width:40,paddingLeft:5}}>
+                        <Icon
+                            name="home"
+                            type="FontAwesome"
+                            style={{color:COLORS.primary}}
+                        />
+                    </View>
+                    <Text style={{...FONTS.body2,width:260, paddingLeft:20, }}>
+                        Manage Address
+                    </Text>
+                    <View style={{width:60, }}>
+                        <Icon
+                            name="navigate-next"
+                            type="MaterialIcons"
+                        />
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.rowFront}>
+                    <View style={{width:40,paddingLeft:5}}>
+                        <Icon
+                            name="heart-circle"
+                            type="Ionicons"
+                            style={{color:COLORS.primary}}
+                        />
+                    </View>
+                    <Text style={{...FONTS.body2,width:260, paddingLeft:20, }}>
+                        Favorites
+                    </Text>
+                    <View style={{width:60, }}>
+                        <Icon
+                            name="navigate-next"
+                            type="MaterialIcons"
+                        />
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    onPress={() => navigation.navigate('Settings')}
+                    style={styles.rowFront}
+                >
+                    <View style={{width:40,paddingLeft:5}}>
+                        <Icon
+                            name="player-settings"
+                            type="Fontisto"
+                            style={{color:COLORS.primary}}
+                        />
+                    </View>
+                    <Text style={{...FONTS.body2,width:260, paddingLeft:20, }}>
+                        Setting
+                    </Text>
+                    <View style={{width:60, }}>
+                        <Icon
+                            name="navigate-next"
+                            type="MaterialIcons"
+                        />
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    // ĐỂ TẠM LOGOUT VÀO ĐÂY
+                    onPress={() => signOut()}
+                    style={{
+                        flexDirection:'row',
+                        marginTop:20,
+                        marginHorizontal:width*0.27,
+                        height:40,
+                        backgroundColor:COLORS.primary,
+                        justifyContent:'space-evenly',
+                        alignItems:'center', 
+                        borderWidth:0.5,
+                        borderRadius:20,
+                    }}
+                >
+                        <Icon
+                            name="power-off"
+                            type="FontAwesome"
+                            style={{color:COLORS.lightGray2}}
+                        />
+                        <Text style={{...FONTS.h4, color:COLORS.lightGray2}}>Log Out</Text>
+                </TouchableOpacity> 
+            */}

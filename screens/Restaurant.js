@@ -396,14 +396,14 @@ const Restaurant = ({ route, navigation }) => {
                                 alignItems: 'center',
                                 borderRadius: SIZES.radius
                             }}
-                            onPress={() => navigation.navigate("Cart"
+                            onPress={() => navigation.navigate('Cart'
                                 // , {
                                 // restaurant: restaurant,
                                 // currentLocation: currentLocation
                                 // }
                             )}
                         >
-                            <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Order</Text>
+                            <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Add To Cart</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

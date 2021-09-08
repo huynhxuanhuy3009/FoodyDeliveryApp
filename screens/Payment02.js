@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
     View,
     StyleSheet,
@@ -16,8 +16,10 @@ import { Icon, ListItem } from "native-base";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 const { width, height } = Dimensions.get("window");
 
-const Payment02 = ({navigation}) => {
-    
+const Payment02 = ({ navigation }) => {
+    const [visapay, setVisapay] = useState(false);
+    const [codpay, setCodpay] = useState(false);
+
     function renderHeader() {
         return (
             <View
@@ -84,7 +86,6 @@ const Payment02 = ({navigation}) => {
                     flexDirection: "row",
                     paddingVertical: width * 0.05,
                     marginHorizontal: width * 0.15,
-                    
                 }}
             >
                 <View style={{ alignItems: "center" }}>
@@ -152,13 +153,15 @@ const Payment02 = ({navigation}) => {
             <ScrollView style={{ paddingHorizontal: width * 0.05 }}>
                 {/* Delivery time */}
                 <View style={styles.rowFront}>
-                    <Text style={{ ...FONTS.h3 }}>DELIVERY TO</Text>  
-                    <View style={{justifyContent:'space-around', height:100}}>
-                        <Text  style={{ ...FONTS.h4 }}>HUYHUYNH</Text>   
+                    <Text style={{ ...FONTS.h3 }}>DELIVERY TO</Text>
+                    <View
+                        style={{ justifyContent: "space-around", height: 100 }}
+                    >
+                        <Text style={{ ...FONTS.h4 }}>HUYHUYNH</Text>
                         <View
                             style={{
-                                flexDirection:'row',
-                                alignItems:'center'
+                                flexDirection: "row",
+                                alignItems: "center",
                             }}
                         >
                             <Text style={{ ...FONTS.h4 }}>Phone number : </Text>
@@ -166,58 +169,77 @@ const Payment02 = ({navigation}) => {
                         </View>
                         <View
                             style={{
-                                flexDirection:'row',
-                                alignItems:'center'
+                                flexDirection: "row",
+                                alignItems: "center",
                             }}
                         >
                             <Text style={{ ...FONTS.h4 }}>Address: </Text>
-                            <Text >37B duong so 8, P.truong tho</Text>
+                            <Text>37B duong so 8, P.truong tho</Text>
                         </View>
-                    </View>                  
+                    </View>
                 </View>
                 {/* hinh thuc thanh toan */}
-                <View style={[styles.rowFront, {height:200}]}>
-                    <Text style={{ ...FONTS.h3 }}>PAYMENTS</Text>  
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('CheckOuts')} 
-                        onChan
-                        style={{
-                            flexDirection:'row',
-                            justifyContent:'space-between', 
-                            alignItems:'center',
-                            backgroundColor: COLORS.darkgray,
-                            height:50, 
-                            borderWidth: 0.5,
-                            borderRadius: 5,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                        }}
-                    >
-                        <Text style={{ ...FONTS.h4, color:'#fff'}}>Payment by card (ATM/VISA)</Text>
-                        <Icon
-                            name='cc-visa'
-                            type='FontAwesome'
-                            
-                        />
-                    </TouchableOpacity>      
-                    <TouchableOpacity style={{
-                            flexDirection:'row',
-                            justifyContent:'space-between', 
-                            alignItems:'center',
-                            backgroundColor:COLORS.darkgray,
-                            height:50, 
-                            borderWidth: 0.5,
-                            borderRadius: 5,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                        }}
-                    >
-                        <Text style={{ ...FONTS.h4, color:'#fff'}}>Payment on delivery</Text>
-                        <Icon
-                            name='dollar-bill'
-                            type='Foundation'
-                        />
-                    </TouchableOpacity>                  
+                <View style={[styles.rowFront, { height: 200 }]}>
+                    <Text style={{ ...FONTS.h3 }}>PAYMENTS</Text>
+                    {visapay ? (
+                        <TouchableOpacity
+                            style={[
+                                styles.btnPayment,
+                                {backgroundColor: COLORS.darkgray,}
+                            ]}
+                        >
+                            <Text style={{ ...FONTS.h4, color: "#fff" }}>
+                                Payment by card (ATM/VISA)
+                            </Text>
+                            <Icon name="cc-visa" type="FontAwesome" />
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity
+                            onPress={() => {
+                                setVisapay(true);
+                                setCodpay(false);
+                            }}
+                            style={[
+                                styles.btnPayment,
+                                {backgroundColor: COLORS.lightGray2,}
+                            ]}
+                        >
+                            <Text style={{ ...FONTS.h4, color: "black" }}>
+                                Payment by card (ATM/VISA)
+                            </Text>
+                            <Icon name="cc-visa" type="FontAwesome" />
+                        </TouchableOpacity>
+                    )}
+
+                    {codpay ? (
+                        <TouchableOpacity
+                            style={[
+                                styles.btnPayment,
+                                {backgroundColor: COLORS.darkgray,}
+                            ]}
+                        >
+                            <Text style={{ ...FONTS.h4, color: "#fff" }}>
+                                Payment on delivery
+                            </Text>
+                            <Icon name="dollar-bill" type="Foundation" />
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity
+                            onPress={() => {
+                                setCodpay(true);
+                                setVisapay(false);
+                            }}
+                            style={[
+                                styles.btnPayment,
+                                {backgroundColor: COLORS.lightGray2,}
+                            ]}
+                        >
+                            <Text style={{ ...FONTS.h4, color: "black" }}>
+                                Payment on delivery
+                            </Text>
+                            <Icon name="dollar-bill" type="Foundation" />
+                        </TouchableOpacity>
+                    )}
                 </View>
                 {/* order summary */}
                 <View>
@@ -302,7 +324,7 @@ const Payment02 = ({navigation}) => {
                     style={{
                         flexDirection: "row",
                         justifyContent: "flex-end",
-                        paddingBottom:SIZES.padding * 1,
+                        paddingBottom: SIZES.padding * 1,
                         paddingHorizontal: SIZES.padding * 1,
                         borderBottomColor: COLORS.lightGray2,
                     }}
@@ -313,18 +335,20 @@ const Payment02 = ({navigation}) => {
                     <Text style={{ ...FONTS.h3 }}>$0.00</Text>
                 </View>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Payment03')}
+                    onPress={() => navigation.navigate("Payment03")}
                     style={{
-                        marginHorizontal:width*0.15,
-                        height:40,
-                        backgroundColor:'#0CC255',
-                        justifyContent:'center',
-                        alignItems:'center', 
-                        borderWidth:0.5,
-                        borderRadius:20,
+                        marginHorizontal: width * 0.15,
+                        height: 40,
+                        backgroundColor: "#0CC255",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderWidth: 0.5,
+                        borderRadius: 20,
                     }}
                 >
-                    <Text style={{color:'white', ...FONTS.h4}}>Continue</Text>
+                    <Text style={{ color: "white", ...FONTS.h4 }}>
+                        Continue
+                    </Text>
                 </TouchableOpacity>
             </View>
         );
@@ -337,7 +361,7 @@ const Payment02 = ({navigation}) => {
             {renderFooter()}
         </SafeAreaView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -359,6 +383,16 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 5,
     },
-})
+    btnPayment: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        height: 50,
+        borderWidth: 0.5,
+        borderRadius: 5,
+        paddingVertical: 7,
+        paddingHorizontal: 10,
+    },
+});
 
 export default Payment02;

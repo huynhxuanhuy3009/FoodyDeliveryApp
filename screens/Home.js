@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
     SafeAreaView,
     View,
@@ -8,6 +8,7 @@ import {
     Image,
     FlatList
 } from "react-native";
+import {Icon} from 'native-base'
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 
@@ -16,7 +17,6 @@ import { AuthContext } from "../componets/context";
 const Home = ({ navigation }) => {
     
     // Dummy Datas
-
     const initialCurrentLocation = {
         streetName: "Kuching",
         gps: {
@@ -339,6 +339,27 @@ const Home = ({ navigation }) => {
     const [restaurants, setRestaurants] = React.useState(restaurantData)
     const [currentLocation, setCurrentLocation] = React.useState(initialCurrentLocation)
 
+    const [data, setData] = useState([]);
+    
+    useEffect(() => {
+        getListItem()
+        return () => {
+            
+        }
+    }, [])
+
+    const getListItem = () => {
+        const apiURL = 'https://foody-store-server.herokuapp.com/categories';
+        fetch(apiURL)
+        .then((response) => response.json())
+        .then((responseJson) => {
+            setData(responseJson)
+        })
+        .catch((error)=> {
+            console.log(error)
+        })
+    }
+    
 
     function onSelectCategory(category) {
         //filter restaurant
@@ -369,14 +390,6 @@ const Home = ({ navigation }) => {
                     }}
 
                 >
-                    <Image
-                        source={icons.nearby}
-                        resizeMode="contain"
-                        style={{
-                            width: 30,
-                            height: 30
-                        }}
-                    />
                 </TouchableOpacity>
 
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -395,26 +408,59 @@ const Home = ({ navigation }) => {
                 </View>
 
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Cart')}
+                    // onPress={() => navigation.navigate('Cart')}
                     style={{
                         width: 50,
                         paddingRight: SIZES.padding * 2,
                         justifyContent: 'center'
                     }}
                 >
-                    <Image
+                    {/* <Image
                         source={icons.basket}
                         resizeMode="contain"
                         style={{
                             width: 30,
                             height: 30
                         }}
-                    />
+                    /> */}
                 </TouchableOpacity>
             </View>
         )
     }
 
+    function renderAPI() {
+        const renderItem = ({item, index}) => {
+            return(
+                <View>
+                    <TouchableOpacity 
+                        style ={{
+                            ...styles.shadow,
+                            padding: SIZES.padding,
+                            paddingBottom : SIZES.padding * 2,
+                            borderRadius: SIZES.radius, 
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginRight: SIZES.padding,
+                            
+                        }}
+                    >
+                        <Text style={{color:'red'}}>{item.name}</Text>
+                        </TouchableOpacity>
+                </View>
+                
+            );
+        }
+        return(
+            <FlatList
+                data={data}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                keyExtractor = {(item) => {item.id}}
+                renderItem={renderItem}
+                contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
+            />
+        );
+    }
     function renderMainCategories() {
         const renderItem = ({ item }) => {
             return (
@@ -461,6 +507,7 @@ const Home = ({ navigation }) => {
                         {item.name}
                     </Text>
                 </TouchableOpacity>
+                
             )
         }
 
@@ -543,7 +590,7 @@ const Home = ({ navigation }) => {
                             marginRight: 10
                         }}
                     />
-                    <Text style={{ ...FONTS.body3 }}>{item.rating}</Text>
+                    {/* <Text style={{ ...FONTS.body3 }}>{item.rating}</Text> */}
 
                     {/* Categories */}
                     <View
@@ -567,17 +614,18 @@ const Home = ({ navigation }) => {
                         }
 
                         {/* Price */}
-                        {
-                            [1, 2, 3].map((priceRating) => (
+                        
+                                {/* [1, 2, 3].map((priceRating) => ( */}
                                 <Text
-                                    key={priceRating}
+                                    // key={priceRating}
                                     style={{
                                         ...FONTS.body3,
-                                        color: (priceRating <= item.priceRating) ? COLORS.black : COLORS.darkgray
+                                        // color: (priceRating <= item.priceRating) ? COLORS.black : COLORS.darkgray
+                                        color:  COLORS.darkgray
                                     }}
-                                >$</Text>
-                            ))
-                        }
+                                >đ</Text>
+                             {/* )) */}
+                      
                     </View>
                 </View>
             </TouchableOpacity>
@@ -598,8 +646,9 @@ const Home = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            {renderHeader()}
+            {renderHeader()}        
             {renderMainCategories()}
+            {renderAPI()}
             {renderRestaurantList()}
         </SafeAreaView>
     )

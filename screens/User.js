@@ -1,5 +1,5 @@
 import React from 'react';
-import {View,Text, StyleSheet, SafeAreaView, Image, Dimensions, TouchableOpacity,List, ListItem} from 'react-native';
+import {View,Text, StyleSheet, SafeAreaView, Image, Dimensions, TextInput,Alert, TouchableOpacity,List, ListItem} from 'react-native';
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 
 import {Icon} from 'native-base';
@@ -9,6 +9,19 @@ const {width, height} = Dimensions.get('window');
 const User = ({navigation}) => {
     // dđể tạm signout
     const {signOut} = React.useContext(AuthContext);
+    const notification = () => Alert.alert(
+        'Success !','edit Profile?'[
+            {
+                text: "cancel",
+                style: 'cancel'
+            },
+            {
+                text: "OK",
+                style: 'destructive'
+            }
+            
+        ]
+    )
     function renderEdit() {
         return(
             <View 
@@ -21,7 +34,7 @@ const User = ({navigation}) => {
                   
                 }}
             >
-                <Image
+                {/* <Image
                     source={images.avatar_Thao}
                     style={{
                         width:width*0.40,
@@ -45,83 +58,60 @@ const User = ({navigation}) => {
                         type="FontAwesome5"
                     />
                     <Text style={{ ...FONTS.h4, color:'black' }}>EDIT PROFILE</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         );
     }
+
     function renderManageUser() {
         return(
             <View
                 style={{
-                    paddingHorizontal:width*0.05
+                    paddingHorizontal:width*0.05,
+                    paddingVertical: height*0.2
                 }}
             >
-                <TouchableOpacity 
-                    onPress={() => navigation.navigate('ManageAddress')}
-                    style={styles.rowFront}
-                >
-                    <View style={{width:40,paddingLeft:5}}>
-                        <Icon
-                            name="home"
-                            type="FontAwesome"
-                            style={{color:COLORS.primary}}
-                        />
-                    </View>
-                    <Text style={{...FONTS.body2,width:260, paddingLeft:20, }}>
-                        Manage Address
-                    </Text>
-                    <View style={{width:60, }}>
-                        <Icon
-                            name="navigate-next"
-                            type="MaterialIcons"
-                        />
-                    </View>
+                 <TextInput
+                    style={[
+                        styles.textinput,
+                    ]}
+                    placeholder='Name'
+                />
+                <TextInput
+                    style={[
+                        styles.textinput,
+                    ]}
+                    placeholder='Email'
+                />
+                <TextInput
+                    style={[
+                        styles.textinput,
+                    ]}
+                    placeholder='Phone Number'
+                />
+                <TextInput
+                    style={[
+                        styles.textinput,
+                    ]}
+                    placeholder='Address'
+                />
+                <TouchableOpacity
+                    title='update thanh cong'
+                    onPress={() => notification()}
+                    style={[
+                        styles.button,
+                        {backgroundColor:COLORS.primary,borderWidth:0.1},
+                    ]}
+                >          
+                    <Text style={{...FONTS.h1,color:COLORS.white, fontSize:15}}>UPDATE</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.rowFront}>
-                    <View style={{width:40,paddingLeft:5}}>
-                        <Icon
-                            name="heart-circle"
-                            type="Ionicons"
-                            style={{color:COLORS.primary}}
-                        />
-                    </View>
-                    <Text style={{...FONTS.body2,width:260, paddingLeft:20, }}>
-                        Favorites
-                    </Text>
-                    <View style={{width:60, }}>
-                        <Icon
-                            name="navigate-next"
-                            type="MaterialIcons"
-                        />
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity 
-                    onPress={() => navigation.navigate('Settings')}
-                    style={styles.rowFront}
-                >
-                    <View style={{width:40,paddingLeft:5}}>
-                        <Icon
-                            name="player-settings"
-                            type="Fontisto"
-                            style={{color:COLORS.primary}}
-                        />
-                    </View>
-                    <Text style={{...FONTS.body2,width:260, paddingLeft:20, }}>
-                        Setting
-                    </Text>
-                    <View style={{width:60, }}>
-                        <Icon
-                            name="navigate-next"
-                            type="MaterialIcons"
-                        />
-                    </View>
-                </TouchableOpacity>
+                
                 <TouchableOpacity 
                     // ĐỂ TẠM LOGOUT VÀO ĐÂY
                     onPress={() => signOut()}
                     style={{
                         flexDirection:'row',
-                        marginTop:20,
+                        marginTop:60,
                         marginHorizontal:width*0.27,
                         height:40,
                         backgroundColor:COLORS.primary,
@@ -137,13 +127,13 @@ const User = ({navigation}) => {
                             style={{color:COLORS.lightGray2}}
                         />
                         <Text style={{...FONTS.h4, color:COLORS.lightGray2}}>Log Out</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> 
             </View>
         );
     }
     return (
         <SafeAreaView style={styles.container}>
-            {renderEdit()}
+            {/* {renderEdit()} */}
             {renderManageUser()}
         </SafeAreaView>
     );
@@ -168,6 +158,22 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
         shadowRadius: 2,
         elevation: 5,
+    },
+    textinput:{
+        width:width*0.9,
+        height:height*0.07,
+        borderRadius:5,
+        borderWidth:0.5,
+        paddingLeft:10,
+        marginTop:25,
+    },
+    button:{
+        width:width*0.9,
+        height:height*0.06,
+        borderRadius:5,
+        marginTop:20,
+        alignItems:'center',
+        justifyContent:'center'
     },
 })
 

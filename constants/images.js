@@ -43,6 +43,7 @@ export default {
     chicago_hot_dog,
     crispy_chicken_burger,
 
+
     fries_restaurant,
     hawaiian_pizza,
     honey_mustard_chicken_burger,

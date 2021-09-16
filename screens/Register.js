@@ -1,10 +1,49 @@
-import React from 'react';
+import React ,{useState, useEffect} from 'react';
 import {View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image,TextInput, Dimensions} from 'react-native';
 import {Icon} from 'native-base';
 import { icons, images, SIZES, COLORS, FONTS } from '../constants';
 
 const {width, height} = Dimensions.get('window');
 const Register = ({navigation}) => {
+
+    const [data, setData] = React.useState({
+        name: "",
+        email:"",
+        password: "",
+        confirmPassword:"",
+        check_textInputChange: false,
+        secureTextEntry01: true,
+        secureTextEntry02: true,
+    });
+
+    // useEffect(() => {
+    //     getAPIRegister()
+    //     return () => {
+    //     }
+    // },[])
+
+    const getAPIRegister = (email, password) => {
+        const apiURL = "https://foody-store-server.herokuapp.com/auth/local/register"
+        fetch(apiURL, {
+            method: "POST",
+            body: JSON.stringify({
+                email: email,
+                password: password,
+                "username" : "longthanh",
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+            },
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+            })
+            .catch((error) => {
+                console.log(">>erro", error);
+            })
+    }
+
 
     function renderHeaderRegister() {
         return(
@@ -44,7 +83,40 @@ const Register = ({navigation}) => {
              </View>
         );
     }
-
+    const textInputChange = (val) => {
+        if (val != 0){
+            setData ({
+                ...data, 
+                email : val, 
+                check_textInputChange : true,
+            })
+        }
+        else{
+            setData ({
+                ...data,
+                email : val,
+                check_textInputChange : false,
+            })
+        }
+    };
+    const handlePasswordChange = (val) =>{
+        setData ({
+            ...data,
+            password : val,
+        })
+    }
+    const updateSecureTextEntry01 = () => {
+        setData({
+            ...data,
+            secureTextEntry01: !data.secureTextEntry01,
+        });
+    };
+    const updateSecureTextEntry02 = () => {
+        setData({
+            ...data,
+            secureTextEntry02: !data.secureTextEntry02,
+        });
+    };
     function renderMainRegister() {
         return(
             <View style={{alignItems:'center'}}>
@@ -52,7 +124,7 @@ const Register = ({navigation}) => {
                     style={{
                         ...FONTS.h1,
                         color:COLORS.primary,
-                        paddingTop:SIZES.padding*20,
+                        paddingTop:SIZES.padding*10,
                         fontSize:50                   
                     }}
                 >
@@ -65,28 +137,72 @@ const Register = ({navigation}) => {
                         styles.textinput,
                     ]}
                     placeholder='Name'
+                   
                 />
                 <TextInput
                     style={[
                         styles.textinput,
                     ]}
                     placeholder='Email'
+                    onChangeText={(val) => textInputChange(val) }
+                    
                 />
-                <TextInput
-                    style={[
-                        styles.textinput,       
-                    ]}
-                    placeholder='Password'
-                />
-                <TextInput
-                    style={[
-                        styles.textinput,    
-                    ]}
-                    placeholder='Confirm Password'
-                />
+                <View style={([styles.textinput], [styles.eyepassword])}>
+                    <TextInput
+                        style={[
+                            styles.textinput,  
+                            {
+                                marginRight: 10,
+                                width: width * 0.74,
+                                borderRightWidth: 0,
+                                marginTop:0,
+                            },     
+                        ]}
+                        placeholder='Password'
+                        secureTextEntry={data.secureTextEntry01 ? true : false}
+                        onChangeText={(val) => handlePasswordChange(val) }
+                    />
+                    <TouchableOpacity
+                        style={{ justifyContent: "center", paddingRight: 25 }}
+                        onPress={updateSecureTextEntry01}
+                    >
+                        {data.secureTextEntry01 ? (
+                            <Icon name="eye-off" size={20} />
+                        ) : (
+                            <Icon name="eye" size={20} />
+                        )}
+                        
+                    </TouchableOpacity>
+                </View>
+                
+                <View style={([styles.textinput], [styles.eyepassword]  )}>
+                    <TextInput
+                        style={[
+                            styles.textinput,  
+                            {
+                                marginRight: 10,
+                                width: width * 0.74,
+                                borderRightWidth: 0,
+                                marginTop:0,
+                            },     
+                        ]}
+                        placeholder='Confirm Password'
+                        secureTextEntry={data.secureTextEntry02 ? true : false}
+                    />
+                    <TouchableOpacity
+                        style={{ justifyContent: "center", paddingRight: 25 }}
+                        onPress={updateSecureTextEntry02}
+                    >
+                        {data.secureTextEntry02 ? (
+                            <Icon name="eye-off" size={20} />
+                        ) : (
+                            <Icon name="eye" size={20} />
+                        )}
+                    </TouchableOpacity>
+                </View>
 
                 <TouchableOpacity
-                    onPress = {() => navigation.navigate('Login')}
+                    onPress={() => getAPIRegister(data.email, data.password)}
                     style={[
                         styles.button,
                         {backgroundColor:COLORS.primary,borderWidth:0.1},
@@ -118,11 +234,19 @@ const styles = StyleSheet.create({
         paddingLeft:10,
         marginTop:25,
     },
+    eyepassword: {
+        flexDirection: "row",
+        alignItems: "center",
+        borderWidth: 0.5,
+        height: height * 0.07,
+        marginTop: 30,
+        borderRadius: 5,
+    },
     button:{
         width:width*0.9,
         height:height*0.06,
         borderRadius:5,
-        marginTop:15,
+        marginTop:30,
         alignItems:'center',
         justifyContent:'center'
     },

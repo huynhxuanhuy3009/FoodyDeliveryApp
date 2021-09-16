@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
     SafeAreaView,
     View,
@@ -6,24 +6,28 @@ import {
     StyleSheet,
     TouchableOpacity,
     Image,
-    FlatList
+    FlatList,
+    Dimensions,
+    Alert,
 } from "react-native";
-import {Icon} from 'native-base'
+import { Icon } from "native-base";
 
-import { icons, images, SIZES, COLORS, FONTS } from '../constants'
+import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 
 import { AuthContext } from "../componets/context";
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
+const { width, height } = Dimensions.get("window");
 const Home = ({ navigation }) => {
+    
     
     // Dummy Datas
     const initialCurrentLocation = {
         streetName: "Kuching",
         gps: {
             latitude: 1.5496614931250685,
-            longitude: 110.36381866919922
-        }
-    }
+            longitude: 110.36381866919922,
+        },
+    };
 
     const categoryData = [
         {
@@ -76,13 +80,12 @@ const Home = ({ navigation }) => {
             name: "Drinks",
             icon: icons.drink,
         },
-
-    ]
+    ];
 
     // price rating
-    const affordable = 1
-    const fairPrice = 2
-    const expensive = 3
+    const affordable = 1;
+    const fairPrice = 2;
+    const expensive = 3;
 
     const restaurantData = [
         {
@@ -99,24 +102,26 @@ const Home = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_1,
-                name: "Amy"
+                name: "Amy",
             },
             menu: [
                 {
                     menuId: 1,
                     name: "Crispy Chicken Burger",
                     photo: images.crispy_chicken_burger,
-                    description: "Burger with crispy chicken, cheese and lettuce",
+                    description:
+                        "Burger with crispy chicken, cheese and lettuce",
                     calories: 200,
-                    price: 10
+                    price: 10,
                 },
                 {
                     menuId: 2,
                     name: "Crispy Chicken Burger with Honey Mustard",
                     photo: images.honey_mustard_chicken_burger,
-                    description: "Crispy Chicken Burger with Honey Mustard Coleslaw",
+                    description:
+                        "Crispy Chicken Burger with Honey Mustard Coleslaw",
                     calories: 250,
-                    price: 15
+                    price: 15,
                 },
                 {
                     menuId: 3,
@@ -124,9 +129,9 @@ const Home = ({ navigation }) => {
                     photo: images.baked_fries,
                     description: "Crispy Baked French Fries",
                     calories: 194,
-                    price: 8
-                }
-            ]
+                    price: 8,
+                },
+            ],
         },
         {
             id: 2,
@@ -142,24 +147,26 @@ const Home = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_2,
-                name: "Jackson"
+                name: "Jackson",
             },
             menu: [
                 {
                     menuId: 4,
                     name: "Hawaiian Pizza",
                     photo: images.hawaiian_pizza,
-                    description: "Canadian bacon, homemade pizza crust, pizza sauce",
+                    description:
+                        "Canadian bacon, homemade pizza crust, pizza sauce",
                     calories: 250,
-                    price: 15
+                    price: 15,
                 },
                 {
                     menuId: 5,
                     name: "Tomato & Basil Pizza",
                     photo: images.pizza,
-                    description: "Fresh tomatoes, aromatic basil pesto and melted bocconcini",
+                    description:
+                        "Fresh tomatoes, aromatic basil pesto and melted bocconcini",
                     calories: 250,
-                    price: 20
+                    price: 20,
                 },
                 {
                     menuId: 6,
@@ -167,7 +174,7 @@ const Home = ({ navigation }) => {
                     photo: images.tomato_pasta,
                     description: "Pasta with fresh tomatoes",
                     calories: 100,
-                    price: 10
+                    price: 10,
                 },
                 {
                     menuId: 7,
@@ -175,9 +182,9 @@ const Home = ({ navigation }) => {
                     photo: images.salad,
                     description: "Finely chopped lettuce, tomatoes, cucumbers",
                     calories: 100,
-                    price: 10
-                }
-            ]
+                    price: 10,
+                },
+            ],
         },
         {
             id: 3,
@@ -193,7 +200,7 @@ const Home = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_3,
-                name: "James"
+                name: "James",
             },
             menu: [
                 {
@@ -202,9 +209,9 @@ const Home = ({ navigation }) => {
                     photo: images.chicago_hot_dog,
                     description: "Fresh tomatoes, all beef hot dogs",
                     calories: 100,
-                    price: 20
-                }
-            ]
+                    price: 20,
+                },
+            ],
         },
         {
             id: 4,
@@ -220,18 +227,19 @@ const Home = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_4,
-                name: "Ahmad"
+                name: "Ahmad",
             },
             menu: [
                 {
                     menuId: 9,
                     name: "Sushi sets",
                     photo: images.sushi,
-                    description: "Fresh salmon, sushi rice, fresh juicy avocado",
+                    description:
+                        "Fresh salmon, sushi rice, fresh juicy avocado",
                     calories: 100,
-                    price: 50
-                }
-            ]
+                    price: 50,
+                },
+            ],
         },
         {
             id: 5,
@@ -247,7 +255,7 @@ const Home = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_4,
-                name: "Muthu"
+                name: "Muthu",
             },
             menu: [
                 {
@@ -256,7 +264,7 @@ const Home = ({ navigation }) => {
                     photo: images.kolo_mee,
                     description: "Noodles with char siu",
                     calories: 200,
-                    price: 5
+                    price: 5,
                 },
                 {
                     menuId: 11,
@@ -264,7 +272,7 @@ const Home = ({ navigation }) => {
                     photo: images.sarawak_laksa,
                     description: "Vermicelli noodles, cooked prawns",
                     calories: 300,
-                    price: 8
+                    price: 8,
                 },
                 {
                     menuId: 12,
@@ -272,7 +280,7 @@ const Home = ({ navigation }) => {
                     photo: images.nasi_lemak,
                     description: "A traditional Malay rice dish",
                     calories: 300,
-                    price: 8
+                    price: 8,
                 },
                 {
                     menuId: 13,
@@ -280,13 +288,11 @@ const Home = ({ navigation }) => {
                     photo: images.nasi_briyani_mutton,
                     description: "A traditional Indian rice dish with mutton",
                     calories: 300,
-                    price: 8
+                    price: 8,
                 },
-
-            ]
+            ],
         },
         {
-
             id: 6,
             name: "ByProgrammers Dessets",
             rating: 4.9,
@@ -300,7 +306,7 @@ const Home = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_1,
-                name: "Jessie"
+                name: "Jessie",
             },
             menu: [
                 {
@@ -309,7 +315,7 @@ const Home = ({ navigation }) => {
                     photo: images.teh_c_peng,
                     description: "Three Layer Teh C Peng",
                     calories: 100,
-                    price: 2
+                    price: 2,
                 },
                 {
                     menuId: 13,
@@ -317,7 +323,7 @@ const Home = ({ navigation }) => {
                     photo: images.ice_kacang,
                     description: "Shaved Ice with red beans",
                     calories: 100,
-                    price: 3
+                    price: 3,
                 },
                 {
                     menuId: 14,
@@ -325,85 +331,119 @@ const Home = ({ navigation }) => {
                     photo: images.kek_lapis,
                     description: "Layer cakes",
                     calories: 300,
-                    price: 20
-                }
-            ]
+                    price: 20,
+                },
+            ],
+        },
+    ];
 
-        }
+    //
+    const [categories, setCategories] = React.useState(categoryData);
+    const [selectedCategory, setSelectedCategory] = React.useState(null);
+    const [restaurants, setRestaurants] = React.useState(restaurantData);
+    const [currentLocation, setCurrentLocation] = React.useState(
+        initialCurrentLocation
+    );
 
-
-    ]
-
-    const [categories, setCategories] = React.useState(categoryData)
-    const [selectedCategory, setSelectedCategory] = React.useState(null)
-    const [restaurants, setRestaurants] = React.useState(restaurantData)
-    const [currentLocation, setCurrentLocation] = React.useState(initialCurrentLocation)
-
+    // Hook category
     const [data, setData] = useState([]);
-    
+    const [selectCategories, setSelectCategories] = useState(null);
+    const [restaurants01, setRrestaurants01] = useState([]);
+    const [usertoken, setUsertoken] = useState("");
     useEffect(() => {
-        getListItem()
-        return () => {
-            
+        getListItem();
+        let userToken;
+        async function getusertoken() {
+            userToken  = await AsyncStorage.getItem('userToken');
+            setUsertoken(userToken);
+            getuserProfile(userToken);
         }
-    }, [])
+        
+        getusertoken();
+        return () => {};
+    }, []);
+    const getuserProfile = (utoken) => {
+        const apiURL = "https://foody-store-server.herokuapp.com/users/me";
+        fetch(apiURL, {
+            method: "GET",           
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization" : `Bearer ${utoken}`
+            },
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(">>email", responseJson.email)    
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     const getListItem = () => {
-        const apiURL = 'https://foody-store-server.herokuapp.com/categories';
+        const apiURL = "https://foody-store-server.herokuapp.com/categories";
         fetch(apiURL)
-        .then((response) => response.json())
-        .then((responseJson) => {
-            setData(responseJson)
-        })
-        .catch((error)=> {
-            console.log(error)
-        })
-    }
-    
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setData(responseJson);
+                // setRrestaurants01(responseJson[2].products);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
+    // < CODE BYPRAM =====================================>
     function onSelectCategory(category) {
         //filter restaurant
-        let restaurantList = restaurantData.filter(a => a.categories.includes(category.id))
+        let restaurantList = restaurantData.filter((a) =>
+            a.categories.includes(category.id)
+        );
 
-        setRestaurants(restaurantList)
+        setRestaurants(restaurantList);
 
-        setSelectedCategory(category)
+        setSelectedCategory(category);
     }
 
     function getCategoryNameById(id) {
-        let category = categories.filter(a => a.id == id)
+        let category = categories.filter((a) => a.id == id);
 
-        if (category.length > 0)
-            return category[0].name
+        if (category.length > 0) return category[0].name;
 
-        return ""
+        return "";
     }
 
     function renderHeader() {
         return (
-            <View style={{ flexDirection: 'row', height: 50 }}>
+            <View style={{ flexDirection: "row", height: 50 }}>
                 <TouchableOpacity
                     style={{
                         width: 50,
                         paddingLeft: SIZES.padding * 2,
-                        justifyContent: 'center'
+                        justifyContent: "center",
                     }}
+                ></TouchableOpacity>
 
+                <View
+                    style={{
+                        flex: 1,
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
                 >
-                </TouchableOpacity>
-
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <View
                         style={{
-                            width: '70%',
+                            width: "70%",
                             height: "100%",
                             backgroundColor: COLORS.lightGray3,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            borderRadius: SIZES.radius
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderRadius: SIZES.radius,
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 }}>{currentLocation.streetName}</Text>
+                        <Text style={{ ...FONTS.h3 }}>
+                            {currentLocation.streetName}
+                        </Text>
                     </View>
                 </View>
 
@@ -412,7 +452,7 @@ const Home = ({ navigation }) => {
                     style={{
                         width: 50,
                         paddingRight: SIZES.padding * 2,
-                        justifyContent: 'center'
+                        justifyContent: "center",
                     }}
                 >
                     {/* <Image
@@ -425,55 +465,26 @@ const Home = ({ navigation }) => {
                     /> */}
                 </TouchableOpacity>
             </View>
-        )
-    }
-
-    function renderAPI() {
-        const renderItem = ({item, index}) => {
-            return(
-                <View>
-                    <TouchableOpacity 
-                        style ={{
-                            ...styles.shadow,
-                            padding: SIZES.padding,
-                            paddingBottom : SIZES.padding * 2,
-                            borderRadius: SIZES.radius, 
-                            alignItems: "center",
-                            justifyContent: "center",
-                            marginRight: SIZES.padding,
-                            
-                        }}
-                    >
-                        <Text style={{color:'red'}}>{item.name}</Text>
-                        </TouchableOpacity>
-                </View>
-                
-            );
-        }
-        return(
-            <FlatList
-                data={data}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                keyExtractor = {(item) => {item.id}}
-                renderItem={renderItem}
-                contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
-            />
         );
     }
+
     function renderMainCategories() {
         const renderItem = ({ item }) => {
             return (
                 <TouchableOpacity
+                    key={item.id}
                     style={{
                         padding: SIZES.padding,
                         paddingBottom: SIZES.padding * 2,
-                        backgroundColor: (selectedCategory?.id == item.id) ? COLORS.primary : COLORS.white,
+                        backgroundColor:
+                            selectedCategory?.id == item.id
+                                ? COLORS.primary
+                                : COLORS.white,
                         borderRadius: SIZES.radius,
                         alignItems: "center",
                         justifyContent: "center",
                         marginRight: SIZES.padding,
-                        ...styles.shadow
+                        ...styles.shadow,
                     }}
                     onPress={() => onSelectCategory(item)}
                 >
@@ -484,7 +495,10 @@ const Home = ({ navigation }) => {
                             borderRadius: 25,
                             alignItems: "center",
                             justifyContent: "center",
-                            backgroundColor: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.lightGray
+                            backgroundColor:
+                                selectedCategory?.id == item.id
+                                    ? COLORS.white
+                                    : COLORS.lightGray,
                         }}
                     >
                         <Image
@@ -492,7 +506,7 @@ const Home = ({ navigation }) => {
                             resizeMode="contain"
                             style={{
                                 width: 30,
-                                height: 30
+                                height: 30,
                             }}
                         />
                     </View>
@@ -500,16 +514,18 @@ const Home = ({ navigation }) => {
                     <Text
                         style={{
                             marginTop: SIZES.padding,
-                            color: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.black,
-                            ...FONTS.body5
+                            color:
+                                selectedCategory?.id == item.id
+                                    ? COLORS.white
+                                    : COLORS.black,
+                            ...FONTS.body5,
                         }}
                     >
                         {item.name}
                     </Text>
                 </TouchableOpacity>
-                
-            )
-        }
+            );
+        };
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
@@ -520,27 +536,32 @@ const Home = ({ navigation }) => {
                     data={categories}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    keyExtractor={item => `${item.id}`}
+                    keyExtractor={(item) => `${item.id}`}
                     renderItem={renderItem}
-                    contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
+                    contentContainerStyle={{
+                        paddingVertical: SIZES.padding * 2,
+                    }}
                 />
             </View>
-        )
+        );
     }
 
     function renderRestaurantList() {
         const renderItem = ({ item }) => (
             <TouchableOpacity
+                key={item.id}
                 style={{ marginBottom: SIZES.padding * 2 }}
-                onPress={() => navigation.navigate("Restaurant", {
-                    item,
-                    currentLocation
-                })}
+                onPress={() =>
+                    navigation.navigate("Restaurant", {
+                        item,
+                        currentLocation,
+                    })
+                }
             >
                 {/* Image */}
                 <View
                     style={{
-                        marginBottom: SIZES.padding
+                        marginBottom: SIZES.padding,
                     }}
                 >
                     <Image
@@ -549,22 +570,22 @@ const Home = ({ navigation }) => {
                         style={{
                             width: "100%",
                             height: 200,
-                            borderRadius: SIZES.radius
+                            borderRadius: SIZES.radius,
                         }}
                     />
 
                     <View
                         style={{
-                            position: 'absolute',
+                            position: "absolute",
                             bottom: 0,
                             height: 50,
                             width: SIZES.width * 0.3,
                             backgroundColor: COLORS.white,
                             borderTopRightRadius: SIZES.radius,
                             borderBottomLeftRadius: SIZES.radius,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            ...styles.shadow
+                            alignItems: "center",
+                            justifyContent: "center",
+                            ...styles.shadow,
                         }}
                     >
                         <Text style={{ ...FONTS.h4 }}>{item.duration}</Text>
@@ -577,7 +598,7 @@ const Home = ({ navigation }) => {
                 <View
                     style={{
                         marginTop: SIZES.padding,
-                        flexDirection: 'row'
+                        flexDirection: "row",
                     }}
                 >
                     {/* Rating */}
@@ -587,7 +608,7 @@ const Home = ({ navigation }) => {
                             height: 20,
                             width: 20,
                             tintColor: COLORS.primary,
-                            marginRight: 10
+                            marginRight: 10,
                         }}
                     />
                     {/* <Text style={{ ...FONTS.body3 }}>{item.rating}</Text> */}
@@ -595,69 +616,224 @@ const Home = ({ navigation }) => {
                     {/* Categories */}
                     <View
                         style={{
-                            flexDirection: 'row',
-                            marginLeft: 10
+                            flexDirection: "row",
+                            marginLeft: 10,
                         }}
                     >
-                        {
-                            item.categories.map((categoryId) => {
-                                return (
-                                    <View
-                                        style={{ flexDirection: 'row' }}
-                                        key={categoryId}
+                        {item.categories.map((categoryId) => {
+                            return (
+                                <View
+                                    style={{ flexDirection: "row" }}
+                                    key={categoryId.id}
+                                >
+                                    <Text style={{ ...FONTS.body3 }}>
+                                        {getCategoryNameById(categoryId)}
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            ...FONTS.h3,
+                                            color: COLORS.darkgray,
+                                        }}
                                     >
-                                        <Text style={{ ...FONTS.body3 }}>{getCategoryNameById(categoryId)}</Text>
-                                        <Text style={{ ...FONTS.h3, color: COLORS.darkgray }}> . </Text>
-                                    </View>
-                                )
-                            })
-                        }
+                                        {" "}
+                                        .{" "}
+                                    </Text>
+                                </View>
+                            );
+                        })}
 
                         {/* Price */}
-                        
-                                {/* [1, 2, 3].map((priceRating) => ( */}
-                                <Text
-                                    // key={priceRating}
-                                    style={{
-                                        ...FONTS.body3,
-                                        // color: (priceRating <= item.priceRating) ? COLORS.black : COLORS.darkgray
-                                        color:  COLORS.darkgray
-                                    }}
-                                >đ</Text>
-                             {/* )) */}
-                      
+
+                        {/* [1, 2, 3].map((priceRating) => ( */}
+                        <Text
+                            // key={priceRating}
+                            style={{
+                                ...FONTS.body3,
+                                // color: (priceRating <= item.priceRating) ? COLORS.black : COLORS.darkgray
+                                color: COLORS.darkgray,
+                            }}
+                        >
+                            đ
+                        </Text>
+                        {/* )) */}
                     </View>
                 </View>
             </TouchableOpacity>
-        )
+        );
 
         return (
             <FlatList
                 data={restaurants}
-                keyExtractor={item => `${item.id}`}
+                keyExtractor={(item) => `${item.id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingHorizontal: SIZES.padding * 2,
-                    paddingBottom: 30
+                    paddingBottom: 30,
                 }}
             />
-        )
+        );
+    }
+    // < /CODE BYPRAM ===================================>
+
+    const checkSelectCategories = (values) => {
+        console.log(values)
+        let cateProduct = [];
+        data.map((id) => {
+            if(id.name === values.name) cateProduct = id.products;
+        })
+        setRrestaurants01(cateProduct);
+        setSelectCategories(values);
+    };
+
+    function renderCatelogy() {
+        const renderItem = ({ item, index }) => {
+            return (
+                <View key={item.id} style={{}}>
+                    <TouchableOpacity
+                        style={{
+                            ...styles.shadow,
+                            padding: SIZES.padding,
+                            paddingBottom: SIZES.padding * 2,
+                            borderRadius: SIZES.radius,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginRight: SIZES.padding,
+                            height: 100,
+                            backgroundColor:
+                                selectCategories?.id === item.id
+                                    ? COLORS.primary
+                                    : COLORS.white,
+                        }}
+                        onPress={() => checkSelectCategories(item)}
+                    >
+                        <View
+                            style={{
+                                width: 50,
+                                height: 50,
+                                borderRadius: 25,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                backgroundColor:
+                                    selectedCategory?.id == item.id
+                                        ? COLORS.white
+                                        : COLORS.lightGray,
+                            }}
+                        >
+                            {/* <Image
+                                source={item.icon}
+                                resizeMode="contain"
+                                style={{
+                                    width: 30,
+                                    height: 30,
+                                }}
+                            /> */}
+                        </View>
+                        <Text
+                            style={{
+                                marginTop: SIZES.padding,
+                                color:
+                                    selectCategories?.id == item.id
+                                        ? COLORS.white
+                                        : COLORS.black,
+                                ...FONTS.body5,
+                            }}
+                        >
+                            {item.name}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            );
+        };
+        return (
+            <View style={{ padding: SIZES.padding * 2 }}>
+                <Text style={{ ...FONTS.h1 }}>Main</Text>
+                <Text style={{ ...FONTS.h1 }}>Categories</Text>
+                <FlatList
+                    data={data}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={(item) => {
+                        item.id;
+                    }}
+                    renderItem={renderItem}
+                    contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
+                />
+            </View>
+        );
+    }
+
+    function renderListProduct(productlist) {
+        const renderItem = ({ item }) => {
+            return (
+                    <TouchableOpacity
+                        key={item.id}
+                        style={{marginBottom: SIZES.padding * 2}}
+                        // onPress={() => navigation.navigate('Restaurant')}
+                    >
+                        <View 
+                            style={{
+                                 marginBottom: SIZES.padding,
+                             }}
+                        >
+                            <Image
+                                source={{
+                                    uri: `https://foody-store-server.herokuapp.com${item?.image.url}`,
+                                }}
+                                resizeMode="cover"
+                                style={{
+                                    width: width*0.9,
+                                    height: 200,
+                                    borderRadius: SIZES.radius,
+                                }}
+                            />
+                            {/* info product */}
+                            <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
+                            <View 
+                                style={{flexDirection:'row', marginTop: SIZES.padding,}}
+                            >
+                                <Text style={{ ...FONTS.body3,color: COLORS.darkgray,}}>
+                                    {item?.price}
+                                </Text>
+                                
+                            </View>
+                            {/* <Text>{itemPro.image.url}</Text> */}
+                        </View>
+
+                        {/* })} */}
+                    </TouchableOpacity>
+            );
+        };
+        return (
+            <View style={{ padding: SIZES.padding * 2 }}>
+            <FlatList
+                data={productlist}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(item) => {
+                    item.id;
+                }}
+                renderItem={renderItem}
+                contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
+            />
+            </View>
+        );
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            {renderHeader()}        
-            {renderMainCategories()}
-            {renderAPI()}
-            {renderRestaurantList()}
+            {renderHeader()}
+            {renderCatelogy()}
+            {renderListProduct(restaurants01)}
+            {/* {renderMainCategories()} */}
+            {/* {renderRestaurantList()} */}
         </SafeAreaView>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray4
+        backgroundColor: COLORS.lightGray4,
     },
     shadow: {
         shadowColor: "#000",
@@ -668,7 +844,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 3,
         elevation: 1,
-    }
-})
+    },
+});
 
 export default Home;
+
+

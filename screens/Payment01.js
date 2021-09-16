@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState} from "react";
 import {
     View,
     StyleSheet,
@@ -17,6 +17,7 @@ import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 
 const { width, height } = Dimensions.get("window");
 const Payment01 = ({ navigation }) => {
+    const [fullName, setFullName] = useState(initialState)
     function renderHeader() {
         return (
             <View

@@ -8,6 +8,7 @@ import {
     Image,
     FlatList,
     Dimensions,
+    ScrollView,
     Alert,
 } from "react-native";
 import { Icon } from "native-base";
@@ -765,14 +766,18 @@ const Home = ({ navigation }) => {
     function renderListProduct(productlist) {
         const renderItem = ({ item }) => {
             return (
-                    <TouchableOpacity
+                     <TouchableOpacity
                         key={item.id}
-                        style={{marginBottom: SIZES.padding * 2}}
-                        // onPress={() => navigation.navigate('Restaurant')}
+                        style={{
+                            marginBottom: SIZES.padding * 2, 
+                            flexDirection:'column', 
+                            paddingHorizontal:10
+                        }} 
                     >
                         <View 
                             style={{
                                  marginBottom: SIZES.padding,
+            
                              }}
                         >
                             <Image
@@ -781,8 +786,8 @@ const Home = ({ navigation }) => {
                                 }}
                                 resizeMode="cover"
                                 style={{
-                                    width: width*0.9,
-                                    height: 200,
+                                    width: width*0.41,
+                                    height: 150,
                                     borderRadius: SIZES.radius,
                                 }}
                             />
@@ -800,22 +805,24 @@ const Home = ({ navigation }) => {
                         </View>
 
                         {/* })} */}
-                    </TouchableOpacity>
+                    </TouchableOpacity>     
             );
         };
         return (
-            <View style={{ padding: SIZES.padding * 2 }}>
-            <FlatList
-                data={productlist}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                keyExtractor={(item) => {
-                    item.id;
-                }}
-                renderItem={renderItem}
-                contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
-            />
-            </View>
+            <ScrollView>
+                <View style={{ padding: SIZES.padding * 2}}>
+                        <FlatList
+                            data={productlist}                   
+                            showsHorizontalScrollIndicator={false}
+                            keyExtractor={(item) => {
+                                item.id;
+                            }}
+                            renderItem={renderItem}
+                            numColumns={2}
+                            contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
+                        /> 
+                </View>
+            </ScrollView>
         );
     }
 

@@ -797,7 +797,10 @@ const Home = ({ navigation }) => {
                                 style={{flexDirection:'row', marginTop: SIZES.padding,}}
                             >
                                 <Text style={{ ...FONTS.body3,color: COLORS.darkgray,}}>
-                                    {item?.price}
+                                    {
+                                        item?.price.toFixed().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                                    }
+                                    đ
                                 </Text>
                                 
                             </View>
@@ -809,8 +812,8 @@ const Home = ({ navigation }) => {
             );
         };
         return (
-            <ScrollView>
-                <View style={{ padding: SIZES.padding * 2}}>
+            <ScrollView>   
+                <View style={{ padding: SIZES.padding * 2}}>        
                         <FlatList
                             data={productlist}                   
                             showsHorizontalScrollIndicator={false}
@@ -832,7 +835,7 @@ const Home = ({ navigation }) => {
             {renderCatelogy()}
             {renderListProduct(restaurants01)}
             {/* {renderMainCategories()} */}
-            {/* {renderRestaurantList()} */}
+            {renderRestaurantList()}
         </SafeAreaView>
     );
 };

@@ -773,6 +773,11 @@ const Home = ({ navigation }) => {
                             flexDirection:'column', 
                             paddingHorizontal:10
                         }} 
+                        onPress={() => 
+                            navigation.navigate("Restaurant", {
+                                item
+                            })
+                        }
                     >
                         <View 
                             style={{
@@ -835,7 +840,7 @@ const Home = ({ navigation }) => {
             {renderCatelogy()}
             {renderListProduct(restaurants01)}
             {/* {renderMainCategories()} */}
-            {renderRestaurantList()}
+            {/* {renderRestaurantList()} */}
         </SafeAreaView>
     );
 };

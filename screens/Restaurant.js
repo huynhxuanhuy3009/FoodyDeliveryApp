@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
     StyleSheet,
     SafeAreaView,
@@ -8,6 +8,7 @@ import {
     Image,
     Animated
 } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import { isIphoneX } from 'react-native-iphone-x-helper'
 
 import { icons, COLORS, SIZES, FONTS } from '../constants'
@@ -19,13 +20,36 @@ const Restaurant = ({ route, navigation }) => {
     const [currentLocation, setCurrentLocation] = React.useState(null);
     const [orderItems, setOrderItems] = React.useState([]);
 
+    //code H
+    const [data, setData] = useState([])
+    const [restaurants01, setRestaurants01] = React.useState(null);
+
     React.useEffect(() => {
         let { item, currentLocation } = route.params;
 
-        setRestaurant(item)
-        setCurrentLocation(currentLocation)
+        setRestaurants01(item)
+        // setCurrentLocation(currentLocation)
     })
 
+    useEffect(() => {
+        getListProduct();
+        return () => {}
+    }, [])
+
+    const getListProduct = () => {
+        const apiURL = "https://foody-store-server.herokuapp.com/categories"
+        fetch(apiURL)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                setData(responseJson)
+                console.log(responseJson)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    // CODE BYPRAM ==============================================
     function editOrder(action, menuId, price) {
         let orderList = orderItems.slice()
         let item = orderList.filter(a => a.menuId == menuId)
@@ -264,7 +288,6 @@ const Restaurant = ({ route, navigation }) => {
             </Animated.ScrollView>
         )
     }
-
     function renderDots() {
 
         const dotPosition = Animated.divide(scrollX, SIZES.width)
@@ -424,12 +447,40 @@ const Restaurant = ({ route, navigation }) => {
             </View>
         )
     }
+    //CODE BYPRAM ================================================
+    function renderFoodInfo01() {
+        const renderItem = ({item}) => {
+            console.log(item.name)
+            // return (
+            //     <View>
+            //         <Text>{item.name}</Text>
+            //     </View>
+            //  );
+        }
+
+        return (
+            <View>
+                 <FlatList
+                    data={data}
+                    keyExtractor={(item) => {
+                        item.id;
+                    }}
+                    renderItem={renderItem}
+                
+                />
+            </View>
+           
+        );
+    }
+
+   
 
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
-            {renderFoodInfo()}
-            {renderOrder()}
+            {/* {renderFoodInfo()} */}
+            {renderFoodInfo01(restaurants01)}
+            {/* {renderOrder()} */}
         </SafeAreaView>
     )
 }

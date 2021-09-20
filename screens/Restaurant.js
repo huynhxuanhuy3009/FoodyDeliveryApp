@@ -15,7 +15,7 @@ import { isIphoneX } from "react-native-iphone-x-helper";
 import { icons, COLORS, SIZES, FONTS } from "../constants";
 
 const { width, height } = Dimensions.get("window");
-const Restaurant = ({ route, navigation }) => {
+const Restaurant = ({ route, navigation, props}) => {
     const scrollX = new Animated.Value(0);
     const [restaurant, setRestaurant] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(null);
@@ -38,7 +38,7 @@ const Restaurant = ({ route, navigation }) => {
     }, []);
 
     const getListProduct = () => {
-        const apiURL = "https://foody-store-server.herokuapp.com/categories";
+        const apiURL = "https://foody-store-server.herokuapp.com/products";
         fetch(apiURL)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -50,10 +50,11 @@ const Restaurant = ({ route, navigation }) => {
             });
     };
 
-    // CODE BYPRAM ==============================================
-    function editOrder(action, menuId, price) {
+    // <CODE BYPRAM></CODE> ==============================================
+    function editOrder(action, Id, price) {
+        console.log(">>itemname", item.name)
         let orderList = orderItems.slice();
-        let item = orderList.filter((a) => a.menuId == menuId);
+        let item = orderList.filter((a) => a.Id == Id);
 
         if (action == "+") {
             if (item.length > 0) {
@@ -62,7 +63,7 @@ const Restaurant = ({ route, navigation }) => {
                 item[0].total = item[0].qty * price;
             } else {
                 const newItem = {
-                    menuId: menuId,
+                    Id: Id,
                     qty: 1,
                     price: price,
                     total: price,
@@ -84,8 +85,8 @@ const Restaurant = ({ route, navigation }) => {
         }
     }
 
-    function getOrderQty(menuId) {
-        let orderItem = orderItems.filter((a) => a.menuId == menuId);
+    function getOrderQty(Id) {
+        let orderItem = orderItems.filter((a) => a.Id == Id);
 
         if (orderItem.length > 0) {
             return orderItem[0].qty;
@@ -492,9 +493,9 @@ const Restaurant = ({ route, navigation }) => {
             </View>
         );
     }
-    //CODE BYPRAM ================================================
+    // </CODE BYPRAM> ================================================
     function renderFoodInfo01() {
-        const renderItem = ({ item }) => {
+        const renderItem = ({ itemPro }) => {
             return (
                 <Animated.ScrollView
                     horizontal
@@ -507,9 +508,9 @@ const Restaurant = ({ route, navigation }) => {
                         { useNativeDriver: false }
                     )}
                 >
-                    {item?.products.map((itemPro) => (
+                    {/* {item?.products.map((itemPro, index) => ( */}
                         
-                        <View key={itemPro} style={{ alignItems: "center" }}>
+                        <View style={{ alignItems: "center" }}>
                             <View style={{ height: SIZES.height * 0.35 }}>     
                                 {/* food image */}
                                 <Image
@@ -642,7 +643,8 @@ const Restaurant = ({ route, navigation }) => {
                                     </Text>
                                 </View>
                         </View>
-                    ))}
+                    )
+                    {/* )} */}
                 </Animated.ScrollView>
             );
         };

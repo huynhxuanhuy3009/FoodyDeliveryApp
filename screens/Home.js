@@ -357,7 +357,7 @@ const Home = ({ navigation }) => {
         async function getusertoken() {
             userToken  = await AsyncStorage.getItem('userToken');
             setUsertoken(userToken);
-            getuserProfile(userToken);
+            // getuserProfile(userToken);
         }
         
         getusertoken();

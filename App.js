@@ -14,10 +14,10 @@ import { Restaurant,
          OrderPlaced, 
          User,
          EditProfile, 
-        Login, Register,ForgotPassword} from './screens';
-import RootStackScreen from './screens/RootStackScreen';
-import { AuthContext } from './componets/context';
-import Tabs from './navigation/tabs';
+        Login, Register,ForgotPassword} from './src/screens';
+import RootStackScreen from './src/screens/RootStackScreen';
+import { AuthContext } from './src/componets/context';
+import Tabs from './src/navigation/tabs';
 
 
 const Stack = createStackNavigator();

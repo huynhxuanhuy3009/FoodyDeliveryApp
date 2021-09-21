@@ -34,31 +34,6 @@ const User = ({navigation}) => {
                   
                 }}
             >
-                {/* <Image
-                    source={images.avatar_Thao}
-                    style={{
-                        width:width*0.40,
-                        height:height*0.2,
-                        borderRadius: 80
-                    }}
-                />
-                <Text style={{ ...FONTS.h4, color: "#B47929" }}>Your profile is 80% completed.</Text>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('EditProfile')}
-                    style={{
-                        width:180,
-                        flexDirection:'row', 
-                        alignItems:'center', 
-                        justifyContent:'space-around', 
-                       
-                    }}
-                >
-                    <Icon
-                        name="user-edit"
-                        type="FontAwesome5"
-                    />
-                    <Text style={{ ...FONTS.h4, color:'black' }}>EDIT PROFILE</Text>
-                </TouchableOpacity> */}
             </View>
         );
     }

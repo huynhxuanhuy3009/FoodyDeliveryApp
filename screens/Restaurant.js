@@ -38,7 +38,7 @@ const Restaurant = ({ route, navigation, props}) => {
     }, []);
 
     const getListProduct = () => {
-        const apiURL = "https://foody-store-server.herokuapp.com/products";
+        const apiURL = "https://foody-store-server.herokuapp.com/categories";
         fetch(apiURL)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -170,146 +170,7 @@ const Restaurant = ({ route, navigation, props}) => {
         );
     }
 
-    function renderFoodInfo() {
-        return (
-            <Animated.ScrollView
-                horizontal
-                pagingEnabled
-                scrollEventThrottle={16}
-                snapToAlignment="center"
-                showsHorizontalScrollIndicator={false}
-                onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                    { useNativeDriver: false }
-                )}
-            >
-                {restaurant?.menu.map((item, index) => (
-                    <View
-                        key={`menu-${index}`}
-                        style={{ alignItems: "center" }}
-                    >
-                        <View style={{ height: SIZES.height * 0.35 }}>
-                            {/* Food Image */}
-                            <Image
-                                source={item.photo}
-                                resizeMode="cover"
-                                style={{
-                                    width: SIZES.width,
-                                    height: "100%",
-                                }}
-                            />
-
-                            {/* Quantity */}
-                            <View
-                                style={{
-                                    position: "absolute",
-                                    bottom: -20,
-                                    width: SIZES.width,
-                                    height: 50,
-                                    justifyContent: "center",
-                                    flexDirection: "row",
-                                }}
-                            >
-                                <TouchableOpacity
-                                    style={{
-                                        width: 50,
-                                        backgroundColor: COLORS.white,
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        borderTopLeftRadius: 25,
-                                        borderBottomLeftRadius: 25,
-                                    }}
-                                    onPress={() =>
-                                        editOrder("-", item.menuId, item.price)
-                                    }
-                                >
-                                    <Text style={{ ...FONTS.body1 }}>-</Text>
-                                </TouchableOpacity>
-
-                                <View
-                                    style={{
-                                        width: 50,
-                                        backgroundColor: COLORS.white,
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                    }}
-                                >
-                                    <Text style={{ ...FONTS.h2 }}>
-                                        {getOrderQty(item.menuId)}
-                                    </Text>
-                                </View>
-
-                                <TouchableOpacity
-                                    style={{
-                                        width: 50,
-                                        backgroundColor: COLORS.white,
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        borderTopRightRadius: 25,
-                                        borderBottomRightRadius: 25,
-                                    }}
-                                    onPress={() =>
-                                        editOrder("+", item.menuId, item.price)
-                                    }
-                                >
-                                    <Text style={{ ...FONTS.body1 }}>+</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-
-                        {/* Name & Description */}
-                        <View
-                            style={{
-                                width: SIZES.width,
-                                alignItems: "center",
-                                marginTop: 15,
-                                paddingHorizontal: SIZES.padding * 2,
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    marginVertical: 10,
-                                    textAlign: "center",
-                                    ...FONTS.h2,
-                                }}
-                            >
-                                {item.name} - {item.price.toFixed(2)}
-                            </Text>
-                            <Text style={{ ...FONTS.body3 }}>
-                                {item.description}
-                            </Text>
-                        </View>
-
-                        {/* Calories */}
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                marginTop: 10,
-                            }}
-                        >
-                            <Image
-                                source={icons.fire}
-                                style={{
-                                    width: 20,
-                                    height: 20,
-                                    marginRight: 10,
-                                }}
-                            />
-
-                            <Text
-                                style={{
-                                    ...FONTS.body3,
-                                    color: COLORS.darygray,
-                                }}
-                            >
-                                {item.calories.toFixed(2)} cal
-                            </Text>
-                        </View>
-                    </View>
-                ))}
-            </Animated.ScrollView>
-        );
-    }
+   
     function renderDots() {
         const dotPosition = Animated.divide(scrollX, SIZES.width);
 
@@ -495,8 +356,9 @@ const Restaurant = ({ route, navigation, props}) => {
     }
     // </CODE BYPRAM> ================================================
     function renderFoodInfo01() {
-        const renderItem = ({ itemPro }) => {
+        const renderItem = ({item}) => {
             return (
+                   
                 <Animated.ScrollView
                     horizontal
                     pagingEnabled
@@ -508,8 +370,8 @@ const Restaurant = ({ route, navigation, props}) => {
                         { useNativeDriver: false }
                     )}
                 >
-                    {/* {item?.products.map((itemPro, index) => ( */}
-                        
+                    
+                    {item?.products.map((itemPro, index) => (                       
                         <View style={{ alignItems: "center" }}>
                             <View style={{ height: SIZES.height * 0.35 }}>     
                                 {/* food image */}
@@ -543,13 +405,6 @@ const Restaurant = ({ route, navigation, props}) => {
                                             borderTopLeftRadius: 25,
                                             borderBottomLeftRadius: 25,
                                         }}
-                                        onPress={() =>
-                                            editOrder(
-                                                "-",
-                                                itemPro.Id,
-                                                itemPro.price
-                                            )
-                                        }
                                     >
                                         <Text style={{ ...FONTS.body1 }}>
                                             -
@@ -565,7 +420,6 @@ const Restaurant = ({ route, navigation, props}) => {
                                         }}
                                     >
                                         <Text style={{ ...FONTS.h2 }}>
-                                            {getOrderQty(itemPro.Id)}
                                         </Text>
                                     </View>
 
@@ -578,13 +432,6 @@ const Restaurant = ({ route, navigation, props}) => {
                                             borderTopRightRadius: 25,
                                             borderBottomRightRadius: 25,
                                         }}
-                                        onPress={() =>
-                                            editOrder(
-                                                "+",
-                                                itemPro.Id,
-                                                itemPro.price
-                                            )
-                                        }
                                     >
                                         <Text style={{ ...FONTS.body1 }}>
                                             +
@@ -639,12 +486,12 @@ const Restaurant = ({ route, navigation, props}) => {
                                             color: COLORS.darygray,
                                         }}
                                     >
-                                        {/* {item.calories.toFixed(2)} cal */}
                                     </Text>
                                 </View>
                         </View>
                     )
-                    {/* )} */}
+                     )}
+                   
                 </Animated.ScrollView>
             );
         };
@@ -653,9 +500,9 @@ const Restaurant = ({ route, navigation, props}) => {
             <View>
                 <FlatList
                     data={data}
-                    keyExtractor={(item) => {
-                        item.id;
-                    }}
+                    keyExtractor={(item) => (
+                        item.id
+                    )}
                     renderItem={renderItem}
                 />
             </View>
@@ -665,12 +512,11 @@ const Restaurant = ({ route, navigation, props}) => {
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
-            {/* {renderFoodInfo()} */}
             {renderFoodInfo01(restaurants01)}
-            {renderOrder()}
+            {/* {renderOrder()} */}
         </SafeAreaView>
     );
-};
+    };
 
 const styles = StyleSheet.create({
     container: {

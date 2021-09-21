@@ -10,11 +10,8 @@ import Payment02 from './Payment02'
 import Payment03 from './Payment03'
 import CheckOuts from './CheckOuts'
 import OrderPlaced from './OrderPlaced'
-import OrderDelivery from './OrderDelivery'
 import User from './User'
 import EditProfile from './EditProfile'
-import ManageAddress from './ManageAddress'
-import Settings from './Settings'
 
 
 export {
@@ -29,10 +26,6 @@ export {
     Payment03,
     CheckOuts,
     OrderPlaced, 
-    OrderDelivery, 
     User,
     EditProfile, 
-    ManageAddress, 
-    Settings,
-
 }

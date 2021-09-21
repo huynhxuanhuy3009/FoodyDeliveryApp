@@ -36,6 +36,15 @@ const cartReducer = (state = initialState, action) => {
             pricet = 0;
             newproc.map((pr) => (pricet = pricet + pr.prices * pr.quantity))
             return {cartAr:[...newproc], totalprice: pricet}
+
+        case actionType.DELETE_PRODUCT:
+            let newcart = state.cartAr;
+            const objIndext = newcart.findIndex((obj)=> (obj.id === action.payload.id))
+            let newtotal;
+            newtotal = state.totalprice - newcart[objIndext].prices * newcart[objIndext].quantity
+            newcart.splice(objIndext, 1);
+            return {cartAr: [...newcart], totalprice: newtotal};
+
     }
 };
 

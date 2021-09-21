@@ -513,7 +513,7 @@ const Restaurant = ({ route, navigation, props}) => {
         <SafeAreaView style={styles.container}>
             {renderHeader()}
             {renderFoodInfo01(restaurants01)}
-            {/* {renderOrder()} */}
+            {renderOrder()}
         </SafeAreaView>
     );
     };

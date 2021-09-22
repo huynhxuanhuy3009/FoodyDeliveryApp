@@ -12,18 +12,17 @@ import {
     Alert,
 } from "react-native";
 import { Icon } from "native-base";
-
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 
+import ProductTag from "../componets/productTag/index";
+
 import { AuthContext } from "../componets/context";
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
-const Home = ({ navigation }) => {
-    
+const Home = ({ navigation, props }) => {
     // Dummy Datas
     const initialCurrentLocation = {
         streetName: "Kuching",
-       
     };
     const [selectedCategory, setSelectedCategory] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(
@@ -39,26 +38,26 @@ const Home = ({ navigation }) => {
         getListItem();
         let userToken;
         async function getusertoken() {
-            userToken  = await AsyncStorage.getItem('userToken');
+            userToken = await AsyncStorage.getItem("userToken");
             setUsertoken(userToken);
             // getuserProfile(userToken);
         }
-        
+
         getusertoken();
         return () => {};
     }, []);
     const getuserProfile = (utoken) => {
         const apiURL = "https://foody-store-server.herokuapp.com/users/me";
         fetch(apiURL, {
-            method: "GET",           
+            method: "GET",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                "Authorization" : `Bearer ${utoken}`
+                Authorization: `Bearer ${utoken}`,
             },
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(">>email", responseJson.email)    
+                console.log(">>email", responseJson.email);
             })
             .catch((error) => {
                 console.log(error);
@@ -119,26 +118,17 @@ const Home = ({ navigation }) => {
                         paddingRight: SIZES.padding * 2,
                         justifyContent: "center",
                     }}
-                >
-                    {/* <Image
-                        source={icons.basket}
-                        resizeMode="contain"
-                        style={{
-                            width: 30,
-                            height: 30
-                        }}
-                    /> */}
-                </TouchableOpacity>
+                ></TouchableOpacity>
             </View>
         );
     }
 
     const checkSelectCategories = (values) => {
-        console.log(values)
+        console.log(values);
         let cateProduct = [];
         data.map((id) => {
-            if(id.name === values.name) cateProduct = id.products;
-        })
+            if (id.name === values.name) cateProduct = id.products;
+        });
         setRrestaurants01(cateProduct);
         setSelectCategories(values);
     };
@@ -214,90 +204,81 @@ const Home = ({ navigation }) => {
                         item.id;
                     }}
                     renderItem={renderItem}
-                    contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
+                    contentContainerStyle={{
+                        paddingVertical: SIZES.padding * 2,
+                    }}
                 />
             </View>
         );
     }
 
     function renderListProduct(productlist) {
+        // chuyển qua màn hình product 
+        // const onclickProduct = (prod) => {
+        //     props.navigation.navigate('Restaurant', prod)
+        // }
+
         const renderItem = ({ item }) => {
             return (
-                     <TouchableOpacity
+                <View>
+                    <ProductTag
+                        onclickProduct={() => onclickProduct(item)}
                         key={item.id}
-                        style={{
-                            marginBottom: SIZES.padding * 2, 
-                            flexDirection:'column', 
-                            paddingHorizontal:10
-                        }} 
-                        onPress={() => 
-                            navigation.navigate("Restaurant", {
-                                item
-                            })
-                        }
-                    >
-                        <View 
-                            style={{
-                                 marginBottom: SIZES.padding,
-            
-                             }}
-                        >
-                            <Image
-                                source={{
-                                    uri: `https://foody-store-server.herokuapp.com${item?.image.url}`,
-                                }}
-                                resizeMode="cover"
-                                style={{
-                                    width: width*0.41,
-                                    height: 150,
-                                    borderRadius: SIZES.radius,
-                                }}
-                            />
-                            {/* info product */}
-                            <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
-                            <View 
-                                style={{flexDirection:'row', marginTop: SIZES.padding,}}
-                            >
-                                <Text style={{ ...FONTS.body3,color: COLORS.darkgray,}}>
-                                    {
-                                        item?.price.toFixed().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-                                    }
-                                    đ
-                                </Text>
-                                
-                            </View>
-                            {/* <Text>{itemPro.image.url}</Text> */}
-                        </View>
-
-                        {/* })} */}
-                    </TouchableOpacity>     
+                        id={item.id}
+                        imagesProduct = {item?.image.url}                                               
+                        name={item.name}
+                        price={item.price}
+                    />
+                </View>
             );
         };
+        
         return (
-            <ScrollView>   
-                <View style={{ padding: SIZES.padding * 2}}>        
-                        <FlatList
-                            data={productlist}                   
-                            showsHorizontalScrollIndicator={false}
-                            keyExtractor={(item) => {
-                                item.id;
-                            }}
-                            renderItem={renderItem}
-                            numColumns={2}
-                            contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
-                        /> 
+            <ScrollView>
+                <View style={{ padding: SIZES.padding * 2 }}>
+                    <FlatList
+                        data={productlist}
+                        showsHorizontalScrollIndicator={false}
+                        keyExtractor={(item) => {
+                            item.id;
+                        }}
+                        renderItem={renderItem}
+                        numColumns={2}
+                        contentContainerStyle={{
+                            paddingVertical: SIZES.padding * 2,
+                        }}
+                    />
                 </View>
             </ScrollView>
         );
     }
 
+    function addToBasket() {
+        return (
+            <TouchableOpacity
+                style={{
+                    height: 40,
+                    width: width * 1,
+                    backgroundColor: COLORS.primary,
+                    marginBottom: height * 0.09,
+                    borderRadius: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                }}
+                onPress={() => navigation.navigate("Cart")}
+            >
+                <Text>Add To Basket</Text>
+                <Text>300000</Text>
+            </TouchableOpacity>
+        );
+    }
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
             {renderCatelogy()}
             {renderListProduct(restaurants01)}
-            {/* {renderMainCategories()} */}
-            {/* {renderRestaurantList()} */}
+            {addToBasket()}
         </SafeAreaView>
     );
 };
@@ -320,5 +301,3 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
-
-

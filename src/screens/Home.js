@@ -13,13 +13,14 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
+import { connect } from "react-redux";
 
 import ProductTag from "../componets/productTag/index";
 
 import { AuthContext } from "../componets/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
-const Home = ({ navigation, props }) => {
+const Home = ({props, navigation}) => {
     // Dummy Datas
     const initialCurrentLocation = {
         streetName: "Kuching",
@@ -214,9 +215,9 @@ const Home = ({ navigation, props }) => {
 
     function renderListProduct(productlist) {
         // chuyển qua màn hình product 
-        // const onclickProduct = (prod) => {
-        //     props.navigation.navigate('Restaurant', prod)
-        // }
+        const onclickProduct = (prod) => {
+            props.navigation.navigate('Restaurant', prod)
+        }
 
         const renderItem = ({ item }) => {
             return (
@@ -257,19 +258,32 @@ const Home = ({ navigation, props }) => {
         return (
             <TouchableOpacity
                 style={{
-                    height: 40,
+                    height: 50,
                     width: width * 1,
-                    backgroundColor: COLORS.primary,
+                    backgroundColor: '#ffa07a',
                     marginBottom: height * 0.09,
-                    borderRadius: 10,
+                    paddingHorizontal:width*0.07,
                     flexDirection: "row",
-                    justifyContent: "space-around",
+                    justifyContent: 'space-between',
                     alignItems: "center",
                 }}
                 onPress={() => navigation.navigate("Cart")}
             >
-                <Text>Add To Basket</Text>
-                <Text>300000</Text>
+                <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+                    <Icon
+                        name = 'shoppingcart'
+                        type= 'AntDesign'
+                        style={{
+                            width: 25,
+                            height: 25,
+                            color:'#696969',
+                            marginRight:10
+                        }}
+                    />
+                    <Text style={{ ...FONTS.body2 , color:'#696969'}}>Add To Basket</Text>
+                </View>
+                
+                <Text style={{ ...FONTS.body2 , color:'#696969' }}>300,000đ</Text>
             </TouchableOpacity>
         );
     }

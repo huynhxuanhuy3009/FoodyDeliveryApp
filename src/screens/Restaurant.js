@@ -11,11 +11,12 @@ import {
 } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { isIphoneX } from "react-native-iphone-x-helper";
-
 import { icons, COLORS, SIZES, FONTS } from "../constants";
 
+import { imgport } from "../config/port";
+
 const { width, height } = Dimensions.get("window");
-const Restaurant = ({ route, navigation, props}) => {
+const Restaurant = (props) => {
     const scrollX = new Animated.Value(0);
     const [restaurant, setRestaurant] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(null);
@@ -24,7 +25,9 @@ const Restaurant = ({ route, navigation, props}) => {
     //code H
     const [data, setData] = useState([]);
     const [restaurants01, setRestaurants01] = React.useState(null);
+    const productID = props.route.params._id;
 
+    const dataProduct = {...props.route.params, id: productID};
     React.useEffect(() => {
         let { item, currentLocation } = route.params;
 
@@ -359,25 +362,25 @@ const Restaurant = ({ route, navigation, props}) => {
         const renderItem = ({item}) => {
             return (
                    
-                <Animated.ScrollView
-                    horizontal
-                    pagingEnabled
-                    scrollEventThrottle={16}
-                    snapToAlignment="center"
-                    showsHorizontalScrollIndicator={false}
-                    onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                        { useNativeDriver: false }
-                    )}
-                >
-                    
+                // <Animated.ScrollView
+                //     horizontal
+                //     pagingEnabled
+                //     scrollEventThrottle={16}
+                //     snapToAlignment="center"
+                //     showsHorizontalScrollIndicator={false}
+                //     onScroll={Animated.event(
+                //         [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                //         { useNativeDriver: false }
+                //     )}
+                // >
+                    <View>
                     {item?.products.map((itemPro, index) => (                       
                         <View style={{ alignItems: "center" }}>
                             <View style={{ height: SIZES.height * 0.35 }}>     
                                 {/* food image */}
                                 <Image
                                     source={{
-                                        uri: `https://foody-store-server.herokuapp.com${itemPro?.image.url}`,
+                                        uri: `${imgport}/${props.route.params.imagesProduct}`,
                                     }}
                                     resizeMode="cover"
                                     style={{
@@ -491,8 +494,8 @@ const Restaurant = ({ route, navigation, props}) => {
                         </View>
                     )
                      )}
-                   
-                </Animated.ScrollView>
+                </View>
+                // </Animated.ScrollView>
             );
         };
 

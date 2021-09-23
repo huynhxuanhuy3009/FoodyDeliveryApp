@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { useState, useEffect } from "react";
 import {
     SafeAreaView,
@@ -14,14 +15,21 @@ import {
 import { Icon } from "native-base";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import { connect } from "react-redux";
+import { useNavigation } from '@react-navigation/native';
 
+import {decreaseProduct,
+    deleteProduct,
+    increaseProduct,
+    delallProduct,}
+    from '../../src/componets/productTag/action/index'
 import ProductTag from "../componets/productTag/index";
 
 import { AuthContext } from "../componets/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
-const Home = ({props, navigation}) => {
+const Home = (props) => {
     // Dummy Datas
+    const navigation = useNavigation(); 
     const initialCurrentLocation = {
         streetName: "Kuching",
     };
@@ -71,7 +79,7 @@ const Home = ({props, navigation}) => {
             .then((response) => response.json())
             .then((responseJson) => {
                 setData(responseJson);
-                // setRrestaurants01(responseJson[2].products);
+                setRrestaurants01(responseJson[2].products);
             })
             .catch((error) => {
                 console.log(error);
@@ -214,18 +222,13 @@ const Home = ({props, navigation}) => {
     }
 
     function renderListProduct(productlist) {
-        // chuyển qua màn hình product 
-        const onclickProduct = (prod) => {
-            props.navigation.navigate('Restaurant', prod)
-        }
-
         const renderItem = ({ item }) => {
             return (
                 <View>
                     <ProductTag
                         onclickProduct={() => onclickProduct(item)}
                         key={item.id}
-                        id={item.id}
+                        id={item._id}
                         imagesProduct = {item?.image.url}                                               
                         name={item.name}
                         price={item.price}
@@ -233,7 +236,15 @@ const Home = ({props, navigation}) => {
                 </View>
             );
         };
-        
+
+        // chuyển qua màn hình product 
+        const onclickProduct = (prod) => 
+            (
+                // console.log(prod.name),
+                // console.log(prod.image)
+                props.navigation.navigate('Restaurant', prod)
+            );
+       
         return (
             <ScrollView>
                 <View style={{ padding: SIZES.padding * 2 }}>

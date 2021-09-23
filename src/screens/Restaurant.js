@@ -16,7 +16,7 @@ import { icons, COLORS, SIZES, FONTS } from "../constants";
 import { imgport } from "../config/port";
 
 const { width, height } = Dimensions.get("window");
-const Restaurant = (props) => {
+const Restaurant = ({props, route, navigation}) => {
     const scrollX = new Animated.Value(0);
     const [restaurant, setRestaurant] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(null);
@@ -25,9 +25,10 @@ const Restaurant = (props) => {
     //code H
     const [data, setData] = useState([]);
     const [restaurants01, setRestaurants01] = React.useState(null);
-    const productID = props.route.params._id;
+    // const productID = props.route.params._id;
+    // const dataProduct = { ...props.route.params, id: productID };
 
-    const dataProduct = {...props.route.params, id: productID};
+    const {name, price, image} = route.params
     React.useEffect(() => {
         let { item, currentLocation } = route.params;
 
@@ -55,7 +56,7 @@ const Restaurant = (props) => {
 
     // <CODE BYPRAM></CODE> ==============================================
     function editOrder(action, Id, price) {
-        console.log(">>itemname", item.name)
+        console.log(">>itemname", item.name);
         let orderList = orderItems.slice();
         let item = orderList.filter((a) => a.Id == Id);
 
@@ -107,7 +108,7 @@ const Restaurant = (props) => {
     function sumOrder() {
         let total = orderItems.reduce((a, b) => a + (b.total || 0), 0);
 
-        return total.toFixed().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        return total.toFixed().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     }
 
     function renderHeader() {
@@ -173,7 +174,6 @@ const Restaurant = (props) => {
         );
     }
 
-   
     function renderDots() {
         const dotPosition = Animated.divide(scrollX, SIZES.width);
 
@@ -359,159 +359,121 @@ const Restaurant = (props) => {
     }
     // </CODE BYPRAM> ================================================
     function renderFoodInfo01() {
-        const renderItem = ({item}) => {
-            return (
-                   
-                // <Animated.ScrollView
-                //     horizontal
-                //     pagingEnabled
-                //     scrollEventThrottle={16}
-                //     snapToAlignment="center"
-                //     showsHorizontalScrollIndicator={false}
-                //     onScroll={Animated.event(
-                //         [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                //         { useNativeDriver: false }
-                //     )}
-                // >
-                    <View>
-                    {item?.products.map((itemPro, index) => (                       
-                        <View style={{ alignItems: "center" }}>
-                            <View style={{ height: SIZES.height * 0.35 }}>     
-                                {/* food image */}
-                                <Image
-                                    source={{
-                                        uri: `${imgport}/${props.route.params.imagesProduct}`,
-                                    }}
-                                    resizeMode="cover"
-                                    style={{
-                                        width: SIZES.width,
-                                        height: "100%",
-                                    }}
-                                />
-                                {/* Quantity */}
-                                <View
-                                    style={{
-                                        position: "absolute",
-                                        bottom: -20,
-                                        width: SIZES.width,
-                                        height: 50,
-                                        justifyContent: "center",
-                                        flexDirection: "row",
-                                    }}
-                                >
-                                    <TouchableOpacity
-                                        style={{
-                                            width: 50,
-                                            backgroundColor: COLORS.white,
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            borderTopLeftRadius: 25,
-                                            borderBottomLeftRadius: 25,
-                                        }}
-                                    >
-                                        <Text style={{ ...FONTS.body1 }}>
-                                            -
-                                        </Text>
-                                    </TouchableOpacity>
-
-                                    <View
-                                        style={{
-                                            width: 50,
-                                            backgroundColor: COLORS.white,
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                        }}
-                                    >
-                                        <Text style={{ ...FONTS.h2 }}>
-                                        </Text>
-                                    </View>
-
-                                    <TouchableOpacity
-                                        style={{
-                                            width: 50,
-                                            backgroundColor: COLORS.white,
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            borderTopRightRadius: 25,
-                                            borderBottomRightRadius: 25,
-                                        }}
-                                    >
-                                        <Text style={{ ...FONTS.body1 }}>
-                                            +
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                             {/* Name & Description */}
-                             <View
-                                    style={{
-                                        width: SIZES.width,
-                                        alignItems: "center",
-                                        marginTop: 15,
-                                        paddingHorizontal: SIZES.padding * 2,
-                                    }}
-                                >
-                                    <Text
-                                        style={{
-                                            marginVertical: 10,
-                                            textAlign: "center",
-                                            ...FONTS.h2,
-                                        }}
-                                    >
-                                        {itemPro.name} - {itemPro.price.toFixed()
-                                                            .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-                                                        }
-                                        đ
-                                    </Text>
-                                    <Text style={{ ...FONTS.body3 }}>
-                                        {itemPro.description}
-                                    </Text>
-                                </View>
-                                {/* Calories */}
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        marginTop: 10,
-                                    }}
-                                >
-                                    <Image
-                                        source={icons.fire}
-                                        style={{
-                                            width: 20,
-                                            height: 20,
-                                            marginRight: 10,
-                                        }}
-                                    />
-
-                                    <Text
-                                        style={{
-                                            ...FONTS.body3,
-                                            color: COLORS.darygray,
-                                        }}
-                                    >
-                                    </Text>
-                                </View>
-                        </View>
-                    )
-                     )}
-                </View>
-                // </Animated.ScrollView>
-            );
-        };
-
         return (
-            <View>
-                <FlatList
-                    data={data}
-                    keyExtractor={(item) => (
-                        item.id
-                    )}
-                    renderItem={renderItem}
-                />
+            <View style={{ alignItems: "center" }}>
+                <View style={{ height: SIZES.height * 0.35 }}>
+                    {/* food image */}
+                    <Image
+                        source={{
+                            uri: `${imgport}/${image}`,
+                        }}
+                        resizeMode="cover"
+                        style={{
+                            width: SIZES.width,
+                            height: "100%",
+                        }}
+                    />
+                    {/* Quantity */}
+                    <View
+                        style={{
+                            position: "absolute",
+                            bottom: -20,
+                            width: SIZES.width,
+                            height: 50,
+                            justifyContent: "center",
+                            flexDirection: "row",
+                        }}
+                    >
+                        <TouchableOpacity
+                            style={{
+                                width: 50,
+                                backgroundColor: COLORS.white,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderTopLeftRadius: 25,
+                                borderBottomLeftRadius: 25,
+                            }}
+                        >
+                            <Text style={{ ...FONTS.body1 }}>-</Text>
+                        </TouchableOpacity>
+
+                        <View
+                            style={{
+                                width: 50,
+                                backgroundColor: COLORS.white,
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Text style={{ ...FONTS.h2 }}></Text>
+                        </View>
+
+                        <TouchableOpacity
+                            style={{
+                                width: 50,
+                                backgroundColor: COLORS.white,
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderTopRightRadius: 25,
+                                borderBottomRightRadius: 25,
+                            }}
+                        >
+                            <Text style={{ ...FONTS.body1 }}>+</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                {/* Name & Description */}
+                <View
+                    style={{
+                        width: SIZES.width,
+                        alignItems: "center",
+                        marginTop: 15,
+                        paddingHorizontal: SIZES.padding * 2,
+                    }}
+                >
+                    <Text
+                        style={{
+                            marginVertical: 10,
+                            textAlign: "center",
+                            ...FONTS.h2,
+                        }}
+                    >
+                        {name} -{" "}
+                        {price
+                            .toFixed()
+                            .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
+                        đ
+                    </Text>
+                    {/* <Text style={{ ...FONTS.body3 }}>
+                        {itemPro.description}
+                    </Text> */}
+                </View>
+                {/* Calories */}
+                <View
+                    style={{
+                        flexDirection: "row",
+                        marginTop: 10,
+                    }}
+                >
+                    <Image
+                        source={icons.fire}
+                        style={{
+                            width: 20,
+                            height: 20,
+                            marginRight: 10,
+                        }}
+                    />
+
+                    <Text
+                        style={{
+                            ...FONTS.body3,
+                            color: COLORS.darygray,
+                        }}
+                    ></Text>
+                </View>
             </View>
         );
     }
-
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
@@ -519,7 +481,7 @@ const Restaurant = (props) => {
             {renderOrder()}
         </SafeAreaView>
     );
-    };
+};
 
 const styles = StyleSheet.create({
     container: {

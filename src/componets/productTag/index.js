@@ -91,4 +91,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect (mapStateToProps, mapDispatchToProps)(ProductTag);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductTag);

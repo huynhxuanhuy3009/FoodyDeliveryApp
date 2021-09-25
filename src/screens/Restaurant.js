@@ -16,7 +16,7 @@ import { icons, COLORS, SIZES, FONTS } from "../constants";
 import { imgport } from "../config/port";
 
 const { width, height } = Dimensions.get("window");
-const Restaurant = ({props, route, navigation}) => {
+const Restaurant = (props) => {
     const scrollX = new Animated.Value(0);
     const [restaurant, setRestaurant] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(null);
@@ -28,10 +28,10 @@ const Restaurant = ({props, route, navigation}) => {
     // const productID = props.route.params._id;
     // const dataProduct = { ...props.route.params, id: productID };
 
-    const {name, price, image} = route.params
+    const {name, price, imagesProduct} = props.route.params
     React.useEffect(() => {
-        let { item, currentLocation } = route.params;
-
+        let { item, currentLocation } = props.route.params;
+        console.log(">>`route.params`",`${props.route.params.image.url}`)
         setRestaurants01(item);
         // setCurrentLocation(currentLocation)
     });
@@ -55,55 +55,6 @@ const Restaurant = ({props, route, navigation}) => {
     };
 
     // <CODE BYPRAM></CODE> ==============================================
-    function editOrder(action, Id, price) {
-        console.log(">>itemname", item.name);
-        let orderList = orderItems.slice();
-        let item = orderList.filter((a) => a.Id == Id);
-
-        if (action == "+") {
-            if (item.length > 0) {
-                let newQty = item[0].qty + 1;
-                item[0].qty = newQty;
-                item[0].total = item[0].qty * price;
-            } else {
-                const newItem = {
-                    Id: Id,
-                    qty: 1,
-                    price: price,
-                    total: price,
-                };
-                orderList.push(newItem);
-            }
-
-            setOrderItems(orderList);
-        } else {
-            if (item.length > 0) {
-                if (item[0]?.qty > 0) {
-                    let newQty = item[0].qty - 1;
-                    item[0].qty = newQty;
-                    item[0].total = newQty * price;
-                }
-            }
-
-            setOrderItems(orderList);
-        }
-    }
-
-    function getOrderQty(Id) {
-        let orderItem = orderItems.filter((a) => a.Id == Id);
-
-        if (orderItem.length > 0) {
-            return orderItem[0].qty;
-        }
-
-        return 0;
-    }
-
-    function getBasketItemCount() {
-        let itemCount = orderItems.reduce((a, b) => a + (b.qty || 0), 0);
-
-        return itemCount;
-    }
 
     function sumOrder() {
         let total = orderItems.reduce((a, b) => a + (b.total || 0), 0);
@@ -120,7 +71,7 @@ const Restaurant = ({props, route, navigation}) => {
                         paddingLeft: SIZES.padding * 2,
                         justifyContent: "center",
                     }}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => props.navigation.goBack()}
                 >
                     <Image
                         source={icons.back}
@@ -255,7 +206,7 @@ const Restaurant = ({props, route, navigation}) => {
                         }}
                     >
                         <Text style={{ ...FONTS.h3 }}>
-                            {getBasketItemCount()} items in Cart
+                             items in Cart
                         </Text>
                         <Text style={{ ...FONTS.h3 }}>{sumOrder()}đ</Text>
                     </View>
@@ -326,7 +277,7 @@ const Restaurant = ({props, route, navigation}) => {
                                 borderRadius: SIZES.radius,
                             }}
                             onPress={() =>
-                                navigation.navigate(
+                                props.navigation.navigate(
                                     "Cart"
                                     // , {
                                     // restaurant: restaurant,
@@ -365,7 +316,7 @@ const Restaurant = ({props, route, navigation}) => {
                     {/* food image */}
                     <Image
                         source={{
-                            uri: `${imgport}/${image}`,
+                            uri: `${imgport}${props.route.params.image.url}`,
                         }}
                         resizeMode="cover"
                         style={{

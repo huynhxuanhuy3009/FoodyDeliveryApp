@@ -21,9 +21,10 @@ import {
     decreaseProduct,
 } from '../componets/productTag/action/index'
 import ProductCart from "../componets/productCart/index";
+import { connect } from "react-redux";
 
 const { width, height } = Dimensions.get("window");
-const Cart = ({ navigation }) => {
+const Cart = (props,navigation) => {
    
 
     // header của cart
@@ -36,7 +37,7 @@ const Cart = ({ navigation }) => {
                         paddingLeft: SIZES.padding * 2,
                         justifyContent: "center",
                     }}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => props.navigation.goBack()}
                 >
                     <Image
                         source={icons.back}
@@ -90,15 +91,16 @@ const Cart = ({ navigation }) => {
     }
 
     //body cart
-    function renderItemsCart() {
-        return(
+    function renderItemsCart(item) {
+        return(           
             <ProductCart
-                name ={'pho'}
-                price = {'300'}
-                quantity={0}
-                ondecreaseProduct={() => props.decreaseProduct(product)}
-                onincreaseProduct={() => props.increaseProduct(product)}
-                ondeleteProduct={() => props.deleteProduct(product)}
+                name ={item.name}
+                price = {item.price}
+                quantity={item.quantity}
+                imagesProduct = {item.imagesProduct} 
+                ondecreaseProduct={() => props.decreaseProduct(item)}
+                onincreaseProduct={() => props.increaseProduct(item)}
+                ondeleteProduct={() => props.deleteProduct(item)}
             />
         );
     }
@@ -157,7 +159,7 @@ const Cart = ({ navigation }) => {
                             10%
                         </Text>
                         <Text style={{ ...FONTS.h2, color:'black', }}>
-                            $20000
+                            {`${props.totalprice}`}
                         </Text>
                     </View>
                 </View>
@@ -186,7 +188,7 @@ const Cart = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {renderHeaderCart()}
-            {renderItemsCart()}
+            {props.cart.map((prod) => renderItemsCart(prod))}
             {renderTotalCart()}
             {/* {renderTabs()} */}
         </SafeAreaView>
@@ -212,4 +214,20 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Cart;
+const mapStatesToProps = (state) => {
+    return {
+        cart : state.cart.cartAr, 
+        totalprice: state.cart.totalprice,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return{
+        decreaseProduct : (product_current) => dispatch(decreaseProduct(product_current)),
+        increaseProduct : (product_current) => dispatch(increaseProduct(product_current)),
+        deleteProduct : (product_current) => dispatch(deleteProduct(product_current)),
+    }
+}
+
+
+export default connect (mapStatesToProps, mapDispatchToProps)(Cart);

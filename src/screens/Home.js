@@ -223,6 +223,7 @@ const Home = (props) => {
 
     function renderListProduct(productlist) {
         const renderItem = ({ item }) => {
+            console.log(">producttag",item?.image.url);
             return (
                 <View>
                     <ProductTag
@@ -241,7 +242,7 @@ const Home = (props) => {
         const onclickProduct = (prod) => 
             (
                 // console.log(prod.name),
-                // console.log(prod.image)
+                console.log("prod",prod),
                 props.navigation.navigate('Restaurant', prod)
             );
        
@@ -294,7 +295,12 @@ const Home = (props) => {
                     <Text style={{ ...FONTS.body2 , color:'#696969'}}>Add To Basket</Text>
                 </View>
                 
-                <Text style={{ ...FONTS.body2 , color:'#696969' }}>300,000đ</Text>
+                <Text style={{ ...FONTS.body2 , color:'#696969' }}> {props.totalprice
+                            // .toFixed()
+                            // .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+                            }
+                            
+                </Text>  
             </TouchableOpacity>
         );
     }

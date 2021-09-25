@@ -63,7 +63,7 @@ const ProductTag = (props) => {
                         đ
                     </Text>
                     <TouchableOpacity
-                        onPress={() => props.buyProduct(props)}
+                        onPress={() =>{ props.buyProduct(props); console.log(">112312s",props.cart) }}
                     >
                         <Icon
                             name="plus"
@@ -87,7 +87,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 const mapStateToProps = (state) => {
     return { 
-        cart : state.cart.cartAr
+        cart : state.cart.cartAr, 
     };
 };
 

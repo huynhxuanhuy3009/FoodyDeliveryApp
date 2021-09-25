@@ -11,10 +11,27 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 import { icons, images, SIZES, COLORS, FONTS } from "../../constants";
+import {connect} from 'react-redux'
+
+import { imgport } from "../../config/port";
+import {
+    deleteProduct, 
+    increaseProduct, 
+    decreaseProduct,
+} from '../productTag/action/index'
 import styles from "./style";
 
 const {width, height} = Dimensions.get('window');
 const ProductCart = (props) => {
+    const formatCurrency = (monney) => {
+        const mn = String(monney);
+        return mn
+          .split('')
+          .reverse()
+          .reduce((prev, next, index) => {
+            return (index % 3 ? next : next + '.') + prev;
+          });
+      };
     return (
         <View style={[styles.rowFront, { flexDirection: "row" }]}>
             {/* image */}
@@ -24,7 +41,7 @@ const ProductCart = (props) => {
                 }}
             >
                 <Image
-                    source={props.photo}
+                    source={{uri: `${imgport}${props.imagesProduct}`}}
                     style={{
                         width: width * 0.2,
                         height: height * 0.1,
@@ -40,7 +57,7 @@ const ProductCart = (props) => {
                 }}
             >
                 <Text style={{ ...FONTS.h4 }}>{props.name}</Text>
-                <Text style={{ ...FONTS.h4 }}>{`Price: ${props.price}`}</Text>
+                <Text style={{ ...FONTS.h4 }}>{`Price: ${formatCurrency(props.price)}`}đ</Text>
             </View>
 
             {/* button xoa item */}
@@ -95,4 +112,18 @@ const ProductCart = (props) => {
     );
 };
 
-export default ProductCart;
+const mapStatesToProps = (state) => {
+    return {
+        cart : state.cart.cartAr, 
+        totalprice: state.cart.totalprice,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return{
+        decreaseProduct : (product_current) => dispatch(decreaseProduct(product_current)),
+        increaseProduct : (product_current) => dispatch(increaseProduct(product_current)),
+        deleteProduct : (product_current) => dispatch(deleteProduct(product_current)),
+    }
+}
+export default connect (mapStatesToProps, mapDispatchToProps)(ProductCart);

@@ -24,8 +24,9 @@ const cartReducer = (state = initialState, action) => {
                 newarrC[objIndext] = { ...newarrC[objIndext], quantity: 1 };
                 let pricet = 0;
                 newarrC.map(
-                    (pr) => (pricet = pricet + pr.prices * pr.quantity)
+                    (pr) => (pricet = pricet + pr.price * pr.quantity)
                 );
+
                 return {
                     cartAr: newarrC,
                     totalprice: pricet,
@@ -38,7 +39,7 @@ const cartReducer = (state = initialState, action) => {
                 if (newprocart[objIndext] === 1) {
                     newprocart[objIndext] = {
                         ...newprocart[objIndext],
-                        quantity: 2,
+                        quantity: 2
                     };
                 } else {
                     newprocart[objIndext].quantity =
@@ -46,7 +47,7 @@ const cartReducer = (state = initialState, action) => {
                 }
                 let pricet = 0;
                 newprocart.map(
-                    (pr) => (pricet = pricet + pr.prices * pr.quantity)
+                    (pr) => (pricet = pricet + pr.price * pr.quantity)
                 );
                 return {
                     cartAr: [...newprocart],
@@ -62,7 +63,7 @@ const cartReducer = (state = initialState, action) => {
             let newtotal;
             newtotal =
                 state.totalprice -
-                newcart[objIndex].prices * newcart[objIndex].quantity;
+                newcart[objIndex].price * newcart[objIndex].quantity;
             newcart.splice(objIndex, 1);
             return { cartAr: [...newcart], totalprice: newtotal };
 
@@ -76,7 +77,7 @@ const cartReducer = (state = initialState, action) => {
                 quantity: newproc[objIndext].quantity + 1,
             };
             let pricet = 0;
-            newproc.map((pr) => (pricet = pricet + pr.prices * pr.quantity));
+            newproc.map((pr) => (pricet = pricet + pr.price * pr.quantity));
             return { cartAr: [...newproc], totalprice: pricet };
 
         case actionType.DECREASE_PRODUCT:
@@ -91,7 +92,8 @@ const cartReducer = (state = initialState, action) => {
                 };
             }
             pricet = 0;
-            newcartpro.map((pr) => (pricet = pricet + pr.prices * pr.quantity));
+            newcartpro.map((pr) => (pricet = pricet + pr.price * pr.quantity));
+            console.log(">",pricet);
             return { cartAr: [...newcartpro], totalprice: pricet };
 
         case actionType.DELALL_PRODUCT:

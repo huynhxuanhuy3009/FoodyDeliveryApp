@@ -7,11 +7,12 @@ const {width, height} = Dimensions.get('window');
 const Register = ({navigation}) => {
 
     const [data, setData] = React.useState({
-        name: "",
+        username: "",
         email:"",
         password: "",
         confirmPassword:"",
         check_textInputChange: false,
+        check_textChangeUsername:false,
         secureTextEntry01: true,
         secureTextEntry02: true,
     });
@@ -22,14 +23,14 @@ const Register = ({navigation}) => {
     //     }
     // },[])
 
-    const getAPIRegister = (email, password) => {
+    const getAPIRegister = (email, password, username) => {
         const apiURL = "https://foody-store-server.herokuapp.com/auth/local/register"
         fetch(apiURL, {
             method: "POST",
             body: JSON.stringify({
                 email: email,
                 password: password,
-                "username" : "longthanh",
+                username: username,
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
@@ -82,6 +83,20 @@ const Register = ({navigation}) => {
                     </Text>
              </View>
         );
+    }
+    const textChangeUsername = (val) => {
+        if(val != 0) setData({
+            ...data, 
+            username:val,
+            check_textChangeUsername:true,
+        })
+        else {
+            setData({
+                ...data, 
+                username:val,
+                check_textChangeUsername:false,
+            })
+        }
     }
     const textInputChange = (val) => {
         if (val != 0){
@@ -136,8 +151,8 @@ const Register = ({navigation}) => {
                     style={[
                         styles.textinput,
                     ]}
-                    placeholder='Name'
-                   
+                    placeholder='UserName'
+                    onChangeText={(val) => textChangeUsername(val) }
                 />
                 <TextInput
                     style={[
@@ -202,7 +217,7 @@ const Register = ({navigation}) => {
                 </View>
 
                 <TouchableOpacity
-                    onPress={() => getAPIRegister(data.email, data.password)}
+                    onPress={() => getAPIRegister(data.email, data.password, data.username)}
                     style={[
                         styles.button,
                         {backgroundColor:COLORS.primary,borderWidth:0.1},

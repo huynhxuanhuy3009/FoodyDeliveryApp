@@ -223,7 +223,6 @@ const Home = (props) => {
 
     function renderListProduct(productlist) {
         const renderItem = ({ item }) => {
-            console.log(">producttag",item?.image.url);
             return (
                 <View>
                     <ProductTag
@@ -295,10 +294,7 @@ const Home = (props) => {
                     <Text style={{ ...FONTS.body2 , color:'#696969'}}>Add To Basket</Text>
                 </View>
                 
-                <Text style={{ ...FONTS.body2 , color:'#696969' }}> {props.totalprice
-                            // .toFixed()
-                            // .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-                            }
+                <Text style={{ ...FONTS.body2 , color:'#696969' }}> {`${props.totalprice}`}
                             
                 </Text>  
             </TouchableOpacity>
@@ -310,6 +306,7 @@ const Home = (props) => {
             {renderCatelogy()}
             {renderListProduct(restaurants01)}
             {addToBasket()}
+            {/* {props.cart.map((prod) => addToBasket(prod))} */}
         </SafeAreaView>
     );
 };

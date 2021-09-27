@@ -26,6 +26,15 @@ import { connect } from "react-redux";
 const { width, height } = Dimensions.get("window");
 const Cart = (props,navigation) => {
    
+    const formatCurrency = (monney) => {
+        const mn = String(monney);
+        return mn
+          .split('')
+          .reverse()
+          .reduce((prev, next, index) => {
+            return (index % 3 ? next : next + '.') + prev;
+          });
+      };
 
     // header của cart
     function renderHeaderCart() {
@@ -128,38 +137,13 @@ const Cart = (props,navigation) => {
                     }}
                 >
                     <View>
-                        <Text style={{ ...FONTS.h4, color:'black' }}>
-                            Subtotal
-                        </Text>
-                        <Text style={{ ...FONTS.h4,  color:'black' ,paddingVertical:5}}>
-                            Discount
-                        </Text>
                         <Text style={{ ...FONTS.h2,  color:'black'  }}>
                             Total
                         </Text>
                     </View>
                     <View>
-                        <Text
-                            style={{
-                                ...FONTS.h4,
-                                color:'black',
-                                alignSelf: "flex-end",
-                            }}
-                        >
-                            $18000
-                        </Text>
-                        <Text
-                            style={{
-                                ...FONTS.h4,
-                                color:'black',
-                                alignSelf: "flex-end",
-                                paddingVertical:5
-                            }}
-                        >
-                            10%
-                        </Text>
                         <Text style={{ ...FONTS.h2, color:'black', }}>
-                            {`${props.totalprice}`}
+                            {`${formatCurrency(props.totalprice)}`}đ
                         </Text>
                     </View>
                 </View>

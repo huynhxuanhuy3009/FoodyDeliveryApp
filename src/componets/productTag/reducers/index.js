@@ -12,7 +12,7 @@ const initialState = {
 const cartReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionType.BUY_PRODUCT:
-            console.log("product.id", action.payload.id);
+            // console.log("product.id", action.payload.id);
             const productInCart = state.cartAr.find(
                 (p) => p.id == action.payload.id
             );
@@ -49,6 +49,7 @@ const cartReducer = (state = initialState, action) => {
                 newprocart.map(
                     (pr) => (pricet = pricet + pr.price * pr.quantity)
                 );
+                console.log(">>tong",pricet)
                 return {
                     cartAr: [...newprocart],
                     totalprice: pricet,

@@ -1,5 +1,5 @@
 import React ,{useState, useEffect} from 'react';
-import {View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image,TextInput, Dimensions} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image,TextInput, Dimensions, Alert} from 'react-native';
 import {Icon} from 'native-base';
 import { icons, images, SIZES, COLORS, FONTS } from '../constants';
 
@@ -39,14 +39,29 @@ const Register = ({navigation}) => {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                // if (responseJson?.statusCode != 400){
+                //     console.log(responseJSON)
+                // }
+                // else{
+                //     Alert.alert(
+                //         "Wrong Input!",
+                //         "Username or password field cannot be empty.",
+                //         [{ text: "Okay" }]
+                //     );  
+                // }
             })
             .catch((error) => {
-                console.log(">>erro", error);
+               Alert.alert(
+                    "Invalid User!",
+                    "Username or password is incorrect.",
+                    [{ text: "Okay" }]
+                );
             })
     }
 
-
+// header
     function renderHeaderRegister() {
+        
         return(
             <View 
                 style={{
@@ -71,19 +86,23 @@ const Register = ({navigation}) => {
                             }}
                         />
                     </TouchableOpacity>
-                    <Text 
-                        style={{
-                            ...FONTS.h1,
-                            paddingLeft:100,
-                            alignSelf:'center', 
-                            color:COLORS.lightGray2
-                        }}
-                    >
-                        Register
-                    </Text>
+                    
+                        <Text 
+                            style={{
+                                ...FONTS.h1,
+                                paddingLeft:100,
+                                alignSelf:'center', 
+                                color:COLORS.lightGray2
+                            }}
+                        >
+                            Register
+                        </Text>
+                    
+                    
              </View>
         );
     }
+
     const textChangeUsername = (val) => {
         if(val != 0) setData({
             ...data, 
@@ -133,6 +152,20 @@ const Register = ({navigation}) => {
         });
     };
     function renderMainRegister() {
+        const success = () => {
+            Alert.alert(
+                "",
+                "success !",
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => console.log("Cancel Pressed"),
+                        style: "cancel"
+                      },
+                      { text: "OK", onPress: () => console.log("OK Pressed") }
+                ]
+            )
+        }
         return(
             <View style={{alignItems:'center'}}>
                 <Text 

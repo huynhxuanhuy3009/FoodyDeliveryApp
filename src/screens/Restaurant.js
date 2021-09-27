@@ -13,6 +13,8 @@ import { FlatList } from "react-native-gesture-handler";
 import { isIphoneX } from "react-native-iphone-x-helper";
 import { icons, COLORS, SIZES, FONTS } from "../constants";
 
+import {connect} from 'react-redux'
+import { buyProduct } from "../componets/productTag/action";
 import { imgport } from "../config/port";
 
 const { width, height } = Dimensions.get("window");
@@ -56,11 +58,11 @@ const Restaurant = (props) => {
 
     // <CODE BYPRAM></CODE> ==============================================
 
-    function sumOrder() {
-        let total = orderItems.reduce((a, b) => a + (b.total || 0), 0);
+    // function sumOrder() {
+    //     let total = orderItems.reduce((a, b) => a + (b.total || 0), 0);
 
-        return total.toFixed().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    }
+    //     return total.toFixed().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    // }
 
     function renderHeader() {
         return (
@@ -187,7 +189,7 @@ const Restaurant = (props) => {
     function renderOrder() {
         return (
             <View>
-                {renderDots()}
+                {/* {renderDots()} */}
                 <View
                     style={{
                         backgroundColor: COLORS.white,
@@ -195,7 +197,7 @@ const Restaurant = (props) => {
                         borderTopRightRadius: 40,
                     }}
                 >
-                    <View
+                    {/* <View
                         style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
@@ -258,7 +260,7 @@ const Restaurant = (props) => {
                                 8888
                             </Text>
                         </View>
-                    </View>
+                    </View> */}
 
                     {/* Order Button */}
                     <View
@@ -276,15 +278,7 @@ const Restaurant = (props) => {
                                 alignItems: "center",
                                 borderRadius: SIZES.radius,
                             }}
-                            onPress={() =>
-                                props.navigation.navigate(
-                                    "Cart"
-                                    // , {
-                                    // restaurant: restaurant,
-                                    // currentLocation: currentLocation
-                                    // }
-                                )
-                            }
+                            onPress={() =>props.buyProduct(props)}
                         >
                             <Text style={{ color: COLORS.white, ...FONTS.h2 }}>
                                 Add To Cart
@@ -293,7 +287,7 @@ const Restaurant = (props) => {
                     </View>
                 </View>
 
-                {isIphoneX() && (
+                {/* {isIphoneX() && (
                     <View
                         style={{
                             position: "absolute",
@@ -304,7 +298,7 @@ const Restaurant = (props) => {
                             backgroundColor: COLORS.white,
                         }}
                     ></View>
-                )}
+                )} */}
             </View>
         );
     }
@@ -441,4 +435,15 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Restaurant;
+const mapStateToProps = (state) => {
+    return{
+        cart : state.cart.cartAr
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return{
+        buyProduct : (product_current) => dispatch(buyProduct(product_current))
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Restaurant);

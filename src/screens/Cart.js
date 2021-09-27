@@ -9,6 +9,7 @@ import {
     FlatList,
     Image,
     NativeModules,
+    ScrollView,
 } from "react-native";
 import { Icon, ListItem, Tab } from "native-base";
 import tabs from "../navigation/tabs";
@@ -99,18 +100,73 @@ const Cart = (props,navigation) => {
         );
     }
 
+    function giohangtrong () {
+        return(
+            <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                paddingTop: 50,
+              }}>
+              <Image
+                source={require('../../src/assets/images/nope_basket.jpg')}
+                style={{width: 200, height: 200}}
+              />
+            </View>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: 20,
+                color: 'black',
+                paddingBottom: 10,
+              }}>
+              {'Cart is empty'}
+            </Text>
+  
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  color: 'grey',
+                  width: '80%',
+                  paddingBottom: 30,
+                }}>
+                {'You have not added any products to your cart yet'}
+              </Text>
+            </View>
+          </View>
+        );
+    }
     //body cart
     function renderItemsCart(item) {
-        return(           
-            <ProductCart
-                name ={item.name}
-                price = {item.price}
-                quantity={item.quantity}
-                imagesProduct = {item.imagesProduct} 
-                ondecreaseProduct={() => props.decreaseProduct(item)}
-                onincreaseProduct={() => props.increaseProduct(item)}
-                ondeleteProduct={() => props.deleteProduct(item)}
-            />
+        return(   
+            <View>       
+                {  (props.cart.length === 0 )?
+                    (
+                        <View style={{height:height*0.5}}>
+                            <Text style={{color:'red'}}>huydasdasdasda</Text>
+                        </View>
+                    ) 
+                    :
+                    (  
+                        <View>
+                            <ProductCart
+                                name ={item.name}
+                                price = {item.price}
+                                quantity={item.quantity}
+                                imagesProduct = {item.imagesProduct} 
+                                ondecreaseProduct={() => props.decreaseProduct(item)}
+                                onincreaseProduct={() => props.increaseProduct(item)}
+                                ondeleteProduct={() => props.deleteProduct(item)}
+                            />
+                        </View>
+                    )
+                }
+            </View>
         );
     }
 
@@ -125,7 +181,7 @@ const Cart = (props,navigation) => {
                         marginBottom:60,
                         paddingHorizontal: width * 0.05,
                         paddingVertical: height * 0.035,
-                        height: 160,
+                        height:height*0.2,
                         justifyContent: "space-between",
                     },
                 ]}
@@ -172,9 +228,22 @@ const Cart = (props,navigation) => {
     return (
         <SafeAreaView style={styles.container}>
             {renderHeaderCart()}
-            {props.cart.map((prod) => renderItemsCart(prod))}
-            {renderTotalCart()}
-            {/* {renderTabs()} */}
+            {    
+                    props.cart.length === 0 ?
+                    (<View>{giohangtrong()}</View>)
+                    :
+                    (
+                        <View>
+                            <ScrollView style={{height:height*0.6}}>
+                                 {props.cart.map((prod) => renderItemsCart(prod))}
+                            </ScrollView>           
+                            <View style={{height:height*0.3}}>
+                                {renderTotalCart()}
+                            </View>
+                        </View>
+                    )   
+                        
+            }
         </SafeAreaView>
     );
 };

@@ -26,7 +26,6 @@ const cartReducer = (state = initialState, action) => {
                 newarrC.map(
                     (pr) => (pricet = pricet + pr.price * pr.quantity)
                 );
-
                 return {
                     cartAr: newarrC,
                     totalprice: pricet,
@@ -49,7 +48,7 @@ const cartReducer = (state = initialState, action) => {
                 newprocart.map(
                     (pr) => (pricet = pricet + pr.price * pr.quantity)
                 );
-                console.log(">>tong",pricet)
+                // console.log(">>tong",pricet)
                 return {
                     cartAr: [...newprocart],
                     totalprice: pricet,

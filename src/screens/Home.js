@@ -28,6 +28,16 @@ import { AuthContext } from "../componets/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
 const Home = (props) => {
+
+    const formatCurrency = (monney) => {
+        const mn = String(monney);
+        return mn
+          .split('')
+          .reverse()
+          .reduce((prev, next, index) => {
+            return (index % 3 ? next : next + '.') + prev;
+          });
+      };
     // Dummy Datas
     const navigation = useNavigation(); 
     const initialCurrentLocation = {
@@ -294,8 +304,9 @@ const Home = (props) => {
                     <Text style={{ ...FONTS.body2 , color:'#696969'}}>Add To Basket</Text>
                 </View>
                 
-                <Text style={{ ...FONTS.body2 , color:'#696969' }}> {`${props.totalprice}`}
-                            
+                <Text style={{ ...FONTS.body2 , color:'#696969' }}>
+                     {`${formatCurrency(props.totalprice)}`} 
+                     đ                           
                 </Text>  
             </TouchableOpacity>
         );
@@ -328,4 +339,10 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Home;
+const mapStateToProps = (state) => {
+    return{
+        totalprice : state.cart.totalprice,
+    }
+}
+
+export default connect(mapStateToProps)(Home);

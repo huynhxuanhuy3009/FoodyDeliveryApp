@@ -1,4 +1,4 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 import {
     View,
     StyleSheet,
@@ -15,11 +15,22 @@ import {
 import { Icon, List, ListItem } from "native-base";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
+import { connect } from "react-redux";
 
+import ProductCheckout from "../componets/productCheckout/index";
 const { width, height } = Dimensions.get("window");
 const Payment01 = (props) => {
     // const [fullName, setFullName] = useState(initialState)
     const navigation = useNavigation();
+    const formatCurrency = (monney) => {
+        const mn = String(monney);
+        return mn
+            .split("")
+            .reverse()
+            .reduce((prev, next, index) => {
+                return (index % 3 ? next : next + ".") + prev;
+            });
+    };
     function renderHeader() {
         return (
             <View
@@ -79,104 +90,27 @@ const Payment01 = (props) => {
             </View>
         );
     }
-    function renderStepPayHeader() {
+   
+    function renderProductCheck(item) {
         return (
-            <View
-                style={{
-                    flexDirection: "row",
-                    paddingVertical: width * 0.05,
-                    marginHorizontal: width * 0.15,
-                }}
+            
+            // style={styles.rowFront}
+            <ScrollView 
+                style={[styles.rowFront], {height:100}}
             >
-                <View style={{ alignItems: "center" }}>
-                    <View
-                        style={{
-                            borderWidth: 5,
-                            borderRadius: 20,
-                            width: width * 0.1,
-                            alignItems: "center",
-                            backgroundColor: "#0CC210",
-                        }}
-                    >
-                        <Text style={{ ...FONTS.h2, color: "black" }}>1</Text>
-                    </View>
-                    {/* <Text style={{...FONTS.h3}}>Delivery</Text> */}
-                </View>
-                <View
-                    style={{
-                        width: 80,
-                        marginTop: 20,
-                        backgroundColor: "black",
-                        height: 3,
-                    }}
-                ></View>
-                <View style={{ alignItems: "center" }}>
-                    <View
-                        style={{
-                            borderWidth: 5,
-                            borderRadius: 20,
-                            width: width * 0.1,
-                            alignItems: "center",
-                        }}
-                    >
-                        <Text style={{ ...FONTS.h2, color: "black" }}>2</Text>
-                    </View>
-                    {/* <Text style={{...FONTS.h3}}>Payment</Text> */}
-                </View>
-                <View
-                    style={{
-                        width: 80,
-                        marginTop: 20,
-                        backgroundColor: "black",
-                        height: 3,
-                    }}
-                ></View>
-                <View style={{ alignItems: "center" }}>
-                    <View
-                        style={{
-                            borderWidth: 5,
-                            borderRadius: 20,
-                            width: width * 0.1,
-                            alignItems: "center",
-                        }}
-                    >
-                        <Text style={{ ...FONTS.h2, color: "black" }}>3</Text>
-                    </View>
-                    {/* <Text style={{...FONTS.h3}}>Done </Text> */}
-                </View>
-            </View>
+                <ProductCheckout 
+                    name={item.name} 
+                    price={item.price} 
+                    quantity={item.quantity}
+                    imagesProduct={item.imagesProduct}
+                />
+            </ScrollView>    
         );
     }
     function renderBody() {
         return (
-            <ScrollView style={{ paddingHorizontal: width * 0.05 }}>
-                {/* Delivery time */}
-                <View style={styles.rowFront}>
-                    <Text style={{ ...FONTS.h3 }}>DELIVERY TIME</Text>
-                    <Text style={{ ...FONTS.h4 }}>Today 1/9 (14:40)</Text>
-                    <View
-                        style={{
-                            borderWidth: 0.5,
-                            borderRadius: 5,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                        }}
-                    >
-                        <Text>Data delivery: </Text>
-                        <Text style={{ ...FONTS.h4 }}>Today (01/09/2021)</Text>
-                    </View>
-                    <View
-                        style={{
-                            borderWidth: 0.5,
-                            borderRadius: 5,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                        }}
-                    >
-                        <Text>Time delivery: </Text>
-                        <Text style={{ ...FONTS.h4 }}>Time (14:04)</Text>
-                    </View>
-                </View>
+            <View style={{ paddingHorizontal: width * 0.05 }}>
+
                 {/* Delivery to */}
                 <View
                     style={[
@@ -214,111 +148,60 @@ const Payment01 = (props) => {
                         }}
                     />
                 </View>
-                <View>
-                    <Text style={{ ...FONTS.h2 }}>ORDER SUMMARY</Text>
-                    <View
+                <View   style={[
+                        styles.rowFront,
+                        { justifyContent: "space-evenly", height: 100 },
+                    ]}>
+                     <View
                         style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
-                            paddingVertical: SIZES.padding * 2,
+                            // paddingVertical: SIZES.padding * 2,
                             paddingHorizontal: SIZES.padding * 1,
                             borderBottomColor: COLORS.lightGray2,
                             borderBottomWidth: 1,
                         }}
                     >
                         <Text style={{ ...FONTS.h3 }}>0 Items in Cart</Text>
-                        <Text style={{ ...FONTS.h3 }}>$0.00</Text>
+                        <Text style={{ ...FONTS.h3 }}>{`${formatCurrency(props.totalprice)}`}đ</Text>
                     </View>
+                   
                     <View
                         style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
-                            // paddingVertical: SIZES.padding * 0.5,
-                            paddingHorizontal: SIZES.padding * 1,
-                            borderBottomColor: COLORS.lightGray2,
-                            borderBottomWidth: 1,
-                        }}
-                    >
-                        <Text
-                            style={{ ...FONTS.body3, color: COLORS.darkgray }}
-                        >
-                            Total order
-                        </Text>
-                        <Text style={{ ...FONTS.h3 }}>$0.00</Text>
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            // paddingVertical: SIZES.padding * 0.5,
-                            paddingHorizontal: SIZES.padding * 1,
-                            borderBottomColor: COLORS.lightGray2,
-                            borderBottomWidth: 1,
-                        }}
-                    >
-                        <Text
-                            style={{ ...FONTS.body3, color: COLORS.darkgray }}
-                        >
-                            {" "}
-                            Cost ship
-                        </Text>
-                        <Text style={{ ...FONTS.h3 }}>$0.00</Text>
-                    </View>
-                    <View
-                        style={{
-                            width: width * 10,
-                            marginTop: 20,
-                            backgroundColor: "black",
-                            height: 3,
-                        }}
-                    ></View>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            paddingVertical: SIZES.padding * 2,
+                            paddingVertical: SIZES.padding * 1,
                             paddingHorizontal: SIZES.padding * 1,
                             borderBottomColor: COLORS.lightGray2,
                             borderBottomWidth: 1,
                         }}
                     >
                         <Text style={{ ...FONTS.h1 }}>Total</Text>
-                        <Text style={{ ...FONTS.h1 }}>$0.00</Text>
+                        <Text style={{ ...FONTS.h1 }}>{`${formatCurrency(props.totalprice)}`}đ</Text>
                     </View>
                 </View>
-            </ScrollView>
+            </View>
         );
     }
     function renderFooter() {
         return (
-            <View style={[styles.rowFront, { height: 100 }]}>
-                <View
-                    style={{
-                        flexDirection: "row",
-                        justifyContent: "flex-end",
-                        paddingBottom:SIZES.padding * 1,
-                        paddingHorizontal: SIZES.padding * 1,
-                        borderBottomColor: COLORS.lightGray2,
-                    }}
-                >
-                    <Text style={{ ...FONTS.body3, color: COLORS.darkgray }}>
-                        Total:{" "}
-                    </Text>
-                    <Text style={{ ...FONTS.h3 }}>$0.00</Text>
-                </View>
+            <View style={[styles.rowFront, { height: 60 }]}>
+                
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Payment02')}
+                    onPress={() => navigation.navigate("Payment02")}
                     style={{
-                        marginHorizontal:width*0.15,
-                        height:40,
-                        backgroundColor:'#0CC255',
-                        justifyContent:'center',
-                        alignItems:'center', 
-                        borderWidth:0.5,
-                        borderRadius:20,
+                        marginHorizontal: width * 0.15,
+                        height: 40,
+                        backgroundColor: "#0CC255",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderWidth: 0.5,
+                        borderRadius: 20,
                     }}
                 >
-                    <Text style={{color:'white', ...FONTS.h4}}>Continue</Text>
+                    <Text style={{ color: "white", ...FONTS.h4 }}>
+                        Continue
+                    </Text>
                 </TouchableOpacity>
             </View>
         );
@@ -326,7 +209,13 @@ const Payment01 = (props) => {
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
-            {renderStepPayHeader()}
+            {/* {renderStepPayHeader()} */}
+            <ScrollView  
+                // style={[styles.rowFront], {height:250,marginTop:10}}
+            >
+                {props.cart.map((item) => renderProductCheck(item))}
+            </ScrollView>
+            
             {renderBody()}
             {renderFooter()}
         </SafeAreaView>
@@ -346,7 +235,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         paddingHorizontal: 10,
         paddingVertical: 15,
-        justifyContent: "space-around",
+        // justifyContent: "space-around",
         shadowColor: "#999",
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
@@ -358,8 +247,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: SIZES.padding * 2,
         paddingVertical: SIZES.padding * 2,
-        borderWidth:1
+        borderWidth: 1,
     },
 });
 
-export default Payment01;
+const mapStatesToProps = (state) => {
+    return {
+        cart: state.cart.cartAr,
+        totalprice: state.cart.totalprice,
+    };
+};
+export default connect(mapStatesToProps)(Payment01);

@@ -56,7 +56,7 @@ const ProductCart = (props) => {
                     justifyContent: "space-between",
                 }}
             >
-                <Text style={{ ...FONTS.h4 }}>{props.name}</Text>
+                <Text style={{ ...FONTS.body2 }}>{props.name}</Text>
                 <Text style={{ ...FONTS.h4 }}>{`Price: ${formatCurrency(props.price)}`}đ</Text>
             </View>
 

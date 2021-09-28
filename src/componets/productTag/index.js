@@ -28,17 +28,7 @@ const ProductTag = (props) => {
     };
 
     return (
-        // <Animated.ScrollView
-        //     horizontal
-        //     pagingEnabled
-        //     scrollEventThrottle={16}
-        //     snapToAlignment="center"
-        //     showsHorizontalScrollIndicator={false}
-        //     onScroll={Animated.event(
-        //         [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-        //         { useNativeDriver: false }
-        //     )}
-        // >
+        
         <View
             key={props.id}
             style={{
@@ -94,7 +84,7 @@ const ProductTag = (props) => {
 
             {/* })} */}
         </View>
-        // </Animated.ScrollView>
+       
     );
 };
 

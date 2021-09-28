@@ -14,10 +14,12 @@ import {
 } from "react-native";
 import { Icon, List, ListItem } from "native-base";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
+import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
-const Payment01 = ({ navigation }) => {
-    const [fullName, setFullName] = useState(initialState)
+const Payment01 = (props) => {
+    // const [fullName, setFullName] = useState(initialState)
+    const navigation = useNavigation();
     function renderHeader() {
         return (
             <View

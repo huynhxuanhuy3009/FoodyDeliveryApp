@@ -39,16 +39,6 @@ const Register = ({navigation}) => {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
-                // if (responseJson?.statusCode != 400){
-                //     console.log(responseJSON)
-                // }
-                // else{
-                //     Alert.alert(
-                //         "Wrong Input!",
-                //         "Username or password field cannot be empty.",
-                //         [{ text: "Okay" }]
-                //     );  
-                // }
             })
             .catch((error) => {
                Alert.alert(
@@ -138,6 +128,15 @@ const Register = ({navigation}) => {
             ...data,
             password : val,
         })
+    }
+    const checkPassword = ()=>{
+        if (data.password === data.confirmPassword)
+        {
+            alert('thanh cong');
+        }
+        else {
+            alert('that bai')
+        }
     }
     const updateSecureTextEntry01 = () => {
         setData({
@@ -250,7 +249,7 @@ const Register = ({navigation}) => {
                 </View>
 
                 <TouchableOpacity
-                    onPress={() => getAPIRegister(data.email, data.password, data.username)}
+                    onPress={() => getAPIRegister(data.email, data.password, data.username,checkPassword()) }
                     style={[
                         styles.button,
                         {backgroundColor:COLORS.primary,borderWidth:0.1},

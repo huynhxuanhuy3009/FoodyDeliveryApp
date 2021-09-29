@@ -90,10 +90,18 @@ const Payment01 = (props) => {
             </View>
         );
     }
-   
+    
+    function renderTypePro() {
+        return(
+            <View style={[styles.rowFront, { height: 50 }]}>
+                 <Text style={{ ...FONTS.h3 , fontStyle: 'italic'}}>Types of products : {props.cart.length} </Text>
+            </View>
+        );
+    }
     function renderProductCheck(item) {
         return (
             
+          
             // style={styles.rowFront}
             <ScrollView 
                 style={[styles.rowFront], {height:100}}
@@ -150,21 +158,8 @@ const Payment01 = (props) => {
                 </View>
                 <View   style={[
                         styles.rowFront,
-                        { justifyContent: "space-evenly", height: 100 },
+                        { justifyContent: "space-evenly", height: 75},
                     ]}>
-                     <View
-                        style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                            // paddingVertical: SIZES.padding * 2,
-                            paddingHorizontal: SIZES.padding * 1,
-                            borderBottomColor: COLORS.lightGray2,
-                            borderBottomWidth: 1,
-                        }}
-                    >
-                        <Text style={{ ...FONTS.h3 }}>0 Items in Cart</Text>
-                        <Text style={{ ...FONTS.h3 }}>{`${formatCurrency(props.totalprice)}`}đ</Text>
-                    </View>
                    
                     <View
                         style={{
@@ -176,8 +171,8 @@ const Payment01 = (props) => {
                             borderBottomWidth: 1,
                         }}
                     >
-                        <Text style={{ ...FONTS.h1 }}>Total</Text>
-                        <Text style={{ ...FONTS.h1 }}>{`${formatCurrency(props.totalprice)}`}đ</Text>
+                        <Text style={{ ...FONTS.h2 }}>Total</Text>
+                        <Text style={{ ...FONTS.h2 }}>{`${formatCurrency(props.totalprice)}`}đ</Text>
                     </View>
                 </View>
             </View>
@@ -210,9 +205,11 @@ const Payment01 = (props) => {
         <SafeAreaView style={styles.container}>
             {renderHeader()}
             {/* {renderStepPayHeader()} */}
+            {renderTypePro()}
             <ScrollView  
                 // style={[styles.rowFront], {height:250,marginTop:10}}
             >
+               
                 {props.cart.map((item) => renderProductCheck(item))}
             </ScrollView>
             

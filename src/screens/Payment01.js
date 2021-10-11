@@ -183,7 +183,7 @@ const Payment01 = (props) => {
             <View style={[styles.rowFront, { height: 60 }]}>
                 
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("Payment02")}
+                    onPress={() => navigation.navigate("Paypal")}
                     style={{
                         marginHorizontal: width * 0.15,
                         height: 40,

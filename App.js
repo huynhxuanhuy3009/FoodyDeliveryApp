@@ -1,23 +1,23 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import { ActivityIndicator , View, Text} from 'react-native';
+import { ActivityIndicator , View, Text,Image} from 'react-native';
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
+
 import { Restaurant, 
          Cart,
          Payment01,
          Payment02,
-         Payment03,
-         CheckOuts, 
-         OrderPlaced, 
+         Paypal,
          User,
          EditProfile, 
         Login, Register,ForgotPassword} from './src/screens';
 import RootStackScreen from './src/screens/RootStackScreen';
 import { AuthContext } from './src/componets/context';
 import Tabs from './src/navigation/tabs';
+import { images } from './src/constants';
 
 
 const Stack = createStackNavigator();
@@ -106,8 +106,20 @@ const App = () => {
 
     if(loginState.isLoading){
         return(
-            <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-                <Text>huy</Text>
+            <View 
+                style={{
+                    flex:1, 
+                    justifyContent:'center', 
+                    alignItems:'center', 
+                    backgroundColor: '#ffa07a',
+                }}
+            >
+                <Image
+                    source={images.logo}
+                    resizeMode="contain"
+                    style={{borderRadius:5, marginBottom:50}}
+                />
+
             </View>
         );
     }
@@ -127,9 +139,7 @@ const App = () => {
                         <Stack.Screen name="Cart" component={Cart} />
                         <Stack.Screen name="Payment01" component={Payment01} />
                         <Stack.Screen name="Payment02" component={Payment02} />
-                        <Stack.Screen name="Payment03" component={Payment03} />
-                        <Stack.Screen name="CheckOuts" component={CheckOuts}/>
-                        <Stack.Screen name="OrderPlaced" component={OrderPlaced}/>
+                        <Stack.Screen name="Paypal" component={Paypal} />
                         <Stack.Screen name="User" component={User} />
                         <Stack.Screen name="EditProfile" component={EditProfile}/>
                     </Stack.Navigator>

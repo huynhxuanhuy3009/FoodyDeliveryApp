@@ -7,9 +7,7 @@ import Restaurant from './Restaurant'
 import Cart from './Cart'
 import Payment01 from './Payment01'
 import Payment02 from './Payment02'
-import Payment03 from './Payment03'
-import CheckOuts from './CheckOuts'
-import OrderPlaced from './OrderPlaced'
+import Paypal from './Paypal'
 import User from './User'
 import EditProfile from './EditProfile'
 
@@ -23,9 +21,8 @@ export {
     Cart, 
     Payment01,
     Payment02,
-    Payment03,
-    CheckOuts,
-    OrderPlaced, 
+    Paypal,
     User,
     EditProfile, 
+
 }

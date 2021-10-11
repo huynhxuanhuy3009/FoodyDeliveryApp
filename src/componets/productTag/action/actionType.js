@@ -3,3 +3,4 @@ export const DELETE_PRODUCT = 'delete_product';
 export const INCREASE_PRODUCT = 'increase_product';
 export const DECREASE_PRODUCT = 'decrease_product';
 export const DELALL_PRODUCT = 'delall_product';
+export const UPDATE_PRODUCT = 'update_product';

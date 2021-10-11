@@ -32,4 +32,11 @@ export const delallProduct = () => {
     return {
         type: actionType.DELALL_PRODUCT,
     }
+};
+
+export const updateProduct = (product) => {
+    return { 
+        type: actionType.BUY_PRODUCT, 
+        payload: product,
+    }
 }

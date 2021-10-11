@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import {
     View,
     StyleSheet,
@@ -16,18 +16,24 @@ import tabs from "../navigation/tabs";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import Tabs from "../navigation/tabs";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
     deleteProduct,
     increaseProduct,
     decreaseProduct,
+    updateProduct, 
 } from "../componets/productTag/action/index";
 import ProductCart from "../componets/productCart/index";
 import { connect } from "react-redux";
 
+
 const { width, height } = Dimensions.get("window");
 const Cart = (props) => {
     const navigation = useNavigation();
+    const [usertoken, setUsertoken] = useState("");
+    const [postCart, setPostcart] = useState("");
+    const [update, setUpdate] = useState("");
     const formatCurrency = (monney) => {
         const mn = String(monney);
         return mn
@@ -37,7 +43,96 @@ const Cart = (props) => {
                 return (index % 3 ? next : next + ".") + prev;
             });
     };
-
+    useEffect(() => {
+        // apiCarts()
+        let userToken ;
+        async function getuserToken () {
+            userToken = await AsyncStorage.getItem("userToken");
+            setUsertoken(userToken);
+            apiCarts(userToken);
+        }
+        getuserToken()
+        return () => {};
+    }, []);
+    const apiCarts = (utoken) => {
+        const apiURL = "https://foody-store-server.herokuapp.com/carts"
+        fetch(apiURL, {
+            method: "GET",
+            headers : {
+                "Content-type": "application/json; charset=UTF-8",
+                Authorization : `Bearer ${utoken}`,
+            },
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(">>totalAmount", responseJson[0].totalAmount);
+                console.log(">>IDcart", responseJson[0].id);
+                
+            })
+            .catch((error) => {
+                consolr.log(error);
+            });
+        };
+    const apiPostCarts = (utoken, totalAmount,productID, quantity,amount) => {
+        const apiURL = "https://foody-store-server.herokuapp.com/carts"
+        fetch(apiURL,  {
+            method:"POST",
+            headers : {
+                "Content-type": "application/json; charset=UTF-8",
+                Authorization : `Bearer ${utoken}`
+            },
+            body : JSON.stringify({
+                totalAmount: totalAmount,
+                products: [
+                    {
+                        productID:productID,
+                        quantity: quantity,
+                        amount: amount
+                    }
+                ]
+            })
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson.totalAmount)
+            })
+    }
+    const apiUpdateCarts = (utoken,totalAmount,productID, quantity,amount ) => {
+        const apiURL = "https://foody-store-server.herokuapp.com/carts/61639b0be08fdd0016051da3"
+        fetch(apiURL, {
+            method:"PUT", 
+            body: JSON.stringify({
+                totalAmount: totalAmount,
+                products: [
+                    {
+                        productID: productID,
+                        quantity: quantity,
+                        amount: amount
+                    }
+                ]
+            }),
+            headers:{
+                "Content-type": "application/json; charset=UTF-8",
+                Authorization:`Bearer ${utoken}`,
+            }      
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson.totalAmount)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+    const updateCart = () => {
+        let userToken;
+        async function updatecart() {
+            userToken = await AsyncStorage.getItem("userToken");
+            setUsertoken(userToken);
+            apiUpdateCarts(userToken);
+        } 
+        updatecart()
+    }
     // header của cart
     function renderHeaderCart() {
         return (
@@ -88,12 +183,12 @@ const Cart = (props) => {
                         justifyContent: "center",
                     }}
                 >
-                    <Image
-                        source={icons.basket}
-                        resizeMode="contain"
+                    <Icon
+                        name="delete"
+                        type="AntDesign"
                         style={{
                             width: 30,
-                            height: 30,
+                            height: 28,
                         }}
                     />
                 </TouchableOpacity>
@@ -198,6 +293,23 @@ const Cart = (props) => {
                     </View>
                 </View>
                 <TouchableOpacity
+                    onPress={updateCart}
+                    style={{
+                        marginHorizontal: width * 0.15,
+                        height: 40,
+                        backgroundColor: "#0CC255",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderWidth: 0.5,
+                        borderRadius: 20,
+                    }}
+                >
+                    {/* <Text>{responseJson.totalAmount}</Text> */}
+                    <Text style={{ color: "white", ...FONTS.h4 }}>
+                        confirm cart
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                     onPress={() => props.navigation.navigate("Payment01")}
                     style={{
                         marginHorizontal: width * 0.15,
@@ -216,9 +328,7 @@ const Cart = (props) => {
             </View>
         );
     }
-    function renderTabs() {
-        return <Tabs />;
-    }
+    
     return (
         <SafeAreaView style={styles.container}>
             {renderHeaderCart()}
@@ -272,6 +382,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(increaseProduct(product_current)),
         deleteProduct: (product_current) =>
             dispatch(deleteProduct(product_current)),
+        updateProduct:(product_current)=> 
+            dispatch(updateProduct(product_current)),
     };
 };
 

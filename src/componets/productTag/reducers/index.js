@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import * as actionType from "../action/actionType";
 
 const initialState = {
@@ -26,6 +27,7 @@ const cartReducer = (state = initialState, action) => {
                 newarrC.map(
                     (pr) => (pricet = pricet + pr.price * pr.quantity)
                 );
+                // Alert.alert("Add successful");
                 return {
                     cartAr: newarrC,
                     totalprice: pricet,
@@ -48,11 +50,12 @@ const cartReducer = (state = initialState, action) => {
                 newprocart.map(
                     (pr) => (pricet = pricet + pr.price * pr.quantity)
                 );
-                // console.log(">>tong",pricet)
+                // Alert.alert("Add successful");
                 return {
                     cartAr: [...newprocart],
                     totalprice: pricet,
                 };
+                
             }
 
         case actionType.DELETE_PRODUCT:
@@ -101,6 +104,16 @@ const cartReducer = (state = initialState, action) => {
                 cartAr: [],
                 totalprice: 0,
             };
+
+        case actionType.UPDATE_PRODUCT:
+            let newcartupdate = state.cartAr;  
+            const objIndexCart = action.payload;  
+            newcartupdate[objIndexCart] = {
+                ...newcartupdate[objIndexCart]
+            }
+            pricet = totalAmount;
+            return { cartAr:[...newcartupdate], totalprice : pricet};
+            
         default:
             return state;
     }

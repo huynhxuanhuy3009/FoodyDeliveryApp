@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
     View,
     StyleSheet,
@@ -11,7 +11,7 @@ import {
     NativeModules,
     ScrollView,
 } from "react-native";
-import { Icon, ListItem, Tab } from "native-base";
+import { Button, Icon, ListItem, Tab } from "native-base";
 import tabs from "../navigation/tabs";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import Tabs from "../navigation/tabs";
@@ -22,11 +22,11 @@ import {
     deleteProduct,
     increaseProduct,
     decreaseProduct,
-    updateProduct, 
+    updateProduct,
+    getCart,
 } from "../componets/productTag/action/index";
 import ProductCart from "../componets/productCart/index";
 import { connect } from "react-redux";
-
 
 const { width, height } = Dimensions.get("window");
 const Cart = (props) => {
@@ -34,6 +34,7 @@ const Cart = (props) => {
     const [usertoken, setUsertoken] = useState("");
     const [postCart, setPostcart] = useState("");
     const [update, setUpdate] = useState("");
+    const [cartGet, setcartGet] = useState({});
     const formatCurrency = (monney) => {
         const mn = String(monney);
         return mn
@@ -45,94 +46,102 @@ const Cart = (props) => {
     };
     useEffect(() => {
         // apiCarts()
-        let userToken ;
-        async function getuserToken () {
+        let userToken;
+        async function getuserToken() {
             userToken = await AsyncStorage.getItem("userToken");
             setUsertoken(userToken);
             apiCarts(userToken);
         }
-        getuserToken()
+        getuserToken();
+       
         return () => {};
     }, []);
     const apiCarts = (utoken) => {
-        const apiURL = "https://foody-store-server.herokuapp.com/carts"
+        const apiURL = "https://foody-store-server.herokuapp.com/carts";
         fetch(apiURL, {
             method: "GET",
-            headers : {
+            headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                Authorization : `Bearer ${utoken}`,
+                Authorization: `Bearer ${utoken}`,
             },
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                setcartGet(responseJson[0])
                 console.log(">>totalAmount", responseJson[0].totalAmount);
                 console.log(">>IDcart", responseJson[0].id);
-                
             })
             .catch((error) => {
                 consolr.log(error);
             });
-        };
-    const apiPostCarts = (utoken, totalAmount,productID, quantity,amount) => {
-        const apiURL = "https://foody-store-server.herokuapp.com/carts"
-        fetch(apiURL,  {
-            method:"POST",
-            headers : {
-                "Content-type": "application/json; charset=UTF-8",
-                Authorization : `Bearer ${utoken}`
-            },
-            body : JSON.stringify({
-                totalAmount: totalAmount,
-                products: [
-                    {
-                        productID:productID,
-                        quantity: quantity,
-                        amount: amount
-                    }
-                ]
-            })
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log(responseJson.totalAmount)
-            })
-    }
-    const apiUpdateCarts = (utoken,totalAmount,productID, quantity,amount ) => {
-        const apiURL = "https://foody-store-server.herokuapp.com/carts/61639b0be08fdd0016051da3"
+    };
+    const apiPostCarts = (utoken, totalAmount, productID, quantity, amount) => {
+        const apiURL = "https://foody-store-server.herokuapp.com/carts";
         fetch(apiURL, {
-            method:"PUT", 
+            method: "POST",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                Authorization: `Bearer ${utoken}`,
+            },
             body: JSON.stringify({
                 totalAmount: totalAmount,
                 products: [
                     {
                         productID: productID,
                         quantity: quantity,
-                        amount: amount
-                    }
-                ]
+                        amount: amount,
+                    },
+                ],
             }),
-            headers:{
-                "Content-type": "application/json; charset=UTF-8",
-                Authorization:`Bearer ${utoken}`,
-            }      
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson.totalAmount)
+                console.log(responseJson.totalAmount);
+            });
+    };
+    const apiUpdateCarts = (
+        utoken,
+        totalAmount,
+        productID,
+        quantity,
+        amount
+    ) => {
+        const apiURL =
+            "https://foody-store-server.herokuapp.com/carts/61639b0be08fdd0016051da3";
+        fetch(apiURL, {
+            method: "PUT",
+            body: JSON.stringify({
+                totalAmount: totalAmount,
+                products: [
+                    {
+                        productID: productID,
+                        quantity: quantity,
+                        amount: amount,
+                    },
+                ],
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                Authorization: `Bearer ${utoken}`,
+            },
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson.totalAmount);
             })
             .catch((error) => {
-                console.log(error)
-            })
-    }
+                console.log(error);
+            });
+    };
     const updateCart = () => {
         let userToken;
         async function updatecart() {
             userToken = await AsyncStorage.getItem("userToken");
             setUsertoken(userToken);
             apiUpdateCarts(userToken);
-        } 
-        updatecart()
-    }
+        }
+        updatecart();
+    };
     // header của cart
     function renderHeaderCart() {
         return (
@@ -245,18 +254,16 @@ const Cart = (props) => {
     //body cart
     function renderItemsCart(item) {
         return (
-           
-                <ProductCart
-                    name={item.name}
-                    price={item.price}
-                    quantity={item.quantity}
-                    imagesProduct={item.imagesProduct}
-                    ondecreaseProduct={() => props.decreaseProduct(item)}
-                    onincreaseProduct={() => props.increaseProduct(item)}
-                    ondeleteProduct={() => props.deleteProduct(item)}
-                />
-                )
-            
+            <ProductCart
+                name={item.name}
+                price={item.price}
+                quantity={item.quantity}
+                imagesProduct={item.imagesProduct}
+                ondecreaseProduct={() => props.decreaseProduct(item)}
+                onincreaseProduct={() => props.increaseProduct(item)}
+                ondeleteProduct={() => props.deleteProduct(item)}
+            />
+        );
     }
 
     //total cart
@@ -328,9 +335,13 @@ const Cart = (props) => {
             </View>
         );
     }
-    
+
     return (
         <SafeAreaView style={styles.container}>
+            <TouchableOpacity onPress={() => props.getCart(cartGet)}>
+                <Text>Get cart</Text>
+            </TouchableOpacity>
+
             {renderHeaderCart()}
             {props.cart.length === 0 ? (
                 <View>{giohangtrong()}</View>
@@ -382,8 +393,9 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(increaseProduct(product_current)),
         deleteProduct: (product_current) =>
             dispatch(deleteProduct(product_current)),
-        updateProduct:(product_current)=> 
+        updateProduct: (product_current) =>
             dispatch(updateProduct(product_current)),
+        getCart: (usertoken) => dispatch(getCart(usertoken)),
     };
 };
 

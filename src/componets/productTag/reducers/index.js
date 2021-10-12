@@ -1,4 +1,3 @@
-import { Alert } from "react-native";
 import * as actionType from "../action/actionType";
 
 const initialState = {
@@ -24,9 +23,7 @@ const cartReducer = (state = initialState, action) => {
                 );
                 newarrC[objIndext] = { ...newarrC[objIndext], quantity: 1 };
                 let pricet = 0;
-                newarrC.map(
-                    (pr) => (pricet = pricet + pr.price * pr.quantity)
-                );
+                newarrC.map((pr) => (pricet = pricet + pr.price * pr.quantity));
                 // Alert.alert("Add successful");
                 return {
                     cartAr: newarrC,
@@ -40,7 +37,7 @@ const cartReducer = (state = initialState, action) => {
                 if (newprocart[objIndext] === 1) {
                     newprocart[objIndext] = {
                         ...newprocart[objIndext],
-                        quantity: 2
+                        quantity: 2,
                     };
                 } else {
                     newprocart[objIndext].quantity =
@@ -55,7 +52,6 @@ const cartReducer = (state = initialState, action) => {
                     cartAr: [...newprocart],
                     totalprice: pricet,
                 };
-                
             }
 
         case actionType.DELETE_PRODUCT:
@@ -96,7 +92,7 @@ const cartReducer = (state = initialState, action) => {
             }
             pricet = 0;
             newcartpro.map((pr) => (pricet = pricet + pr.price * pr.quantity));
-            console.log(">",pricet);
+            console.log(">", pricet);
             return { cartAr: [...newcartpro], totalprice: pricet };
 
         case actionType.DELALL_PRODUCT:
@@ -104,16 +100,21 @@ const cartReducer = (state = initialState, action) => {
                 cartAr: [],
                 totalprice: 0,
             };
-
+        case actionType.GET_CART:
+            return {
+                cartAr: [...action.payload.products],
+                totalprice: action.payload.totalAmount,
+            };
+                      
         case actionType.UPDATE_PRODUCT:
-            let newcartupdate = state.cartAr;  
-            const objIndexCart = action.payload;  
+            let newcartupdate = state.cartAr;
+            const objIndexCart = action.payload;
             newcartupdate[objIndexCart] = {
-                ...newcartupdate[objIndexCart]
-            }
+                ...newcartupdate[objIndexCart],
+            };
             pricet = totalAmount;
-            return { cartAr:[...newcartupdate], totalprice : pricet};
-            
+            return { cartAr: [...newcartupdate], totalprice: pricet };
+
         default:
             return state;
     }

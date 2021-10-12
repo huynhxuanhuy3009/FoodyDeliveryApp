@@ -12,13 +12,16 @@ import {
     VirtualizedList,
 } from "react-native";
 import { Icon } from "native-base";
-
+import {
+    getCart
+} from "../componets/productTag/action/index";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import Users from "../model/Users";
 import { AuthContext } from "../componets/context";
+import { connect } from "react-redux";
 
 const { width, height } = Dimensions.get("window");
-const Login = ({ navigation }) => {
+const Login = ({ navigation,getCart }) => {
     const { signIn } = React.useContext(AuthContext);
     const [usertoken, setUsertoken] = useState("");
     const [data, setData] = React.useState({
@@ -49,6 +52,7 @@ const Login = ({ navigation }) => {
                     console.log(responseJson);
                     const foundUser = [{username: responseJson.user.username,userToken:responseJson.jwt }]
                     signIn(foundUser);
+                    getCart(responseJson.jwt);
                 }
                 else{
                     Alert.alert(
@@ -59,11 +63,12 @@ const Login = ({ navigation }) => {
                 }     
             })
             .catch((error) => {
-                Alert.alert(
-                    "Invalid User!",
-                    "Username or password is incorrect.",
-                    [{ text: "Okay" }]
-                );
+                // Alert.alert(
+                //     "Invalid User!",
+                //     "Username or password is incorrect.",
+                //     [{ text: "Okay" }]
+                // );
+              console.log(error);
             });
     };
 
@@ -233,5 +238,18 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 });
+const mapStatesToProps = (state) => {
+    return {
+        cart: state.cart.cartAr,
+        totalprice: state.cart.totalprice,
+    };
+};
 
-export default Login;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getCart : (usertoken) => dispatch(getCart(usertoken))
+    };
+};
+
+export default connect(mapStatesToProps, mapDispatchToProps)(Login);
+

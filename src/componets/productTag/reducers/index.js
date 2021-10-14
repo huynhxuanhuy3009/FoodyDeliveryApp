@@ -92,7 +92,6 @@ const cartReducer = (state = initialState, action) => {
             }
             pricet = 0;
             newcartpro.map((pr) => (pricet = pricet + pr.price * pr.quantity));
-            console.log(">", pricet);
             return { cartAr: [...newcartpro], totalprice: pricet };
 
         case actionType.DELALL_PRODUCT:
@@ -105,7 +104,8 @@ const cartReducer = (state = initialState, action) => {
                 cartAr: [...action.payload.products],
                 totalprice: action.payload.totalAmount,
             };
-                      
+              
+
         case actionType.UPDATE_PRODUCT:
             let newcartupdate = state.cartAr;
             const objIndexCart = action.payload;

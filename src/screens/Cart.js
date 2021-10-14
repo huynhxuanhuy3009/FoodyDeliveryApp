@@ -17,6 +17,7 @@ import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import Tabs from "../navigation/tabs";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
 
 import {
     deleteProduct,
@@ -30,6 +31,7 @@ import { connect } from "react-redux";
 
 const { width, height } = Dimensions.get("window");
 const Cart = (props) => {
+    const dispatch = useDispatch();
     const navigation = useNavigation();
     const [usertoken, setUsertoken] = useState("");
     const [postCart, setPostcart] = useState("");
@@ -51,13 +53,14 @@ const Cart = (props) => {
             userToken = await AsyncStorage.getItem("userToken");
             setUsertoken(userToken);
             apiCarts(userToken);
+            updateCart(userToken);
         }
         getuserToken();
        
         return () => {};
     }, []);
     const apiCarts = (utoken) => {
-        const apiURL = "https://foody-store-server.herokuapp.com/carts";
+        const apiURL = "https://foody-store-server.herokuapp.com/carts/me";
         fetch(apiURL, {
             method: "GET",
             headers: {
@@ -67,15 +70,19 @@ const Cart = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                setcartGet(responseJson[0])
-                console.log(">>totalAmount", responseJson[0].totalAmount);
-                console.log(">>IDcart", responseJson[0].id);
+                setcartGet(responseJson)
+                // console.log(responseJson);
+                // console.log(">>totalAmount", responseJson.totalAmount);
+                // console.log(">>IDcart", responseJson._id);
+                return dispatch(getCart(responseJson));
+               
+                
             })
             .catch((error) => {
-                consolr.log(error);
+                console.log(error);
             });
     };
-    const apiPostCarts = (utoken, totalAmount, productID, quantity, amount) => {
+    const apiPostCarts = (utoken, totalAmount, productID, quantity, amount, productName) => {
         const apiURL = "https://foody-store-server.herokuapp.com/carts";
         fetch(apiURL, {
             method: "POST",
@@ -89,6 +96,7 @@ const Cart = (props) => {
                     {
                         productID: productID,
                         quantity: quantity,
+                        productName:productName,
                         amount: amount,
                     },
                 ],
@@ -104,19 +112,19 @@ const Cart = (props) => {
         totalAmount,
         productID,
         quantity,
+        name,
         amount
     ) => {
         const apiURL =
-            "https://foody-store-server.herokuapp.com/carts/61639b0be08fdd0016051da3";
+            "https://foody-store-server.herokuapp.com/carts/61682f8787b85500163c05b0";
         fetch(apiURL, {
             method: "PUT",
-            body: JSON.stringify({
-                totalAmount: totalAmount,
+            body: JSON.stringify({ 
                 products: [
                     {
                         productID: productID,
                         quantity: quantity,
-                        amount: amount,
+     
                     },
                 ],
             }),
@@ -127,13 +135,15 @@ const Cart = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson.totalAmount);
+                console.log(responseJson)
+                console.log(responseJson.userID)
+                
             })
             .catch((error) => {
                 console.log(error);
             });
     };
-    const updateCart = () => {
+    const updateCartPro = () => {
         let userToken;
         async function updatecart() {
             userToken = await AsyncStorage.getItem("userToken");
@@ -300,7 +310,7 @@ const Cart = (props) => {
                     </View>
                 </View>
                 <TouchableOpacity
-                    onPress={updateCart}
+                    onPress={updateCartPro}
                     style={{
                         marginHorizontal: width * 0.15,
                         height: 40,
@@ -338,10 +348,7 @@ const Cart = (props) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity onPress={() => props.getCart(cartGet)}>
-                <Text>Get cart</Text>
-            </TouchableOpacity>
-
+           
             {renderHeaderCart()}
             {props.cart.length === 0 ? (
                 <View>{giohangtrong()}</View>
@@ -395,7 +402,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(deleteProduct(product_current)),
         updateProduct: (product_current) =>
             dispatch(updateProduct(product_current)),
-        getCart: (usertoken) => dispatch(getCart(usertoken)),
+        getCart: (products) => dispatch(getCart(products)),
+        // updateCart: (products) => dispatch(updateCart(products)),
     };
 };
 

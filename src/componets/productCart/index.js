@@ -57,7 +57,7 @@ const ProductCart = (props) => {
                 }}
             >
                 <Text style={{ ...FONTS.body2 }}>{props.name}</Text>
-                <Text style={{ ...FONTS.h4 }}>{`Price: ${formatCurrency(props.price)}`}đ</Text>
+                <Text style={{ ...FONTS.h4 }}>{`${formatCurrency(props.price)}`}đ</Text>
             </View>
 
             {/* button xoa item */}

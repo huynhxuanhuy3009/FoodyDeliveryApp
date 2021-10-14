@@ -36,9 +36,10 @@ export const delallProduct = () => {
 export const getCart = (token) =>{
     return {
         type: actionType.GET_CART,
-        payload: token
+        payload: token 
     }
 }
+
 export const updateProduct = (product) => {
     return { 
         type: actionType.BUY_PRODUCT, 

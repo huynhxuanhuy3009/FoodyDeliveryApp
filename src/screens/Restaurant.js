@@ -33,8 +33,8 @@ const Restaurant = (props) => {
     // const {name, price, imagesProduct} = props.route.params
     React.useEffect(() => {
         let { item, currentLocation } = props.route.params;
-        console.log(">>`route.params`",`${props.route.params.image.url}`)
-        console.log(">>naem" ,`${props.route.params.name}`)
+        // console.log(">>`route.params`",`${props.route.params.image.url}`)
+        // console.log(">>naem" ,`${props.route.params.name}`)
         setRestaurants01(item);
         // setCurrentLocation(currentLocation)
     });
@@ -50,7 +50,7 @@ const Restaurant = (props) => {
             .then((response) => response.json())
             .then((responseJson) => {
                 setData(responseJson);
-                console.log(responseJson);
+                // console.log(responseJson);
             })
             .catch((error) => {
                 console.log(error);

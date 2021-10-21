@@ -13,6 +13,7 @@ import { Restaurant,
          Paypal,
          User,
          EditProfile, 
+         Search,
         Login, Register,ForgotPassword} from './src/screens';
 import RootStackScreen from './src/screens/RootStackScreen';
 import { AuthContext } from './src/componets/context';
@@ -142,6 +143,7 @@ const App = () => {
                         <Stack.Screen name="Paypal" component={Paypal} />
                         <Stack.Screen name="User" component={User} />
                         <Stack.Screen name="EditProfile" component={EditProfile}/>
+                        <Stack.Screen name="Search" component={Search}/>
                     </Stack.Navigator>
                 )
             :

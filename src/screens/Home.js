@@ -61,7 +61,7 @@ const Home = (props) => {
             setUsertoken(userToken);
             getuserProfile(userToken);
         }
-        getusertoken();
+        // getusertoken();
         return () => {};
     }, []);
     const getuserProfile = (utoken) => {
@@ -88,7 +88,7 @@ const Home = (props) => {
             .then((response) => response.json())
             .then((responseJson) => {
                 setData(responseJson);
-                setRrestaurants01(responseJson[2].products);
+                setRrestaurants01(responseJson[0].products);
             })
             .catch((error) => {
                 console.log(error);
@@ -154,7 +154,7 @@ const Home = (props) => {
     function renderCatelogy() {
         const renderItem = ({ item, index }) => {
             return (
-                <View key={item.id} style={{}}>
+                <View key={item.id} >
                     <TouchableOpacity
                         style={{
                             ...styles.shadow,
@@ -250,7 +250,7 @@ const Home = (props) => {
         const onclickProduct = (prod) => 
             (
                 // console.log(prod.name),
-                console.log("prod",prod),
+                // console.log("prod",prod),
                 props.navigation.navigate('Restaurant', prod)
             );
        

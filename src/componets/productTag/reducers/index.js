@@ -77,6 +77,7 @@ const cartReducer = (state = initialState, action) => {
             };
             let pricet = 0;
             newproc.map((pr) => (pricet = pricet + pr.price * pr.quantity));
+            // console.log('>>name',state.cartAr.quantity)
             return { cartAr: [...newproc], totalprice: pricet };
 
         case actionType.DECREASE_PRODUCT:
@@ -100,9 +101,13 @@ const cartReducer = (state = initialState, action) => {
                 totalprice: 0,
             };
         case actionType.GET_CART:
+            let newtotalamount = action.payload.products;
+            pricet = 0;
+            newtotalamount.map((pr) => (pricet = pricet + pr.price *pr.quantity))
             return {
                 cartAr: [...action.payload.products],
-                totalprice: action.payload.totalAmount,
+                totalprice: pricet,
+                // totalprice: action.payload.totalAmount,
             };
               
 

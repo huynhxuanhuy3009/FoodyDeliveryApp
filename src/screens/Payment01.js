@@ -99,9 +99,7 @@ const Payment01 = (props) => {
         );
     }
     function renderProductCheck(item) {
-        return (
-            
-          
+        return ( 
             // style={styles.rowFront}
             <ScrollView 
                 style={[styles.rowFront], {height:100}}

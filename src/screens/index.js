@@ -10,6 +10,7 @@ import Payment02 from './Payment02'
 import Paypal from './Paypal'
 import User from './User'
 import EditProfile from './EditProfile'
+import Search from './Search'
 
 
 export {
@@ -24,5 +25,6 @@ export {
     Paypal,
     User,
     EditProfile, 
+    Search,
 
 }

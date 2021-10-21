@@ -107,13 +107,15 @@ const Search = (props) => {
         return(
             <View style={{paddingHorizontal:10, marginTop:20}}>
                 <TextInput
-                    placeholder="search products..."
-                    
+                    placeholder="Search products..."
                     value={search}
                     onChangeText={(text) => searchFilter(text)}
                     style={{
+                        height:50,
                         borderWidth:1,
-                        borderRadius:5
+                        borderRadius:5,
+                        paddingLeft:10,
+                        backgroundColor: COLORS.lightGray3,
                     }}           
                 />
                 <FlatList

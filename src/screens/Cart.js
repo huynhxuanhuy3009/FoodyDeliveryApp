@@ -24,6 +24,7 @@ import {
     increaseProduct,
     decreaseProduct,
     updateProduct,
+    delallProduct,
     getCart,
 } from "../componets/productTag/action/index";
 import ProductCart from "../componets/productCart/index";
@@ -160,7 +161,7 @@ const Cart = (props) => {
     
      
     // header của cart
-    function renderHeaderCart() {
+    function renderHeaderCart(item) {
         return (
             <View style={{ flexDirection: "row", height: 50 }}>
                 <TouchableOpacity
@@ -203,6 +204,7 @@ const Cart = (props) => {
                 </View>
 
                 <TouchableOpacity
+                    onPress={() => props.delallProduct(item)}
                     style={{
                         width: 50,
                         paddingRight: SIZES.padding * 2,
@@ -357,6 +359,7 @@ const Cart = (props) => {
     return (
         <SafeAreaView style={styles.container}>
            
+            {/* {props.cart.map((delpro) => renderHeaderCart(delpro))} */}
             {renderHeaderCart()}
             {props.cart.length === 0 ? (
                 <View>{giohangtrong()}</View>
@@ -410,6 +413,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(deleteProduct(product_current)),
         updateProduct: (product_current) =>
             dispatch(updateProduct(product_current)),
+        delallProduct: (product_current) => 
+            dispatch(delallProduct(product_current)),
         getCart: (product_current) => dispatch(getCart(product_current)),
         // updateCart: (products) => dispatch(updateCart(products)),
     };

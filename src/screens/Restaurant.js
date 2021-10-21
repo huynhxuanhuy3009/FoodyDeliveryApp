@@ -149,7 +149,7 @@ const Restaurant = (props) => {
                             flexDirection: "row",
                         }}
                     >
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             style={{
                                 width: 50,
                                 backgroundColor: COLORS.white,
@@ -184,7 +184,7 @@ const Restaurant = (props) => {
                             }}
                         >
                             <Text style={{ ...FONTS.body1 }}>+</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                 </View>
                 {/* Name & Description */}

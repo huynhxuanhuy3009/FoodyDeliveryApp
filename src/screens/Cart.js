@@ -37,7 +37,7 @@ const Cart = (props) => {
     const [usertoken, setUsertoken] = useState("");
     const [update, setUpdate] = useState("");
     const [cartget, setcartGet] = useState("");
-  
+    const [cartID, setcartID] = useState("");
     const formatCurrency = (monney) => {
         const mn = String(monney);
         return mn
@@ -77,6 +77,9 @@ const Cart = (props) => {
                         console.log(">>price", pr.price)
                     })
                 }
+                if(responseJson._id){
+                    setcartID(responseJson._id);
+                }
                 return dispatch(getCart(responseJson));
                
             })
@@ -84,8 +87,10 @@ const Cart = (props) => {
                 console.log(error);
             });
     };
-    const apiPostCarts = (utoken, productID, quantity) => {
+    const apiPostCarts = (utoken, productlist) => {
         const apiURL = "https://foody-store-server.herokuapp.com/carts";
+        let productlistpost = productlist;
+        productlistpost.map((pro)=>pro.productID = pro.id);
         fetch(apiURL, {
             method: "POST",
             headers: {
@@ -93,20 +98,22 @@ const Cart = (props) => {
                 Authorization: `Bearer ${utoken}`,
             },
             body: JSON.stringify({
-                totalAmount: totalAmount,
-                products: [
-                    {
-                        productID: productID,
-                        quantity: quantity,
-                        productName:productName,
-                        amount: amount,
-                    },
-                ],
+                // totalAmount: totalAmount,
+                products: [...productlistpost]
+                // products: [
+                //     {
+                //         productID: productID,
+                //         quantity: quantity,
+                //         productName:productName,
+                //         amount: amount,
+                //     },
+                // ],
             }),
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson.totalAmount);
+                console.log(responseJson);
+                setcartID(responseJson.id);
             });
     };
 
@@ -120,45 +127,72 @@ const Cart = (props) => {
     //     updatecart();
     //     return () => {}
     // }, [])
-    const apiUpdateCarts = (utoken,productID,quantity) => {
-        const apiURL =
-            "https://foody-store-server.herokuapp.com/carts/616b758402c2cb0016331350";
+    const apiUpdateCarts = (utoken,productlist,cartid) => {
+        console.log(">productlist",productlist)
+       const apiURL = `https://foody-store-server.herokuapp.com/carts/${cartid}`;
+        let productlistup = productlist;
+        productlistup.map((pro)=>pro.productID = pro.id);
+        console.log(">>",productlistup);
         fetch(apiURL, {
             method: "PUT",
-            body: JSON.stringify({ 
-                products: [
-                    {
-                        productID:productID ,
-                        quantity: quantity
-                    },
-                ]
-            }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 Authorization: `Bearer ${utoken}`,
             },
+            body: JSON.stringify({              
+                products: [...productlistup]              
+            }),
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                setUpdate(responseJson);
-                //console.log(responseJson.userID)
-                // console.log(responseJson)  
-            })
-            .catch((error) => {
-                console.log(error);
+                // console.log(responseJson.totalAmount);
             });
     };
-      
-    const updateCartPro = () => {
+      const apiDeleteCarts = (utoken,cartid) => {
+        
+       const apiURL = `https://foody-store-server.herokuapp.com/carts/${cartid}`;
+       
+        fetch(apiURL, {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                Authorization: `Bearer ${utoken}`,
+            },
+          
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                // console.log(responseJson.totalAmount);
+                props.delallProduct();
+            });
+    };
+    const saveCartPro = () => {
         let userToken;
         async function updatecart() {
             userToken = await AsyncStorage.getItem("userToken");
             setUsertoken(userToken);
-            apiUpdateCarts(userToken);      
+            if(cartID ===""){
+                console.log(">Create cart");
+                apiPostCarts(userToken,props.cart);     
+            }
+            else {
+                console.log(">>Update cart")
+                apiUpdateCarts(userToken,props.cart,cartID)
+                }
+             
         }
         updatecart();
     }
-    
+     const deleteCartPro = () => {
+        let userToken;
+        async function deletecart() {
+            userToken = await AsyncStorage.getItem("userToken");
+            setUsertoken(userToken);
+            apiDeleteCarts(userToken,cartID);
+             
+        }
+        deletecart();
+    }
      
     // header của cart
     function renderHeaderCart(item) {
@@ -204,7 +238,7 @@ const Cart = (props) => {
                 </View>
 
                 <TouchableOpacity
-                    onPress={() => props.delallProduct(item)}
+                    onPress={deleteCartPro}
                     style={{
                         width: 50,
                         paddingRight: SIZES.padding * 2,
@@ -320,7 +354,7 @@ const Cart = (props) => {
                     
                 </View>
                 <TouchableOpacity
-                    onPress={updateCartPro()}
+                    onPress={saveCartPro}
                     style={{
                         marginHorizontal: width * 0.15,
                         height: 40,
@@ -341,7 +375,7 @@ const Cart = (props) => {
                     style={{
                         marginHorizontal: width * 0.15,
                         height: 40,
-                        backgroundColor: "#0CC255",
+                        backgroundColor: COLORS.primary,
                         justifyContent: "center",
                         alignItems: "center",
                         borderWidth: 0.5,
@@ -413,8 +447,8 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(deleteProduct(product_current)),
         updateProduct: (product_current) =>
             dispatch(updateProduct(product_current)),
-        delallProduct: (product_current) => 
-            dispatch(delallProduct(product_current)),
+        delallProduct: () => 
+            dispatch(delallProduct()),
         getCart: (product_current) => dispatch(getCart(product_current)),
         // updateCart: (products) => dispatch(updateCart(products)),
     };

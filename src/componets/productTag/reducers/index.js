@@ -68,9 +68,18 @@ const cartReducer = (state = initialState, action) => {
 
         case actionType.INCREASE_PRODUCT:
             let newproc = state.cartAr;
-            const objIndext = newproc.findIndex(
-                (obj) => obj.id == action.payload.id
+            let proidincre = action.payload.id;
+            let objIndext = newproc.findIndex(
+                (obj) => obj.id == proidincre
             );
+            if(action.payload.productID) {
+                proidincre = action.payload.productID;
+                objIndext = newproc.findIndex(
+                (obj) => obj.productID == proidincre
+                );
+            }
+           
+            
             newproc[objIndext] = {
                 ...newproc[objIndext],
                 quantity: newproc[objIndext].quantity + 1,
@@ -82,9 +91,16 @@ const cartReducer = (state = initialState, action) => {
 
         case actionType.DECREASE_PRODUCT:
             let newcartpro = state.cartAr;
-            const objIndextd = newcartpro.findIndex(
-                (obj) => obj.id == action.payload.id
+           let proiddecre = action.payload.id;
+            let objIndextd = newcartpro.findIndex(
+                (obj) => obj.id == proiddecre
             );
+            if(action.payload.productID) {
+                proiddecre = action.payload.productID;
+                objIndextd = newcartpro.findIndex(
+                (obj) => obj.productID == proiddecre
+                );
+            }
             if (newcartpro[objIndextd].quantity > 1) {
                 newcartpro[objIndextd] = {
                     ...newcartpro[objIndextd],
@@ -102,8 +118,10 @@ const cartReducer = (state = initialState, action) => {
             };
         case actionType.GET_CART:
             let newtotalamount = action.payload.products;
+            
             pricet = 0;
             newtotalamount.map((pr) => (pricet = pricet + pr.price *pr.quantity))
+            newtotalamount.map((pro)=>pro.id = pro.productID);
             return {
                 cartAr: [...action.payload.products],
                 totalprice: pricet,

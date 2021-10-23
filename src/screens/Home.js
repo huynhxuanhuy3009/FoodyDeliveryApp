@@ -1,4 +1,4 @@
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 import React, { useState, useEffect } from "react";
 import {
     SafeAreaView,
@@ -15,31 +15,31 @@ import {
 import { Icon } from "native-base";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import { connect } from "react-redux";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
-import {decreaseProduct,
+import {
+    decreaseProduct,
     deleteProduct,
     increaseProduct,
-    delallProduct,}
-    from '../../src/componets/productTag/action/index'
+    delallProduct,
+} from "../../src/componets/productTag/action/index";
 import ProductTag from "../componets/productTag/index";
 
 import { AuthContext } from "../componets/context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
 const Home = (props) => {
-
     const formatCurrency = (monney) => {
         const mn = String(monney);
         return mn
-          .split('')
-          .reverse()
-          .reduce((prev, next, index) => {
-            return (index % 3 ? next : next + '.') + prev;
-          });
-      };
+            .split("")
+            .reverse()
+            .reduce((prev, next, index) => {
+                return (index % 3 ? next : next + ".") + prev;
+            });
+    };
     // Dummy Datas
-    const navigation = useNavigation(); 
+    const navigation = useNavigation();
     const initialCurrentLocation = {
         streetName: "Kuching",
     };
@@ -75,7 +75,7 @@ const Home = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(">>email", responseJson.email);
+                // console.log(">>email", responseJson.email);
             })
             .catch((error) => {
                 console.log(error);
@@ -83,7 +83,8 @@ const Home = (props) => {
     };
 
     const getListItem = () => {
-        const apiURL = "https://foody-store-server.herokuapp.com/categories";
+        const apiURL =
+            "https://foody-store-server.herokuapp.com/categories?isDeleted=false";
         fetch(apiURL)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -142,7 +143,7 @@ const Home = (props) => {
     }
 
     const checkSelectCategories = (values) => {
-        console.log(values);
+        // console.log(values);
         let cateProduct = [];
         data.map((id) => {
             if (id.name === values.name) cateProduct = id.products;
@@ -154,7 +155,7 @@ const Home = (props) => {
     function renderCatelogy() {
         const renderItem = ({ item, index }) => {
             return (
-                <View key={item.id} >
+                <View key={item.id}>
                     <TouchableOpacity
                         style={{
                             ...styles.shadow,
@@ -211,9 +212,9 @@ const Home = (props) => {
             );
         };
         return (
-            <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h1 }}>Main</Text>
-                <Text style={{ ...FONTS.h1 }}>Categories</Text>
+            <View style={{ paddingHorizontal: SIZES.padding * 2 }}>
+                <Text style={{ ...FONTS.h2 }}>Main</Text>
+                <Text style={{ ...FONTS.h2 }}>Categories</Text>
                 <FlatList
                     data={data}
                     horizontal
@@ -232,13 +233,16 @@ const Home = (props) => {
 
     function renderListProduct(productlist) {
         const renderItem = ({ item }) => {
+             
+            // console.log(">>pro",item.description)
             return (
                 <View>
+                   
                     <ProductTag
                         onclickProduct={() => onclickProduct(item)}
                         key={item.id}
                         id={item._id}
-                        imagesProduct = {item?.image.url}                                               
+                        imagesProduct={item?.image.url}
                         name={item.name}
                         price={item.price}
                     />
@@ -246,17 +250,15 @@ const Home = (props) => {
             );
         };
 
-        // chuyển qua màn hình product 
-        const onclickProduct = (prod) => 
-            (
-                // console.log(prod.name),
-                // console.log("prod",prod),
-                props.navigation.navigate('Restaurant', prod)
-            );
-       
+        // chuyển qua màn hình product
+        const onclickProduct = (prod) =>
+            // console.log(prod.name),
+            // console.log("prod",prod),
+            props.navigation.navigate("Restaurant", prod);
+
         return (
             <ScrollView>
-                <View style={{ padding: SIZES.padding * 2 }}>
+                <View style={{ paddingHorizontal: SIZES.padding * 2 }}>
                     <FlatList
                         data={productlist}
                         showsHorizontalScrollIndicator={false}
@@ -280,33 +282,40 @@ const Home = (props) => {
                 style={{
                     height: 50,
                     width: width * 1,
-                    backgroundColor: '#ffa07a',
+                    backgroundColor: "#ffa07a",
                     marginBottom: height * 0.09,
-                    paddingHorizontal:width*0.07,
+                    paddingHorizontal: width * 0.07,
                     flexDirection: "row",
-                    justifyContent: 'space-between',
+                    justifyContent: "space-between",
                     alignItems: "center",
                 }}
                 onPress={() => navigation.navigate("Cart")}
             >
-                <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
                     <Icon
-                        name = 'shoppingcart'
-                        type= 'AntDesign'
+                        name="shoppingcart"
+                        type="AntDesign"
                         style={{
                             width: 25,
                             height: 25,
-                            color:'#696969',
-                            marginRight:10
+                            color: "#696969",
+                            marginRight: 10,
                         }}
                     />
-                    <Text style={{ ...FONTS.body2 , color:'#696969'}}>Add To Basket</Text>
+                    <Text style={{ ...FONTS.body2, color: "#696969" }}>
+                        Add To Basket
+                    </Text>
                 </View>
-                
-                <Text style={{ ...FONTS.body2 , color:'#696969' }}>
-                     {`${formatCurrency(props.totalprice)}`} 
-                     đ                           
-                </Text>  
+
+                <Text style={{ ...FONTS.body2, color: "#696969" }}>
+                    {`${formatCurrency(props.totalprice)}`}đ
+                </Text>
             </TouchableOpacity>
         );
     }
@@ -339,9 +348,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    return{
-        totalprice : state.cart.totalprice,
-    }
-}
+    return {
+        totalprice: state.cart.totalprice,
+    };
+};
 
 export default connect(mapStateToProps)(Home);

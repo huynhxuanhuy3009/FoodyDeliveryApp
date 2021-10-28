@@ -12,10 +12,11 @@ const initialState = {
 const cartReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionType.BUY_PRODUCT:
-            // console.log("product.id", action.payload.id);
-            const productInCart = state.cartAr.find(
-                (p) => p.id == action.payload.id
-            );
+            let newprobuy = state.cartAr;
+            let probuy = action.payload.id;
+            const productInCart = newprobuy.find(
+                (p) => p.id == probuy
+            );  
             if (!productInCart) {
                 const newarrC = [...state.cartAr, action.payload];
                 const objIndext = newarrC.findIndex(
@@ -78,8 +79,7 @@ const cartReducer = (state = initialState, action) => {
                 (obj) => obj.productID == proidincre
                 );
             }
-           
-            
+ 
             newproc[objIndext] = {
                 ...newproc[objIndext],
                 quantity: newproc[objIndext].quantity + 1,

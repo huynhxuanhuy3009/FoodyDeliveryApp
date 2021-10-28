@@ -112,27 +112,18 @@ const Cart = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
+                // console.log(responseJson);
                 setcartID(responseJson.id);
             });
     };
 
-    // useEffect(() => {
-    //     let userToken;
-    //     async function updatecart() {
-    //         userToken = await AsyncStorage.getItem("userToken");
-    //         setUsertoken(userToken);
-    //         apiUpdateCarts(userToken);      
-    //     }
-    //     updatecart();
-    //     return () => {}
-    // }, [])
+    
     const apiUpdateCarts = (utoken,productlist,cartid) => {
         console.log(">productlist",productlist)
        const apiURL = `https://foody-store-server.herokuapp.com/carts/${cartid}`;
         let productlistup = productlist;
         productlistup.map((pro)=>pro.productID = pro.id);
-        console.log(">>",productlistup);
+        // console.log(">>",productlistup);
         fetch(apiURL, {
             method: "PUT",
             headers: {
@@ -145,13 +136,14 @@ const Cart = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                // console.log(responseJson.totalAmount);
+                console.log(responseJson);
+                setUpdate(responseJson)
+                
             });
+            
     };
-      const apiDeleteCarts = (utoken,cartid) => {
-        
-       const apiURL = `https://foody-store-server.herokuapp.com/carts/${cartid}`;
-       
+      const apiDeleteCarts = (utoken,cartid) => {    
+       const apiURL = `https://foody-store-server.herokuapp.com/carts/${cartid}`;   
         fetch(apiURL, {
             method: "DELETE",
             headers: {
@@ -221,11 +213,12 @@ const Cart = (props) => {
                         flex: 1,
                         alignItems: "center",
                         justifyContent: "center",
+                        paddingLeft:40
                     }}
                 >
                     <View
                         style={{
-                            width: "70%",
+                            width: "50%",
                             height: "100%",
                             backgroundColor: COLORS.lightGray3,
                             alignItems: "center",
@@ -236,7 +229,29 @@ const Cart = (props) => {
                         <Text style={{ ...FONTS.h3 }}>Cart</Text>
                     </View>
                 </View>
-
+                <View 
+                    style={{                       
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingRight:25, 
+                        height:55
+                }}>
+                    <TouchableOpacity
+                        onPress={saveCartPro}
+                        
+                    >
+                        <Icon
+                            name="save"
+                            type="AntDesign"
+                            style={{
+                                width: 30,
+                                height: 28,
+                            }}
+                        />
+                    </TouchableOpacity>
+                    <Text>save</Text>
+                </View>
+                
                 <TouchableOpacity
                     onPress={deleteCartPro}
                     style={{
@@ -250,7 +265,7 @@ const Cart = (props) => {
                         type="AntDesign"
                         style={{
                             width: 30,
-                            height: 28,
+                            height: 34,
                         }}
                     />
                 </TouchableOpacity>
@@ -353,23 +368,7 @@ const Cart = (props) => {
                     </View>
                     
                 </View>
-                <TouchableOpacity
-                    onPress={saveCartPro}
-                    style={{
-                        marginHorizontal: width * 0.15,
-                        height: 40,
-                        backgroundColor: "#0CC255",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderWidth: 0.5,
-                        borderRadius: 20,
-                    }}
-                >
-                    {/* <Text>{responseJson.totalAmount}</Text> */}
-                    <Text style={{ color: "white", ...FONTS.h4 }}>
-                        Save cart
-                    </Text>
-                </TouchableOpacity>
+                
                 <TouchableOpacity
                     onPress={() => props.navigation.navigate("Payment01")}
                     style={{

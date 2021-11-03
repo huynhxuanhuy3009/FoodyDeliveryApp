@@ -117,8 +117,7 @@ const cartReducer = (state = initialState, action) => {
                 totalprice: 0,
             };
         case actionType.GET_CART:
-            let newtotalamount = action.payload.products;
-            
+            let newtotalamount = action.payload.products;       
             pricet = 0;
             newtotalamount.map((pr) => (pricet = pricet + pr.price *pr.quantity))
             newtotalamount.map((pro)=>pro.id = pro.productID);

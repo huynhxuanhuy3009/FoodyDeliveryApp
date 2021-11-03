@@ -112,14 +112,14 @@ const Cart = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                // console.log(responseJson);
+                setUpdate(responseJson)
                 setcartID(responseJson.id);
             });
     };
 
     
     const apiUpdateCarts = (utoken,productlist,cartid) => {
-        console.log(">productlist",productlist)
+        // console.log(">productlist",productlist)
        const apiURL = `https://foody-store-server.herokuapp.com/carts/${cartid}`;
         let productlistup = productlist;
         productlistup.map((pro)=>pro.productID = pro.id);
@@ -136,8 +136,8 @@ const Cart = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson);
-                setUpdate(responseJson)
+                // console.log(responseJson);
+                // setUpdate(responseJson)
                 
             });
             

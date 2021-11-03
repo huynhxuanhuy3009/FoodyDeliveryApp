@@ -11,6 +11,7 @@ import Paypal from './Paypal'
 import User from './User'
 import EditProfile from './EditProfile'
 import Search from './Search'
+import OrderHistory from './OrderHistory'
 
 
 export {
@@ -26,5 +27,6 @@ export {
     User,
     EditProfile, 
     Search,
+    OrderHistory
 
 }

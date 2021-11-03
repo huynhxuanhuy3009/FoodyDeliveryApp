@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     View,
     StyleSheet,
@@ -13,6 +13,7 @@ import {
     ScrollView,
 } from "react-native";
 import { Icon, List, ListItem } from "native-base";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
@@ -20,7 +21,7 @@ import { connect } from "react-redux";
 import ProductCheckout from "../componets/productCheckout/index";
 const { width, height } = Dimensions.get("window");
 const Payment01 = (props) => {
-    // const [fullName, setFullName] = useState(initialState)
+    
     const navigation = useNavigation();
     const formatCurrency = (monney) => {
         const mn = String(monney);
@@ -31,6 +32,34 @@ const Payment01 = (props) => {
                 return (index % 3 ? next : next + ".") + prev;
             });
     };
+
+    
+
+    const postApiOrder = (utoken,phoneNumber,email, productList, address, status, paymentType) => {
+        const apiURL = "https://foody-store-server.herokuapp.com/orders"
+        fetch (apiURL, {
+            method:"POST",
+            headers: {
+                Authorization:`Bearer ${utoken}`
+            },
+            body:{
+                phoneNumber:phoneNumber,
+                email :email,
+                products: [...productList], 
+                address:address , 
+                status:status,
+                paymentType:paymentType
+            }
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+
+            })
+            .catch((e) => console.log(e))
+    }
+
+   
+ 
     function renderHeader() {
         return (
             <View

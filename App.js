@@ -15,6 +15,7 @@ import { Restaurant,
          EditProfile, 
          Search,
          OrderHistory,
+         OrderDetail,
         Login, Register,ForgotPassword} from './src/screens';
 import RootStackScreen from './src/screens/RootStackScreen';
 import { AuthContext } from './src/componets/context';
@@ -146,6 +147,7 @@ const App = () => {
                         <Stack.Screen name="EditProfile" component={EditProfile}/>
                         <Stack.Screen name="Search" component={Search}/>
                         <Stack.Screen name="OrderHistory" component={OrderHistory}/>
+                        <Stack.Screen name="OrderDetail" component={OrderDetail}/>
                     </Stack.Navigator>
                 )
             :

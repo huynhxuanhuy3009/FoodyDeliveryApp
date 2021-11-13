@@ -12,6 +12,7 @@ import User from './User'
 import EditProfile from './EditProfile'
 import Search from './Search'
 import OrderHistory from './OrderHistory'
+import OrderDetail from './OrderDetail'
 
 
 export {
@@ -27,6 +28,7 @@ export {
     User,
     EditProfile, 
     Search,
-    OrderHistory
+    OrderHistory,
+    OrderDetail
 
 }

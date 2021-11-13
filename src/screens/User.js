@@ -20,7 +20,7 @@ import { AuthContext } from "../componets/context";
 
 const { width, height } = Dimensions.get("window");
 const User = ( props ) => {
-    const [userToken, setuserToken] = useState("");
+    
     const { signOut } = React.useContext(AuthContext);
     const notification = () =>
         Alert.alert(
@@ -37,35 +37,7 @@ const User = ( props ) => {
             ]
         );
     
-    const getInfoOrder = () => {
-        let userToken ;
-        async function getUserToken () {
-            userToken = await AsyncStorage.getItem("userToken")
-            setuserToken(userToken)
-            getApiOrder(userToken)
-        }
-        getUserToken()
-        
-    }
-    const getApiOrder = (utoken) => {
-        const apiURL = "https://foody-store-server.herokuapp.com/orders"
-        fetch (apiURL, {
-            method:"GET" ,
-            headers:{
-                "Content-type": "application/json; charset=UTF-8",
-                Authorization:`Bearer ${utoken}`,
-            }
-        })
-            .then((response)=> response.json())
-            .then((responseJson) => {              
-                responseJson.map((pro) => {
-                    console.log(">>payment",pro.paymentType)
-                    console.log(">>phone",pro.phoneNumber)
-                    console.log(">>address",pro.address)
-                })                                
-            })
-            .catch((e) => console.log(e))
-    }
+    
     function renderHeader() {
         return (
             <View 
@@ -77,14 +49,14 @@ const User = ( props ) => {
                 }}
             >
                <Image
-                    source={images.avatar_1}
+                    source={images.kl}
                     style={{                       
                         height:height*0.2,
                         width:width*0.3,
                     }}
                />
                <TouchableOpacity
-                    onPress={getInfoOrder,(()=> props.navigation.navigate("OrderHistory")) }
+                    onPress={(()=> props.navigation.navigate("OrderHistory")) }
                     style={{
                         flexDirection:'row', 
                         paddingTop:10, 

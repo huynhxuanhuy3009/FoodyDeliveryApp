@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, SafeAreaView,TouchableOpacity, Image, Dimension
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ProductDetail from "../componets/productDetail/index";
+import { useNavigation } from "@react-navigation/native";
 
 const {width, height} = Dimensions.get("window");
 const line = () => {
@@ -17,6 +18,7 @@ const line = () => {
     );
 }
 const OrderDetail = (props) => {
+    const navigation = useNavigation();
     const [data, setData] = useState('');
     const [userToken, setUserToken] = useState('')
     useEffect(() => {
@@ -103,10 +105,11 @@ const OrderDetail = (props) => {
             <View style={{marginHorizontal: width * 0.05}}>
                 <Text style={{ ...FONTS.h3,marginTop:20, }}>Completed</Text>
                 <TouchableOpacity 
+                    onPress={() => navigation.navigate('Home')}
                     style={{
                         marginTop:20,
                         height: 40,
-                        backgroundColor: COLORS.primary,
+                        backgroundColor: "#ffa07a",
                         justifyContent: "center",
                         alignItems: "center",
                         borderRadius: 20,
@@ -119,7 +122,7 @@ const OrderDetail = (props) => {
     };
     const infomation = () => {
         const renderItem = (infoItem) => {
-            console.log(infoItem)
+            // console.log(infoItem)
             return(
                 <View>
                     <ProductDetail
@@ -134,8 +137,8 @@ const OrderDetail = (props) => {
             );
         }
         return (
-            <View style={{marginHorizontal: width * 0.05}}>
-                <Text style={{ ...FONTS.h3}}>Information Order</Text>
+            <View style={{marginHorizontal: width * 0.05, marginBottom:10}}>
+                
                 <FlatList
                     data={data}
                     keyExtractor={(item) => item.id}
@@ -151,6 +154,7 @@ const OrderDetail = (props) => {
             {hoantat()}
             {line()}
             {infomation()}
+           
         </SafeAreaView>
     );
         

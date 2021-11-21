@@ -56,6 +56,7 @@ const OrderHistory = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(">>respon",responseJson)
                 setData(responseJson);
             })
             .catch((e) => console.log(e));
@@ -123,9 +124,10 @@ const OrderHistory = (props) => {
     }
     function renderListOrders() {
         const renderItem = (itemPro) => {
-            // console.log(">>item",item.item?.products.map((pro) =>{
-            //     console.log(pro.name)
-            // }))
+            console.log(itemPro);
+            console.log(">>item",itemPro.item?.products.map((pro) =>{
+                console.log(pro.name)
+            }))
             return (
                 <View>                     
                         <ListItem>                                                       
@@ -134,9 +136,9 @@ const OrderHistory = (props) => {
                                     fullName={itemPro.item.fullName}
                                     phoneNumber={itemPro.item.phoneNumber}
                                     updatedAt={itemPro.item.updatedAt}
+                                    name = {itemPro.item.products[0].name}
                                 />                           
-                        </ListItem>                               
-                    
+                        </ListItem>                              
                 </View>
             );
         };
@@ -148,7 +150,7 @@ const OrderHistory = (props) => {
                     <FlatList
                         data={data}
                         renderItem={renderItem}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item._id}
                     />
                 </View>
             </ScrollView>

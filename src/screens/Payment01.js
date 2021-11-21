@@ -214,7 +214,7 @@ const Payment01 = (props) => {
                     style={{
                         marginHorizontal: width * 0.15,
                         height: 40,
-                        backgroundColor: "#0CC255",
+                        backgroundColor:COLORS.primary,
                         justifyContent: "center",
                         alignItems: "center",
                         borderWidth: 0.5,

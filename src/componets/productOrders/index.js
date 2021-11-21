@@ -80,7 +80,7 @@ const ProductOrders = (props) => {
                     <Text style={{ ...FONTS.h4 }}>{props.fullName}</Text>
                     <Text>{props.phoneNumber}</Text>
                     <Text>{props.updatedAt}</Text>
-                   
+                    <Text>{props.name}</Text>
                 </TouchableOpacity>
             </View>
     );

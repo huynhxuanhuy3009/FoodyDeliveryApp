@@ -49,7 +49,7 @@ const User = ( props ) => {
                 }}
             >
                <Image
-                    source={images.kl}
+                    source={images.avatar_3}
                     style={{                       
                         height:height*0.2,
                         width:width*0.3,
@@ -59,15 +59,19 @@ const User = ( props ) => {
                     onPress={(()=> props.navigation.navigate("OrderHistory")) }
                     style={{
                         flexDirection:'row', 
-                        paddingTop:10, 
-                        justifyContent:'space-around', 
+                        alignItems:'center',
+                        borderRadius:10,
+                        marginTop:10, 
+                        justifyContent:'space-evenly',
+                        width:165, 
+                        backgroundColor:"#ffa07a"
                         
                     }}
                >
-                   <Text style={{fontSize:20}}>Order history</Text>
+                   <Text style={{...FONTS.body2}}>Order history</Text>
                    <Icon
-                        name="rightsquareo"
-                        type="AntDesign"
+                        name="navigate-next"
+                        type="MaterialIcons"
                    />
                 </TouchableOpacity>
             </View>

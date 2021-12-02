@@ -122,7 +122,7 @@ const Payment01 = (props) => {
     
     function renderTypePro() {
         return(
-            <View style={[styles.rowFront, { height: 50 }]}>
+            <View style={[styles.rowFront, { height: 50, backgroundColor:COLORS.lightGray2 }]}>
                  <Text style={{ ...FONTS.h3 , fontStyle: 'italic'}}>Types of products : {props.cart.length} </Text>
             </View>
         );
@@ -144,13 +144,13 @@ const Payment01 = (props) => {
     }
     function renderBody() {
         return (
-            <View style={{ paddingHorizontal: width * 0.05 }}>
+            <View style={{ paddingHorizontal: width * 0.05 , }}>
 
                 {/* Delivery to */}
                 <View
                     style={[
                         styles.rowFront,
-                        { justifyContent: "space-evenly", height: 250 },
+                        { justifyContent: "space-evenly", height: 250, backgroundColor:COLORS.lightGray2 },
                     ]}
                 >
                     <Text style={{ ...FONTS.h3 }}>DELIVERY TO</Text>
@@ -196,6 +196,7 @@ const Payment01 = (props) => {
                             paddingHorizontal: SIZES.padding * 1,
                             borderBottomColor: COLORS.lightGray2,
                             borderBottomWidth: 1,
+                            backgroundColor:COLORS.lightGray2
                         }}
                     >
                         <Text style={{ ...FONTS.h2 }}>Total</Text>
@@ -207,7 +208,7 @@ const Payment01 = (props) => {
     }
     function renderFooter() {
         return (
-            <View style={[styles.rowFront, { height: 60 }]}>
+            <View style={[styles.rowFront, { height: 60, backgroundColor:"#ffe4e1",}]}>
                 
                 <TouchableOpacity
                     onPress={() => navigation.navigate("Paypal")}
@@ -249,7 +250,8 @@ const Payment01 = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray2,
+        // backgroundColor: COLORS.lightGray2,
+        backgroundColor:"#ffe4e1",
     },
     rowFront: {
         backgroundColor: "#FFF",

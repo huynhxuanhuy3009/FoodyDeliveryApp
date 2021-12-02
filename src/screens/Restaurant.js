@@ -98,7 +98,7 @@ const Restaurant = (props) => {
                             backgroundColor: COLORS.lightGray3,
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 }}>{restaurant?.name}</Text>
+                        <Text style={{ ...FONTS.h3 }}>Product Details</Text>
                     </View>
                 </View>
 
@@ -109,14 +109,14 @@ const Restaurant = (props) => {
                         justifyContent: "center",
                     }}
                 >
-                    <Image
+                    {/* <Image
                         source={icons.list}
                         resizeMode="contain"
                         style={{
                             width: 30,
                             height: 30,
                         }}
-                    />
+                    /> */}
                 </TouchableOpacity>
             </View>
         );
@@ -292,7 +292,7 @@ const Restaurant = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray2,
+        backgroundColor:"#ffe4e1",
     },
 });
 

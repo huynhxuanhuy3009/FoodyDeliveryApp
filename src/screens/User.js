@@ -9,52 +9,114 @@ import {
     TextInput,
     Alert,
     TouchableOpacity,
-    List,
-    ListItem,
+    Modal, 
+    ScrollView, 
+    Button
 } from "react-native";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
+import {Card, Input} from "react-native-elements"
+import {Icon} from "native-base"
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import { Icon } from "native-base";
 import { AuthContext } from "../componets/context";
+
 
 const { width, height } = Dimensions.get("window");
 const User = ( props ) => {
-    
+    const [userProfile, setUserProfile] = useState({
+        fName:'Hoang Thi Khanh Linh',
+        email:'abc@gmail.com',
+    });
+    const [dataupdate, setdataupdate] = useState({});
+    const [modalVisible, setModalVisible] = useState(false);
     const { signOut } = React.useContext(AuthContext);
-    const notification = () =>
-        Alert.alert(
-            "Success !",
-            "edit Profile?"[
-                ({
-                    text: "cancel",
-                    style: "cancel",
+    const ProfileTag = ({iconP, iconType, titleP}) => {
+        return(
+            <View
+            style={{width: '100%', flexDirection: 'row', justifyContent: 'center'}}>
+            <View
+              style={{
+                height: 85,
+                width: '90%',
+      
+                backgroundColor: 'white',
+      
+                shadowColor: 'grey',
+                shadowOffset: {
+                  width: 0,
+                  height: 1,
                 },
-                {
-                    text: "OK",
-                    style: "destructive",
-                })
-            ]
+                shadowOpacity: 0.22,
+                shadowRadius: 2.22,
+      
+                elevation: 3,
+      
+                borderRadius: 5,
+      
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: 20,
+              }}>
+              <Icon
+                style={{color: 'white', fontSize: 32, color: '#4b5d53'}}
+                // name={'calendar-week'}
+                name={iconP}
+                type={iconType}
+              />
+              <View
+                style={{
+                  height: '100%',
+                  width: '85%',
+                  paddingLeft: 40,
+      
+                  justifyContent: 'center',
+                }}>
+                <Text style={{fontSize: 20}}>{titleP}</Text>
+                {/* <Text style={{color: 'grey'}}>{dcrP}</Text> */}
+              </View>
+            </View>
+          </View>
         );
-    
-    
+       
+    }
     function renderHeader() {
         return (
             <View 
                 style={{
                     // backgroundColor:'red', 
-                    height:250,
+                    height:300,
                     paddingTop:30,
                     alignItems:'center'
                 }}
             >
                <Image
-                    source={images.avatar_3}
+                    source={images.kl}
                     style={{                       
                         height:height*0.2,
                         width:width*0.3,
                     }}
                />
+               <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                   <Text style={{textAlign: 'center', fontSize: 25, fontWeight: 'bold'}}>
+                       {userProfile.fName}
+                   </Text>
+                   <View style={{flexDirection: 'row', alignItems: 'center', paddingLeft: 5}}>
+                       <TouchableOpacity onPress={() => {setModalVisible(true)}}>
+                           <Icon
+                               style={{color: 'white', fontSize: 20, color: '#4b5d53'}}
+                               name="user-edit"
+                               type="FontAwesome5"
+                           />
+                       </TouchableOpacity>
+                   </View>
+               </View>
+               <Text style={{
+                      textAlign: 'center',
+                      fontSize: 15,
+                      color: 'grey',
+                      fontStyle: 'italic',
+                   }}>
+                   {userProfile.email}
+               </Text>
                <TouchableOpacity
                     onPress={(()=> props.navigation.navigate("OrderHistory")) }
                     style={{
@@ -80,40 +142,165 @@ const User = ( props ) => {
 
     function renderManageUser() {
         return (
-            <View
-                style={{
-                    paddingHorizontal: width * 0.05,
-                    // paddingVertical: height * 0.2,
-                    // backgroundColor:'blue',
-                    flex:1
-                }}
+            <SafeAreaView
+                style={{backgroundColor: 'white', height: '100%'}}
             >
-                <TextInput style={[styles.textinput]} placeholder="Name" />
-                <TextInput style={[styles.textinput]} placeholder="Email" />
-                <TextInput
-                    style={[styles.textinput]}
-                    placeholder="Phone Number"
-                />
-                <TextInput style={[styles.textinput]} placeholder="Address" />
-                <TouchableOpacity
-                    title="update thanh cong"
-                    onPress={() => notification()}
-                    style={[
-                        styles.button,
-                        { backgroundColor: COLORS.primary, borderWidth: 0.1 },
-                    ]}
+                <Modal
+                     animationType="fade"
+                     transparent={true}
+                     visible={modalVisible}
+                     onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                      }}
                 >
-                    <Text
+                    <View 
                         style={{
-                            ...FONTS.h1,
-                            color: COLORS.white,
-                            fontSize: 15,
-                        }}
+                            width: '100%',
+                            height: '100%',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
                     >
-                        UPDATE
-                    </Text>
-                </TouchableOpacity>
+                        <View style={{
+                            width: '90%',
+                            height: 450,
+                            backgroundColor: 'white',
 
+                            shadowColor: '#000',
+                            shadowOffset: {
+                                width: 0,
+                                height: 2,
+                            },
+                            shadowOpacity: 0.25,
+                            shadowRadius: 3.84,
+
+                            elevation: 5,
+
+                            paddingTop: 10,
+                            }}>
+                            <View 
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <TouchableOpacity
+                                    onPress={() => {
+                                    setModalVisible(!modalVisible);
+                                    }}
+                                >
+                                    <Icon
+                                        style={{
+                                            color: 'grey',
+                                            fontSize: 15,
+                                            textAlign: 'left',
+                                            marginLeft: 20,
+                                            marginRight: 40,
+                                        }}
+                                        name="arrow-back"
+                                        type="Ionicons"
+                                    />
+                                </TouchableOpacity>
+                                <Text
+                                    style={{
+                                    textAlign: 'center',
+                                    fontSize: 20,
+                                    color: 'grey',
+                                    fontWeight: 'bold',
+                                    }}>
+                                    {'Update information'}
+                                </Text>
+                            </View>
+                            <ScrollView>
+                                <Card>
+                                    <Card.Title style={{textAlign: 'left', fontSize: 18}}>
+                                        {'Full name'}
+                                    </Card.Title>
+                                    <Card.Divider />
+                                    <Input
+                                        // onChangeText={(value) =>
+                                        //     setdataupdate({...dataupdate, fName: value})
+                                        // }
+                                        placeholder={userProfile.fName}
+                                    />
+                                    <Card.Divider />
+                                    <Card.Title style={{textAlign: 'left', fontSize: 18}}>
+                                        {'Birthday'}
+                                    </Card.Title>
+                                    <Card.Divider />
+                                    <View style={{flexDirection: 'row'}}>
+                                        <View style={{width: '100%'}}>
+                                            <Input
+                                            // onChangeText={(value) =>
+                                            //     setdataupdate({...dataupdate, birthday: value})
+                                            // }
+                                            keyboardType="numeric"
+                                            placeholder={userProfile.birthday}
+                                            />
+                                        </View>
+                                    </View>
+                                    <Card.Divider />
+                                    <Card.Title style={{textAlign: 'left', fontSize: 18}}>
+                                        {'Phone number'}
+                                    </Card.Title>
+                                    <Card.Divider />
+                                    <Input
+                                        onChangeText={(value) =>
+                                            setdataupdate({...dataupdate, phone: value})
+                                            }
+                                            placeholder={userProfile.phone}
+                                    />
+                                    <Card.Divider />
+                                    <Card.Title style={{textAlign: 'left', fontSize: 18}}>
+                                        {'Address'}
+                                    </Card.Title>
+                                    <Card.Divider />
+                                    <Input
+                                        onChangeText={(value) =>
+                                            setdataupdate({...dataupdate, phone: value})
+                                            }
+                                        placeholder={userProfile.phone}
+                                    />
+                                </Card>
+                            </ScrollView>
+
+                            <Button 
+                            // onPress={updateProfile} 
+                            title="Cập nhật" color="#4a5d54" 
+                            />
+                        </View>
+                    </View>
+                </Modal>
+
+
+                <View style={{flexDirection: 'column', paddingTop: 20}}>
+                    <View style={{marginBottom: 20}}>
+                    <ProfileTag
+                        iconP="calendar-week"
+                        iconType="FontAwesome5"
+                        titleP="Birthday"
+                        // dcrP={userProfile.birthday}
+                    />
+                    </View>
+                    <View style={{marginBottom: 20}}>
+                    <ProfileTag
+                        iconP="phone"
+                        iconType="Entypo"
+                        titleP="Phone Number"
+                        // dcrP={userProfile.phone}
+                    />
+                    </View>
+                    <View style={{marginBottom: 20}}>
+                    <ProfileTag
+                        iconP="address-book"
+                        iconType="FontAwesome"
+                        titleP="Address"
+                        // dcrP={userProfile.gender}
+                    />
+                    </View>
+                </View>
+               
                 <TouchableOpacity
                     // ĐỂ TẠM LOGOUT VÀO ĐÂY
                     onPress={() => signOut()}
@@ -138,7 +325,7 @@ const User = ( props ) => {
                         Log Out
                     </Text>
                 </TouchableOpacity>
-            </View>
+            </SafeAreaView>
         );
     }
     return (
@@ -153,7 +340,7 @@ const User = ( props ) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray2,
+        backgroundColor: "#ffe4e1",
     },
     rowFront: {
         flexDirection: "row",
@@ -189,3 +376,29 @@ const styles = StyleSheet.create({
 });
 
 export default User;
+
+{/* <TextInput style={[styles.textinput]} placeholder="Name" />
+                <TextInput style={[styles.textinput]} placeholder="Email" />
+                <TextInput
+                    style={[styles.textinput]}
+                    placeholder="Phone Number"
+                />
+                <TextInput style={[styles.textinput]} placeholder="Address" />
+                <TouchableOpacity
+                    title="update thanh cong"
+                    onPress={() => notification()}
+                    style={[
+                        styles.button,
+                        { backgroundColor: COLORS.primary, borderWidth: 0.1 },
+                    ]}
+                >
+                    <Text
+                        style={{
+                            ...FONTS.h1,
+                            color: COLORS.white,
+                            fontSize: 15,
+                        }}
+                    >
+                        UPDATE
+                    </Text>
+                </TouchableOpacity> */}

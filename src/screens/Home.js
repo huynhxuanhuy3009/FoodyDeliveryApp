@@ -333,7 +333,9 @@ const Home = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray4,
+        // backgroundColor: COLORS.lightGray4,
+        backgroundColor:"#ffe4e1",
+        
     },
     shadow: {
         shadowColor: "#000",

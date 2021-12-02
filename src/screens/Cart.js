@@ -234,22 +234,23 @@ const Cart = (props) => {
                         justifyContent: "center",
                         alignItems: "center",
                         paddingRight:25, 
-                        height:55
+                        height:50
                 }}>
                     <TouchableOpacity
                         onPress={saveCartPro}
-                        
+                        style={{backgroundColor:COLORS.lightGray3}}
                     >
-                        <Icon
+                        {/* <Icon
                             name="save"
                             type="AntDesign"
                             style={{
                                 width: 30,
                                 height: 28,
                             }}
-                        />
+                        /> */}
+                        <Text style={{...FONTS.body3}}>Save</Text>
                     </TouchableOpacity>
-                    <Text>save</Text>
+                    {/* <Text>save</Text> */}
                 </View>
                 
                 <TouchableOpacity
@@ -322,15 +323,18 @@ const Cart = (props) => {
     //body cart
     function renderItemsCart(item) {
         return (
-            <ProductCart
-                name={item.name}
-                price={item.price}
-                quantity={item.quantity}
-                imagesProduct={item.imagesProduct}
-                ondecreaseProduct={() => props.decreaseProduct(item)}
-                onincreaseProduct={() => props.increaseProduct(item)}
-                ondeleteProduct={() => props.deleteProduct(item)}
-            />
+            <View>
+                <ProductCart
+                    name={item.name}
+                    price={item.price}
+                    quantity={item.quantity}
+                    imagesProduct={item.imagesProduct}
+                    ondecreaseProduct={() => props.decreaseProduct(item)}
+                    onincreaseProduct={() => props.increaseProduct(item)}
+                    ondeleteProduct={() => props.deleteProduct(item)}
+                />
+            </View>
+            
         );
     }
 
@@ -347,6 +351,7 @@ const Cart = (props) => {
                         paddingVertical: height * 0.035,
                         height: height * 0.2,
                         justifyContent: "space-between",
+                       
                     },
                 ]}
             >
@@ -398,7 +403,7 @@ const Cart = (props) => {
                 <View>{giohangtrong()}</View>
             ) : (
                 <View>
-                    <ScrollView style={{ height: height * 0.6 }}>
+                    <ScrollView style={{ height: height * 0.6 , marginTop:20}}>
                         {props.cart.map((prod) => renderItemsCart(prod))}
                     </ScrollView>
                     <View style={{ height: height * 0.3 }}>
@@ -413,7 +418,9 @@ const Cart = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray2,
+        // backgroundColor: COLORS.lightGray2,
+       
+        backgroundColor:"#ffe4e1",
     },
     rowFront: {
         backgroundColor: "#FFF",

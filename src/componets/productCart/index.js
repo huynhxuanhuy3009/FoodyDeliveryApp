@@ -33,7 +33,7 @@ const ProductCart = (props) => {
           });
       };
     return (
-        <View style={[styles.rowFront, { flexDirection: "row" }]}>
+        <View style={[styles.rowFront, { flexDirection: "row", paddingTop:15, backgroundColor:COLORS.lightGray2}]}>
             {/* image */}
             <View
                 style={{
@@ -45,6 +45,7 @@ const ProductCart = (props) => {
                     style={{
                         width: width * 0.2,
                         height: height * 0.1,
+                        marginLeft:10
                     }}
                 />
             </View>

@@ -21,7 +21,7 @@ const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
 
     if (isSelected) {
         return (
-            <View style={{ flex: 1, alignItems: "center" }}>
+            <View style={{ flex: 1, alignItems: "center",  }}>
                 <View style={{ flexDirection: 'row', position: 'absolute', top: 0 }}>
                     <View style={{ flex: 1, backgroundColor: COLORS.white }}></View>
                     <Svg
@@ -111,7 +111,7 @@ const Tabs = () => {
                     right: 0,
                     borderTopWidth: 0,
                     backgroundColor: "transparent",
-                    elevation: 0
+                    elevation: 0, 
                 }
             }}
             tabBar={(props) => (

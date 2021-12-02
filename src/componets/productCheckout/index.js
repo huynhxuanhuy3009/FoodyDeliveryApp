@@ -24,6 +24,7 @@ const ProductCheckout = (props) => {
                         height: "90%",
                         width: 100,
                         resizeMode: "cover",
+                        marginLeft:10
                     }}
                 />
             </View>

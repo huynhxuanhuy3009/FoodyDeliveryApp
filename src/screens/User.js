@@ -23,8 +23,10 @@ import { AuthContext } from "../componets/context";
 const { width, height } = Dimensions.get("window");
 const User = ( props ) => {
     const [userProfile, setUserProfile] = useState({
-        fName:'Hoang Thi Khanh Linh',
+        fName:'Nguyen Van A',
         email:'abc@gmail.com',
+        phoneNumber:"0961003973", 
+        address:"360/21/7B Nguyen An Ninh, P8, TP VT",
     });
     const [dataupdate, setdataupdate] = useState({});
     const [modalVisible, setModalVisible] = useState(false);
@@ -89,7 +91,7 @@ const User = ( props ) => {
                 }}
             >
                <Image
-                    source={images.kl}
+                    source={images.avatar_5}
                     style={{                       
                         height:height*0.2,
                         width:width*0.3,
@@ -249,7 +251,7 @@ const User = ( props ) => {
                                         onChangeText={(value) =>
                                             setdataupdate({...dataupdate, phone: value})
                                             }
-                                            placeholder={userProfile.phone}
+                                            placeholder={userProfile.phoneNumber}
                                     />
                                     <Card.Divider />
                                     <Card.Title style={{textAlign: 'left', fontSize: 18}}>
@@ -257,10 +259,10 @@ const User = ( props ) => {
                                     </Card.Title>
                                     <Card.Divider />
                                     <Input
-                                        onChangeText={(value) =>
-                                            setdataupdate({...dataupdate, phone: value})
-                                            }
-                                        placeholder={userProfile.phone}
+                                        // onChangeText={(value) =>
+                                        //     setdataupdate({...dataupdate, phone: value})
+                                        //     }
+                                        placeholder={userProfile.address}
                                     />
                                 </Card>
                             </ScrollView>
@@ -284,7 +286,7 @@ const User = ( props ) => {
                     />
                     </View>
                     <View style={{marginBottom: 20}}>
-                    <ProfileTag
+                    <ProfileTag 
                         iconP="phone"
                         iconType="Entypo"
                         titleP="Phone Number"

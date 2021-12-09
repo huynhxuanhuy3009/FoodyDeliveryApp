@@ -44,7 +44,7 @@ const ProductTag = (props) => {
             >
                 <Image
                     source={{
-                        uri: `${imgport}${props.imagesProduct}`,
+                        uri: `${imgport}${props.imagesProduct}.png`,
                     }}
                     resizeMode="cover"
                     style={{

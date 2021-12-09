@@ -130,7 +130,7 @@ const Restaurant = (props) => {
                     {/* food image */}
                     <Image
                         source={{
-                            uri: `${imgport}${props.route.params.image.url}`,
+                            uri: `${imgport}${props.route.params.image}.png`,
                         }}
                         resizeMode="cover"
                         style={{
@@ -209,12 +209,29 @@ const Restaurant = (props) => {
                             .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
                         đ
                     </Text>
-                    {/* <Text style={{ ...FONTS.body3 }}>
-                        {itemPro.description}
-                    </Text> */}
+                    <View
+                        style={{
+                            marginTop:20, 
+                            borderRadius:20, 
+                            width:width*0.9,
+                            height:height*0.15,
+                            borderWidth:1, 
+                            backgroundColor:COLORS.lightGray3, 
+                            justifyContent:'center',
+                            alignItems:'center', 
+                            paddingHorizontal:width*0.02
+
+
+                        }}
+                    >
+                        <Text style={{ ...FONTS.h4, color:COLORS.darkgray}}>
+                            {`Description: ${props.route.params.description}`}
+                        </Text>
+                    </View>
+                    
                 </View>
                 {/* Calories */}
-                <View
+                {/* <View
                     style={{
                         flexDirection: "row",
                         marginTop: 10,
@@ -235,7 +252,7 @@ const Restaurant = (props) => {
                             color: COLORS.darygray,
                         }}
                     ></Text>
-                </View>
+                </View> */}
             </View>
         );
     }
@@ -250,6 +267,7 @@ const Restaurant = (props) => {
                         backgroundColor: COLORS.white,
                         borderTopLeftRadius: 40,
                         borderTopRightRadius: 40,
+                        marginTop:50
                     }}
                 >
 

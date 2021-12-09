@@ -137,7 +137,7 @@ const Payment01 = (props) => {
                     name={item.name} 
                     price={item.price} 
                     quantity={item.quantity}
-                    imagesProduct={item.imagesProduct}
+                    imagesProduct={item.image}
                 />
             </ScrollView>    
         );

@@ -16,7 +16,7 @@ import { Icon } from "native-base";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import { connect } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-
+import { imgport } from "../config/port";
 import {
     decreaseProduct,
     deleteProduct,
@@ -62,6 +62,7 @@ const Home = (props) => {
             getuserProfile(userToken);
         }
         // getusertoken();
+        // getImagesProduct();
         return () => {};
     }, []);
     const getuserProfile = (utoken) => {
@@ -84,7 +85,7 @@ const Home = (props) => {
 
     const getListItem = () => {
         const apiURL =
-            "https://foody-store-server.herokuapp.com/categories?isDeleted=false";
+            "https://foody-store-server.herokuapp.com/categories";
         fetch(apiURL)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -95,6 +96,19 @@ const Home = (props) => {
                 console.log(error);
             });
     };
+
+    // const getImagesProduct = () => {
+    //     const apiURL = "https://foody-store-server.herokuapp.com/images";
+    //     fetch(apiURL)
+    //         .then((response) => response.json())
+    //         .then((responseJson) => {
+    //             setData(responseJson)
+    //             console.log(">>images", responseJson)
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         });
+    // }
 
     function renderHeader() {
         return (
@@ -154,6 +168,7 @@ const Home = (props) => {
 
     function renderCatelogy() {
         const renderItem = ({ item, index }) => {
+            // console.log(">>imagecate",item.image)
             return (
                 <View key={item.id}>
                     <TouchableOpacity
@@ -186,14 +201,16 @@ const Home = (props) => {
                                         : COLORS.lightGray,
                             }}
                         >
-                            {/* <Image
-                                source={item.icon}
+                            <Image
+                                source={{
+                                    uri: `${imgport}${item.image}.png`
+                                }}
                                 resizeMode="contain"
                                 style={{
                                     width: 30,
                                     height: 30,
                                 }}
-                            /> */}
+                            />
                         </View>
                         <Text
                             style={{
@@ -242,7 +259,7 @@ const Home = (props) => {
                         onclickProduct={() => onclickProduct(item)}
                         key={item.id}
                         id={item._id}
-                        imagesProduct={item?.image.url}
+                        imagesProduct={item?.image}
                         name={item.name}
                         price={item.price}
                     />

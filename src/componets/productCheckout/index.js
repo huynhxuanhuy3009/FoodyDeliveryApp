@@ -19,7 +19,7 @@ const ProductCheckout = (props) => {
         >
             <View>
                 <Image
-                    source={{uri:`${imgport}${props.imagesProduct}`}}
+                    source={{uri:`${imgport}${props.imagesProduct}.png`}}
                     style={{
                         height: "90%",
                         width: 100,

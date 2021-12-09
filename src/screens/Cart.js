@@ -38,6 +38,7 @@ const Cart = (props) => {
     const [update, setUpdate] = useState("");
     const [cartget, setcartGet] = useState("");
     const [cartID, setcartID] = useState("");
+    let userToken1 = '';
     const formatCurrency = (monney) => {
         const mn = String(monney);
         return mn
@@ -59,6 +60,15 @@ const Cart = (props) => {
        
         return () => {};
     }, []);
+  
+    
+    //lưu giỏ hàng dưới api 
+    useEffect(async() => {
+        console.log("chay vao")
+        userToken1 = await AsyncStorage.getItem("userToken");
+        apiUpdateCarts(userToken1,props.cart,cartID)     
+    }, [props.totalprice]);
+
     const apiCarts = (utoken) => {
         const apiURL = "https://foody-store-server.herokuapp.com/carts/me";
         fetch(apiURL, {
@@ -73,8 +83,8 @@ const Cart = (props) => {
                 setcartGet(responseJson)
                 {
                     responseJson?.products.map((pr) => {
-                        console.log(">>name",pr.name)
-                        console.log(">>price", pr.price)
+                        // console.log(">>name",pr.name)
+                        // console.log(">>price", pr.price)
                     })
                 }
                 if(responseJson._id){
@@ -163,14 +173,13 @@ const Cart = (props) => {
         async function updatecart() {
             userToken = await AsyncStorage.getItem("userToken");
             setUsertoken(userToken);
-            if(cartID ===""){
-                console.log(">Create cart");
+            if(cartID === ""){
+                
                 apiPostCarts(userToken,props.cart);     
             }
-            else {
-                console.log(">>Update cart")
+            else {        
                 apiUpdateCarts(userToken,props.cart,cartID)
-                }
+            }
              
         }
         updatecart();
@@ -238,17 +247,17 @@ const Cart = (props) => {
                 }}>
                     <TouchableOpacity
                         onPress={saveCartPro}
-                        style={{backgroundColor:COLORS.lightGray3}}
+                        style={{}}
                     >
-                        {/* <Icon
-                            name="save"
-                            type="AntDesign"
+                        <Icon
+                            name="arrow-collapse-down"
+                            type="MaterialCommunityIcons"
                             style={{
                                 width: 30,
                                 height: 28,
                             }}
-                        /> */}
-                        <Text style={{...FONTS.body3}}>Save</Text>
+                        />
+                        {/* <Text style={{...FONTS.body3}}>Save</Text> */}
                     </TouchableOpacity>
                     {/* <Text>save</Text> */}
                 </View>
@@ -256,6 +265,7 @@ const Cart = (props) => {
                 <TouchableOpacity
                     onPress={deleteCartPro}
                     style={{
+                        paddingTop:10,
                         width: 50,
                         paddingRight: SIZES.padding * 2,
                         justifyContent: "center",
@@ -328,7 +338,7 @@ const Cart = (props) => {
                     name={item.name}
                     price={item.price}
                     quantity={item.quantity}
-                    imagesProduct={item.imagesProduct}
+                    imagesProduct={item?.image}
                     ondecreaseProduct={() => props.decreaseProduct(item)}
                     onincreaseProduct={() => props.increaseProduct(item)}
                     ondeleteProduct={() => props.deleteProduct(item)}

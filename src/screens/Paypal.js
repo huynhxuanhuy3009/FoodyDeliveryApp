@@ -1,3 +1,4 @@
+
 import React, { Component, useState } from "react";
 import {
     Text,
@@ -5,22 +6,100 @@ import {
     TouchableOpacity,
     SafeAreaView,
     StyleSheet,
-    Modal
+    Modal, Dimensions,
+    Image
 } from "react-native";
 // import Modal from "react-native-modal";
 import { WebView } from "react-native-webview";
+import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 
+const {width, height} = Dimensions.get('window');
 const Paypal = () => {
+    
     const [showModal, setShowModal] = useState(false);
     const [status, setStatus] = useState("pending")
-    return (
+    const value= 123;
+    const handleResponse = (data) => {
+        if (data.title === 'success'){
+            setShowModal(showModal),
+            setStatus('Complete')
+            // <Modal>
+            //     <TouchableOpacity></TouchableOpacity>
+            // </Modal>
+        }else if (data.title === 'cancel'){
+            setShowModal(showModal),
+            setStatus('Canceled')
+        }
+        else{
+            return;
+        }
+    }
+    console.log(">>status",status)
+    
+    return (   
+        <SafeAreaView style={[styles.container]}>
+            <View
+                style={{
+                    flexDirection: "row",
+                    height: 60,
+                    borderBottomWidth: 0.3,
+                    paddingBottom: 10,
+                  
+                }}
+            >
+                <TouchableOpacity
+                    style={{
+                        width: 50,
+                        paddingLeft: SIZES.padding * 2,
+                        justifyContent: "center",
+                    }}
+                    // onPress={() => navigation.goBack()}
+                >
+                    <Image
+                        source={icons.back}
+                        resizeMode="contain"
+                        style={{
+                            width: 30,
+                            height: 30,
+                        }}
+                    />
+                </TouchableOpacity>
 
-        <SafeAreaView style={{ marginTop: 100, marginHorizontal: 20 }}>
+                <View
+                    style={{
+                        flex: 1,
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <View
+                        style={{
+                            width: "70%",
+                            height: "100%",
+                            backgroundColor: COLORS.lightGray3,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderRadius: SIZES.radius,
+                        }}
+                    >
+                        <Text style={{ ...FONTS.h3 }}>Payment</Text>
+                    </View>
+                </View>
+
+                <TouchableOpacity
+                    style={{
+                        width: 50,
+                        paddingRight: SIZES.padding * 2,
+                        justifyContent: "center",
+                    }}
+                ></TouchableOpacity>
+            </View>
             <Modal
                 visible={showModal}
                 onRequestClose={()=>{setShowModal(false)}} 
             >
                 <WebView
+                            
                             source={{
                                 uri: "http://10.0.3.2:3000",
                                 headers: {
@@ -28,68 +107,59 @@ const Paypal = () => {
                                     'Access-Control-Allow-Origin': '*'
                                 }
                             }}
-                            // onNavigationStateChange={data =>
-                            //     this.handleResponse(data)
-                            // }
-                            // injectedJavaScript={`document.f1.submit()`}
+                            onNavigationStateChange={(data) => handleResponse(data)}
+                            injectedJavaScript={`document.getElementById('price').value="123";document.f1.submit()`}                           
                         />
             </Modal>
-            
+    
+            <Image 
+                source={images.logo_payment}
+                style={{width:400, height:450,justifyContent:"center"}}
+            />
             <TouchableOpacity
-                       style={{
-                        width: 200,
-                        height: 50,
-                        borderWidth: 1,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor:"#fff4c4"
-                    }}
+                style={{
+                    marginHorizontal: width * 0.05,
+                    marginVertical:20,
+                    height: 50,
+                    backgroundColor: "#ffa07a",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderWidth: 0.5,
+                    borderRadius: 20,
+                }}
                     onPress={() => setShowModal(true)}
             >
-                <Text>Pay with paypal</Text>
+                <Text style={{ color: "black", ...FONTS.h4 }}>Pay with paypal</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+                style={{
+                    marginHorizontal: width * 0.05,
+                    height: 50,
+                    backgroundColor: COLORS.darkgray,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderWidth: 0.5,
+                    borderRadius: 20,
+                }}
+            >
+                <Text style={{ color: "white", ...FONTS.h4 }}>Pay on delivery</Text>
             </TouchableOpacity>
             
+            <Text>{`paypal:${status}`}</Text>
         </SafeAreaView>
     );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // backgroundColor: COLORS.lightGray2,
+       
+        backgroundColor:"#ffe4e1",
+    },
+})
 
 export default Paypal;
 
 
-// export default class Paypal extends Component {
-//     state = {
-//         showModal: false,
-//         status: "Pending",
-//     };
-//     render() {
-//         return (
-//             <SafeAreaView style={{ marginTop: 100, marginHorizontal: 20 }}>
-//                 <Modal
-//                     visible={this.state.showModal}
-//                     onRequestClose={() => this.setState({ showModal: false })}
-//                 >
-//                     <WebView
-//                         javaScriptEnabled={true}
-//                         source={{ uri: "https://localhost:3000" }}
-//                     />
-//                 </Modal>
-//                 <TouchableOpacity
-//                     onPress={() => this.setState({ showModal: true })}
-//                     style={{
-//                         width: 200,
-//                         height: 50,
-//                         borderWidth: 1,
-//                         alignItems: "center",
-//                         justifyContent: "center",
-//                         backgroundColor:"#fff4c4"
-//                     }}
-//                 >
-//                     <Text>Pay With Paypal</Text>
-//                 </TouchableOpacity>
-//                 <Text>Payment Status : {this.state.status}</Text>
-//             </SafeAreaView>
-//         );
-//     }
-// }
+

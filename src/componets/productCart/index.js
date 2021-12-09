@@ -41,7 +41,7 @@ const ProductCart = (props) => {
                 }}
             >
                 <Image
-                    source={{uri: `${imgport}${props.imagesProduct}`}}
+                    source={{uri: `${imgport}${props.imagesProduct}.png`}}
                     style={{
                         width: width * 0.2,
                         height: height * 0.1,

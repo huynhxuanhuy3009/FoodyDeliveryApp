@@ -81,6 +81,7 @@ const ProductOrders = (props) => {
                     <Text>{props.phoneNumber}</Text>
                     <Text>{props.updatedAt}</Text>
                     <Text>{props.name}</Text>
+                    <Text>{props.address}</Text>
                 </TouchableOpacity>
             </View>
     );

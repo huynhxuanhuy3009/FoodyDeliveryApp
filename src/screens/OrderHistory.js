@@ -133,10 +133,11 @@ const OrderHistory = (props) => {
                         <ListItem>                                                       
                                 <ProductOrders
                                     onclickOrder={()=>onclickOrder(itemPro)}
-                                    fullName={itemPro.item.fullName}
-                                    phoneNumber={itemPro.item.phoneNumber}
-                                    updatedAt={itemPro.item.updatedAt}
-                                    name = {itemPro.item.products[0].name}
+                                    fullName={itemPro?.item?.fullName}
+                                    phoneNumber={itemPro?.item?.phoneNumber}
+                                    updatedAt={itemPro?.item?.updatedAt}
+                                    address={itemPro?.item?.address}
+                                    // name = {itemPro?.item?.products[0]?.name}
                                 />                           
                         </ListItem>                              
                 </View>

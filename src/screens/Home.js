@@ -22,6 +22,7 @@ import {
     deleteProduct,
     increaseProduct,
     delallProduct,
+    getCart,
 } from "../../src/componets/productTag/action/index";
 import ProductTag from "../componets/productTag/index";
 
@@ -53,16 +54,20 @@ const Home = (props) => {
     const [selectCategories, setSelectCategories] = useState(null);
     const [restaurants01, setRrestaurants01] = useState([]);
     const [usertoken, setUsertoken] = useState("");
+    const [cartget, setcartGet] = useState("");
+    const [cartID, setcartID] = useState("");
     useEffect(() => {
         getListItem();
         let userToken;
-        async function getusertoken() {
+        async function getTokenOpenCart() {
             userToken = await AsyncStorage.getItem("userToken");
             setUsertoken(userToken);
-            getuserProfile(userToken);
+            //getuserProfile(userToken);
+            getCartOpenApp(userToken);
+           
         }
-        // getusertoken();
-        // getImagesProduct();
+        getTokenOpenCart();
+        
         return () => {};
     }, []);
     const getuserProfile = (utoken) => {
@@ -97,18 +102,29 @@ const Home = (props) => {
             });
     };
 
-    // const getImagesProduct = () => {
-    //     const apiURL = "https://foody-store-server.herokuapp.com/images";
-    //     fetch(apiURL)
-    //         .then((response) => response.json())
-    //         .then((responseJson) => {
-    //             setData(responseJson)
-    //             console.log(">>images", responseJson)
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         });
-    // }
+    //get cart lúc mới vào app
+    const getCartOpenApp = (utoken) => {
+        const apiURL = "https://foody-store-server.herokuapp.com/carts/me";
+        fetch(apiURL, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                Authorization: `Bearer ${utoken}`,
+            },
+        })
+        .then((response)=> response.json())
+        .then((responseJson)=>{
+              setcartGet(responseJson)
+              if(responseJson._id){
+                 setcartID(responseJson._id)
+              }
+              return dispatch(getCart(responseJson));
+              //console.log(">>cart luc moi vao app",responseJson)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    }
 
     function renderHeader() {
         return (
@@ -170,8 +186,9 @@ const Home = (props) => {
         const renderItem = ({ item, index }) => {
             // console.log(">>imagecate",item.image)
             return (
-                <View key={item.id}>
+                <View>
                     <TouchableOpacity
+                        key={item._id}
                         style={{
                             ...styles.shadow,
                             padding: SIZES.padding,
@@ -249,11 +266,11 @@ const Home = (props) => {
     }
 
     function renderListProduct(productlist) {
-        const renderItem = ({ item }) => {
+        const renderItem = ({ item}) => {
              
             // console.log(">>pro",item.description)
             return (
-                <View>
+                <View key={item.id}>
                    
                     <ProductTag
                         onclickProduct={() => onclickProduct(item)}
@@ -274,7 +291,7 @@ const Home = (props) => {
             props.navigation.navigate("Restaurant", prod);
 
         return (
-            <ScrollView>
+            <ScrollView nestedScrollEnabled={true}>
                 <View style={{ paddingHorizontal: SIZES.padding * 2 }}>
                     <FlatList
                         data={productlist}
@@ -368,8 +385,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
+        cart :state.cart.cartAr,
         totalprice: state.cart.totalprice,
     };
 };
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getCart: (product_current) => dispatch(getCart(product_current))
+    }
+}
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -21,7 +21,9 @@ import { connect } from "react-redux";
 import ProductCheckout from "../componets/productCheckout/index";
 const { width, height } = Dimensions.get("window");
 const Payment01 = (props) => {
-    
+    const [valueName, setValueName] = useState("")
+    const [valueAddress, setValueAddress] = useState("")
+
     const navigation = useNavigation();
     const formatCurrency = (monney) => {
         const mn = String(monney);
@@ -36,29 +38,37 @@ const Payment01 = (props) => {
     
 
     const postApiOrder = (utoken,phoneNumber,email, productList, address, status, paymentType) => {
-        const apiURL = "https://foody-store-server.herokuapp.com/orders"
-        fetch (apiURL, {
-            method:"POST",
-            headers: {
-                Authorization:`Bearer ${utoken}`
-            },
-            body:{
-                phoneNumber:phoneNumber,
-                email :email,
-                products: [...productList], 
-                address:address , 
-                status:status,
-                paymentType:paymentType
-            }
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-
-            })
-            .catch((e) => console.log(e))
+        console.log('valueAddress', valueAddress)
+        let userToken;
+      
+        userToken = AsyncStorage.getItem("userToken")       
+            .then((res) => {
+                const apiURL = "https://foody-store-server.herokuapp.com/orders"
+                fetch (apiURL, {
+                method:"POST",
+                headers: {
+                    Authorization:`Bearer ${res}`
+                },
+                body:JSON.stringify({
+                    // phoneNumber:phoneNumber,
+                    // email :email,
+                    // products: [...productList], 
+                    address:valueAddress, 
+                    // status:status,
+                    paymentType:"Paypal"
+                })
+                .then ((response) => response.json())
+                .then ((responseJson => {
+                    setValueAddress(valueAddress)
+                }))
+                .catch((e) => {console.log(e)})
+            })  
+        });    
+    }   
+    const handleContinue = () => {
+        postApiOrder();
+        navigation.navigate("Paypal");
     }
-
-   
  
     function renderHeader() {
         return (
@@ -127,13 +137,16 @@ const Payment01 = (props) => {
             </View>
         );
     }
-    function renderProductCheck(item) {
+    function renderProductCheck(item, index) {
         return ( 
             // style={styles.rowFront}
             <ScrollView 
+                
+                nestedScrollEnabled={true}
+                key={item.id}
                 style={[styles.rowFront], {height:100}}
             >
-                <ProductCheckout 
+                <ProductCheckout                  
                     name={item.name} 
                     price={item.price} 
                     quantity={item.quantity}
@@ -143,6 +156,7 @@ const Payment01 = (props) => {
         );
     }
     function renderBody() {
+        console.log(">>name", valueAddress)
         return (
             <View style={{ paddingHorizontal: width * 0.05 , }}>
 
@@ -156,6 +170,8 @@ const Payment01 = (props) => {
                     <Text style={{ ...FONTS.h3 }}>DELIVERY TO</Text>
                     <TextInput
                         placeholder="Full name"
+                        value={valueName}
+                        onChangeText={(val) => {setValueName(val)}}
                         style={{
                             borderWidth: 0.5,
                             borderRadius: 5,
@@ -175,6 +191,8 @@ const Payment01 = (props) => {
                     />
                     <TextInput
                         placeholder="Address..."
+                        value={valueAddress}
+                        onChangeText={(val) => {setValueAddress(val)}}
                         style={{
                             borderWidth: 0.5,
                             borderRadius: 5,
@@ -211,7 +229,7 @@ const Payment01 = (props) => {
             <View style={[styles.rowFront, { height: 60, backgroundColor:"#ffe4e1",}]}>
                 
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("Paypal")}
+                    onPress={() => handleContinue()}
                     style={{
                         marginHorizontal: width * 0.15,
                         height: 40,
@@ -234,8 +252,8 @@ const Payment01 = (props) => {
             {renderHeader()}
             {/* {renderStepPayHeader()} */}
             {renderTypePro()}
-            <ScrollView  
-                // style={[styles.rowFront], {height:250,marginTop:10}}
+            <ScrollView         
+                nestedScrollEnabled={true}
             >
                
                 {props.cart.map((item) => renderProductCheck(item))}

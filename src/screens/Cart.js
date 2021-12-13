@@ -81,12 +81,12 @@ const Cart = (props) => {
             .then((response) => response.json())
             .then((responseJson) => {
                 setcartGet(responseJson)
-                {
-                    responseJson?.products.map((pr) => {
-                        // console.log(">>name",pr.name)
-                        // console.log(">>price", pr.price)
-                    })
-                }
+              //   {
+              //       responseJson?.products.map((pr) => {
+              //           // console.log(">>name",pr.name)
+              //           // console.log(">>price", pr.price)
+              //       })
+              //   }
                 if(responseJson._id){
                     setcartID(responseJson._id);
                 }
@@ -124,7 +124,10 @@ const Cart = (props) => {
             .then((responseJson) => {
                 setUpdate(responseJson)
                 setcartID(responseJson.id);
-            });
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     };
 
     
@@ -149,7 +152,10 @@ const Cart = (props) => {
                 // console.log(responseJson);
                 // setUpdate(responseJson)
                 
-            });
+            })
+            .catch((error) => {
+                console.log(error)
+            })
             
     };
       const apiDeleteCarts = (utoken,cartid) => {    
@@ -166,7 +172,10 @@ const Cart = (props) => {
             .then((responseJson) => {
                 // console.log(responseJson.totalAmount);
                 props.delallProduct();
-            });
+            })
+            .catch((error) => {
+                console.log(error)
+            }) 
     };
     const saveCartPro = () => {
         let userToken;
@@ -196,9 +205,12 @@ const Cart = (props) => {
     }
      
     // header của cart
-    function renderHeaderCart(item) {
+    function renderHeaderCart(item, index) {
         return (
-            <View style={{ flexDirection: "row", height: 50 }}>
+            <View 
+                
+                style={{ flexDirection: "row", height: 50 }}
+            >
                 <TouchableOpacity
                     style={{
                         width: 50,
@@ -331,9 +343,9 @@ const Cart = (props) => {
         );
     }
     //body cart
-    function renderItemsCart(item) {
+    function renderItemsCart(item, index) {
         return (
-            <View>
+            <View key={item.id}>
                 <ProductCart
                     name={item.name}
                     price={item.price}
@@ -413,8 +425,17 @@ const Cart = (props) => {
                 <View>{giohangtrong()}</View>
             ) : (
                 <View>
-                    <ScrollView style={{ height: height * 0.6 , marginTop:20}}>
-                        {props.cart.map((prod) => renderItemsCart(prod))}
+                    <ScrollView 
+                        
+                        nestedScrollEnabled={true}
+                        style={{ height: height * 0.6 , marginTop:20}}
+                    >
+                        {props.cart.map((prod, index) =>
+                        <View key={prod._id}>
+                            {renderItemsCart(prod)}
+                        </View>
+                       
+                            )}
                     </ScrollView>
                     <View style={{ height: height * 0.3 }}>
                         {renderTotalCart()}
@@ -465,6 +486,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(updateProduct(product_current)),
         delallProduct: () => 
             dispatch(delallProduct()),
+
         getCart: (product_current) => dispatch(getCart(product_current)),
         // updateCart: (products) => dispatch(updateCart(products)),
     };

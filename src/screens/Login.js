@@ -9,7 +9,6 @@ import {
     TouchableOpacity,
     TextInput,
     Dimensions,
-    VirtualizedList,
 } from "react-native";
 import { Icon } from "native-base";
 import {

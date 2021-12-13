@@ -46,18 +46,18 @@ const ProductDetail = (props) => {
                 }}>
             </View>  
             <View>
-                <Text style={{ ...FONTS.h3}}>Selected Products</Text>
-                <ListItem style={{flexDirection:'row', justifyContent:'space-between'}}>
+                {/* <Text style={{ ...FONTS.h3}}>Selected Products</Text> */}
+                {/* <ListItem style={{flexDirection:'row', justifyContent:'space-between'}}>
                     
                     <View>
                         <Text style={{...FONTS.body2}}>Pizza</Text>
-                        {/* <Text style={{...FONTS.body3}}>{props.fullName}</Text> */}
+                        <Text style={{...FONTS.body3}}>{props.fullName}</Text>
                     </View>
                     <View>
                         <Text style={{...FONTS.body2}}>50.000đ</Text>
-                        {/* <Text style={{...FONTS.body3}}>{props.phoneNumber}</Text> */}
+                        <Text style={{...FONTS.body3}}>{props.phoneNumber}</Text>
                     </View>
-                </ListItem >
+                </ListItem > */}
             </View>  
         </View>
         

@@ -12,10 +12,11 @@ import {
 // import Modal from "react-native-modal";
 import { WebView } from "react-native-webview";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
+import { useNavigation } from "@react-navigation/native";
 
 const {width, height} = Dimensions.get('window');
 const Paypal = () => {
-    
+    const navigation = useNavigation();
     const [showModal, setShowModal] = useState(false);
     const [status, setStatus] = useState("pending")
     const value= 123;
@@ -53,7 +54,7 @@ const Paypal = () => {
                         paddingLeft: SIZES.padding * 2,
                         justifyContent: "center",
                     }}
-                    // onPress={() => navigation.goBack()}
+                    onPress={() => navigation.goBack()}
                 >
                     <Image
                         source={icons.back}

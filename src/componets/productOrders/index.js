@@ -5,83 +5,45 @@ import {
     Text,
     TouchableOpacity,
     FlatList,
+    Dimensions,
 } from "react-native";
 import { Icon } from "native-base";
 import { icons, images, SIZES, COLORS, FONTS } from "../../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const {width, height} =Dimensions.get('window');
 const ProductOrders = (props) => {
-    // const [data, setData] = useState("");
-    // const [userToken, setuserToken] = useState("");
-    // useEffect(() => {
-    //     let userToken;
-    //     async function getUserToken() {
-    //         userToken = await AsyncStorage.getItem("userToken");
-    //         setuserToken(userToken);
-    //         getApiOrder(userToken);
-    //     }
-    //     getUserToken();
-    //     return () => {};
-    // }, []);
-
-    // const getApiOrder = () => {
-    //     const apiURL = "https://foody-store-server.herokuapp.com/orders";
-    //     fetch(apiURL, {
-    //         method: "GET",
-    //         headers: {
-    //             "Content-type": "application/json; charset=UTF-8",
-    //             Authorization: `Bearer ${utoken}`,
-    //         },
-    //     })
-    //         .then((response) => response.json())
-    //         .then((responseJson) => {
-    //             setData(responseJson);
-    //         })
-    //         .catch((e) => console.log(e));
-    // };
-    // const renderItem = (item) => {
-    //     return (
-    //         <View>
-    //             <TouchableOpacity
-    //                 style={{
-    //                     flexDirection: "column",
-    //                     justifyContent: "space-around",
-    //                 }}
-    //             >
-    //                 <Text>At store</Text>
-    //                 <Text>{item.item.fullName}</Text>
-    //                 <Text style={{ ...FONTS.h4 }}>{props.fullName}</Text>
-    //                 <Text>{props.phoneNumber}</Text>
-    //                 <Text>{props.updatedAt}</Text>
-    //                 {item.item?.products.map((pro) => {
-
-    //                 return (
-    //                     <View>
-    //                         <Text>{pro.name}</Text>
-    //                     </View>
-    //                 );
-    //             })}
-    //             </TouchableOpacity>
-    //         </View>
-    //     );
-    // };
-
+    const formatCurrency = (monney) => {
+        const mn = String(monney);
+        return mn
+            .split("")
+            .reverse()
+            .reduce((prev, next, index) => {
+                return (index % 3 ? next : next + ".") + prev;
+            });
+    };
     return (
-        <View>
+            <View>
                 <TouchableOpacity
                     onPress={() => props.onclickOrder()}
                     style={{
-                        flexDirection: "column",
-                        justifyContent: "space-around",
+                        width:width*0.8,
+                        flexDirection: "row",
+                        justifyContent: "space-between", 
+                        alignItems:'center', 
+                        // backgroundColor:'red'
                     }}
                 >
-                    <Text>At store</Text>
-                    
-                    <Text style={{ ...FONTS.h4 }}>{props.fullName}</Text>
-                    <Text>{props.phoneNumber}</Text>
-                    <Text>{props.updatedAt}</Text>
-                    <Text>{props.name}</Text>
-                    <Text>{props.address}</Text>
+                    <View >
+                        <Text>At store</Text>
+                        <Text style={{ ...FONTS.h4 }}>{props.fullName}</Text>
+                        <Text>{props.phoneNumber}</Text>
+                        <Text>{props.updatedAt}</Text>
+                        <Text>{props.name}</Text>
+                    </View>
+                    <View>
+                        <Text style={{ ...FONTS.body2, color:COLORS.darkgray}}>{`${formatCurrency(props.total)}`}đ</Text>
+                    </View>
                 </TouchableOpacity>
             </View>
     );

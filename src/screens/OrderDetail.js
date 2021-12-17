@@ -17,7 +17,7 @@ const line = () => {
         </View>
     );
 }
-const OrderDetail = (props) => {
+const OrderDetail = (props, route) => {
     const navigation = useNavigation();
     const [data, setData] = useState('');
     const [userToken, setUserToken] = useState('')
@@ -31,9 +31,10 @@ const OrderDetail = (props) => {
         getUserToken()
         return () => {}
     }, [])
-
+    console.log("listorder1", props.route.params.idDetailOrder)
     const getApiOrder = (utoken) => {
-        const apiURL = "https://foody-store-server.herokuapp.com/orders";
+        const apiURL = `https://foody-store-server.herokuapp.com/orders/${props.route.params.idDetailOrder}`;
+        console.log("userauth", utoken )
         fetch(apiURL, {
             method: "GET",
             headers: {
@@ -43,6 +44,7 @@ const OrderDetail = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log(">>responseJson",responseJson)
                 setData(responseJson)
             })
             .catch((e) => console.log(e))
@@ -101,9 +103,9 @@ const OrderDetail = (props) => {
         );
     };
     const hoantat = () => {
+
         return(
             <View style={{marginHorizontal: width * 0.05}}>
-                <Text style={{ ...FONTS.h3,marginTop:20, }}>Completed</Text>
                 <TouchableOpacity 
                     onPress={() => navigation.navigate('Home')}
                     style={{
@@ -117,30 +119,62 @@ const OrderDetail = (props) => {
                 >
                     <Text style={{...FONTS.h4,color:COLORS.white}}>Re-Order</Text>
                 </TouchableOpacity>
+                <Text style={{ ...FONTS.h3,marginTop:20, }}>Completed</Text>
+                <ProductDetail
+                    fullName = {data.fullName}
+                    phoneNumber = {data.phoneNumber}
+                    address = {data.address}
+                    status={data.status}
+                    _id= {data._id}
+                />
+                <View style={{marginHorizontal: width * 0.05, marginBottom:10}}> 
+                <FlatList
+                    data={data.products}
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderItem}
+                />
+                </View>
+                
             </View>
         );
     };
+    const renderItem = ({item}) => (
+            <View>
+                {/* <ProductDetail
+                    fullName = {infoItem.item.fullName}
+                    phoneNumber = {infoItem.item.phoneNumber}
+                    address = {infoItem.item.address}
+                    status = {infoItem.item.status}
+                    _id = {infoItem.item.id}
+                /> */}
+                <Text>{item.name}</Text>
+                
+            </View>
+            
+        
+    )
     const infomation = () => {
         const renderItem = (infoItem) => {
             // console.log(infoItem)
             return(
                 <View>
-                    <ProductDetail
+                    {/* <ProductDetail
                         fullName = {infoItem.item.fullName}
                         phoneNumber = {infoItem.item.phoneNumber}
                         address = {infoItem.item.address}
                         status = {infoItem.item.status}
                         _id = {infoItem.item.id}
-                    />
+                    /> */}
+                    <Text>{infoItem.name}</Text>
+                    
                 </View>
                 
             );
         }
         return (
-            <View style={{marginHorizontal: width * 0.05, marginBottom:10}}>
-                
+            <View style={{marginHorizontal: width * 0.05, marginBottom:10}}> 
                 <FlatList
-                    data={data}
+                    data={data.products}
                     keyExtractor={(item) => item.id}
                     renderItem={renderItem}
                 />
@@ -153,7 +187,7 @@ const OrderDetail = (props) => {
             {renderHeader()}
             {hoantat()}
             {line()}
-            {infomation()}
+            {/* {infomation()} */}
            
         </SafeAreaView>
     );

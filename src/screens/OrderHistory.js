@@ -46,7 +46,7 @@ const OrderHistory = (props) => {
     }, []);
 
     const getApiOrder = (utoken) => {
-        const apiURL = "https://foody-store-server.herokuapp.com/orders";
+        const apiURL = "https://foody-store-server.herokuapp.com/orders/me";
         fetch(apiURL, {
             method: "GET",
             headers: {
@@ -56,7 +56,7 @@ const OrderHistory = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(">>respon",responseJson)
+                // console.log(">>respon",responseJson)
                 setData(responseJson);
             })
             .catch((e) => console.log(e));
@@ -122,32 +122,39 @@ const OrderHistory = (props) => {
         )
         
     }
+   
     function renderListOrders() {
-        const renderItem = (itemPro) => {
-            console.log(itemPro);
-            console.log(">>item",itemPro.item?.products.map((pro) =>{
-                console.log(pro.name)
-            }))
+            const renderItem = (itemPro) => {
+                console.log("itemPro",itemPro.item?.products.name)
             return (
                 <View>                     
                         <ListItem>                                                       
                                 <ProductOrders
-                                    onclickOrder={()=>onclickOrder(itemPro)}
+                                    onclickOrder={()=>navigation.navigate("OrderDetail",{idDetailOrder:itemPro?.item._id})}
                                     fullName={itemPro?.item?.fullName}
                                     phoneNumber={itemPro?.item?.phoneNumber}
                                     updatedAt={itemPro?.item?.updatedAt}
                                     address={itemPro?.item?.address}
-                                    // name = {itemPro?.item?.products[0]?.name}
-                                />                           
+                                    total={itemPro?.item?.totalAmount}
+                                    // name = {itemPro?.item.products.name}
+                                />  
+                                
+                                {/* <View style={{marginHorizontal: width * 0.05, marginBottom:10}}> 
+                                    <FlatList
+                                        data={data.products}
+                                        keyExtractor={(item) => item.id}
+                                        renderItem={renderItem}
+                                    />
+                                </View>                          */}
                         </ListItem>                              
                 </View>
             );
         };
 
-        const onclickOrder = (listOrder) => props.navigation.navigate("OrderDetail",listOrder )
+        
         return (
             <ScrollView>
-                <View style={{ paddingHorizontal: width * 0.025 }}>
+                <View style={{ }}>
                     <FlatList
                         data={data}
                         renderItem={renderItem}
@@ -157,6 +164,7 @@ const OrderHistory = (props) => {
             </ScrollView>
         );
     }
+    // console.log(">>totalsdasdsadsadas",props.totalprice)
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
@@ -177,7 +185,13 @@ const styles = StyleSheet.create({
     },
 });
 
-export default OrderHistory;
+const mapStatesToProps = (state) => {
+    return {
+        cart: state.cart.cartAr,
+        totalprice: state.cart.totalprice,
+    };
+};
+export default connect(mapStatesToProps)(OrderHistory);
 // const mapStatesToProps = (state) => {
 //     return ({
 //         cart:state.cart.cartAr,

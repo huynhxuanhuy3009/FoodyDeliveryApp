@@ -19,7 +19,7 @@ const Paypal = () => {
     const navigation = useNavigation();
     const [showModal, setShowModal] = useState(false);
     const [status, setStatus] = useState("pending")
-    const value= 123;
+   
     const handleResponse = (data) => {
         if (data.title === 'success'){
             setShowModal(showModal),

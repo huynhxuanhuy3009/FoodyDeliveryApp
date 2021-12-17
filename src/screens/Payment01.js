@@ -21,8 +21,10 @@ import { connect } from "react-redux";
 import ProductCheckout from "../componets/productCheckout/index";
 const { width, height } = Dimensions.get("window");
 const Payment01 = (props) => {
-    const [valueName, setValueName] = useState("")
+    
     const [valueAddress, setValueAddress] = useState("")
+    const [valuePhoneNumber, setValuePhoneNumber] = useState("")
+    const [valueFullName, setValueFullName] = useState("")
 
     const navigation = useNavigation();
     const formatCurrency = (monney) => {
@@ -35,40 +37,46 @@ const Payment01 = (props) => {
             });
     };
 
-    
+    const handleContinue = () => {
+        postApiOrder(props.cart);
+        navigation.navigate("Paypal");
+    }
 
     const postApiOrder = (utoken,phoneNumber,email, productList, address, status, paymentType) => {
-        console.log('valueAddress', valueAddress)
         let userToken;
-      
-        userToken = AsyncStorage.getItem("userToken")       
+        let prolistorder = props.cart;
+        // console.log(">>cart", props.cart);
+        
+        prolistorder.map((pro) => {delete pro.id})
+        console.log(">>prolistorderid", prolistorder);
+        userToken = AsyncStorage.getItem("userToken")      
             .then((res) => {
-                const apiURL = "https://foody-store-server.herokuapp.com/orders"
+                const apiURL = "https://foody-store-server.herokuapp.com/orders";
                 fetch (apiURL, {
                 method:"POST",
                 headers: {
+                    'Content-Type' : 'application/json; charset=UTF-8',
                     Authorization:`Bearer ${res}`
                 },
-                body:JSON.stringify({
-                    // phoneNumber:phoneNumber,
-                    // email :email,
-                    // products: [...productList], 
+                body : JSON.stringify({  
                     address:valueAddress, 
-                    // status:status,
-                    paymentType:"Paypal"
-                })
-                .then ((response) => response.json())
+                    fullName:valueFullName,
+                    phoneNumber:valuePhoneNumber, 
+                    products: prolistorder, 
+                    totalAmount:props.totalprice
+                })         
+            }) 
+            .then ((response) => response.json())
                 .then ((responseJson => {
-                    setValueAddress(valueAddress)
+                    // console.log(responseJson);
                 }))
-                .catch((e) => {console.log(e)})
-            })  
+                .catch((e) => {console.log(e)}) 
         });    
     }   
-    const handleContinue = () => {
-        postApiOrder();
-        navigation.navigate("Paypal");
-    }
+    
+    
+    
+
  
     function renderHeader() {
         return (
@@ -156,7 +164,7 @@ const Payment01 = (props) => {
         );
     }
     function renderBody() {
-        console.log(">>name", valueAddress)
+        
         return (
             <View style={{ paddingHorizontal: width * 0.05 , }}>
 
@@ -170,8 +178,8 @@ const Payment01 = (props) => {
                     <Text style={{ ...FONTS.h3 }}>DELIVERY TO</Text>
                     <TextInput
                         placeholder="Full name"
-                        value={valueName}
-                        onChangeText={(val) => {setValueName(val)}}
+                        value={valueFullName}
+                        onChangeText={(val) => {setValueFullName(val)}}
                         style={{
                             borderWidth: 0.5,
                             borderRadius: 5,
@@ -181,6 +189,8 @@ const Payment01 = (props) => {
                     />
                     <TextInput
                         placeholder="Phone number"
+                        value={valuePhoneNumber}
+                        onChangeText={(val) => {setValuePhoneNumber(val)}}
                         keyboardType={"phone-pad"}
                         style={{
                             borderWidth: 0.5,

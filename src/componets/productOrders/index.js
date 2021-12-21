@@ -35,14 +35,14 @@ const ProductOrders = (props) => {
                     }}
                 >
                     <View >
-                        <Text>At store</Text>
-                        <Text style={{ ...FONTS.h4 }}>{props.fullName}</Text>
-                        <Text>{props.phoneNumber}</Text>
-                        <Text>{props.updatedAt}</Text>
-                        <Text>{props.name}</Text>
+                        <Text style={{color:COLORS.darkgray}}>At store</Text>
+                        <Text style={{ ...FONTS.h2}}>{props.fullName}</Text>
+                        <Text style={{paddingTop:5, color:COLORS.darkgray}}>{props.phoneNumber}</Text>
+                        <Text style={{paddingTop:5, color:COLORS.darkgray}}>{props.updatedAt}</Text>
+                        
                     </View>
                     <View>
-                        <Text style={{ ...FONTS.body2, color:COLORS.darkgray}}>{`${formatCurrency(props.total)}`}đ</Text>
+                        <Text style={{ ...FONTS.body2, color:"black"}}>{`${formatCurrency(props.total)}`}đ</Text>
                     </View>
                 </TouchableOpacity>
             </View>

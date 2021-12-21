@@ -91,7 +91,7 @@ const cartReducer = (state = initialState, action) => {
 
         case actionType.DECREASE_PRODUCT:
             let newcartpro = state.cartAr;
-           let proiddecre = action.payload.id;
+            let proiddecre = action.payload.id;
             let objIndextd = newcartpro.findIndex(
                 (obj) => obj.id == proiddecre
             );
@@ -117,7 +117,9 @@ const cartReducer = (state = initialState, action) => {
                 totalprice: 0,
             };
         case actionType.GET_CART:
-            let newtotalamount = action.payload.products;       
+            console.log(">>action.payload",action.payload)
+            let newtotalamount = action.payload.products;  
+            console.log("newtotalamount",newtotalamount)     
             pricet = 0;
             newtotalamount.map((pr) => (pricet = pricet + pr.price *pr.quantity))
             newtotalamount.map((pro)=>pro.id = pro.productID);

@@ -18,7 +18,7 @@ const ProductCheckout = (props) => {
             style={{ width: "100%", flexDirection: "row",height:100,}}
         >
             <View>
-                <Image
+                {props.imagesProduct&&<Image
                     source={{uri:`${imgport}${props.imagesProduct}.png`}}
                     style={{
                         height: "90%",
@@ -26,7 +26,18 @@ const ProductCheckout = (props) => {
                         resizeMode: "cover",
                         marginLeft:10
                     }}
-                />
+                />}
+                {props.imagesProductAdd&&
+                  <Image
+                  source={{uri:`${imgport}${props.imagesProductAdd}.png`}}
+                  style={{
+                      height: "90%",
+                      width: 100,
+                      resizeMode: "cover",
+                      marginLeft:10
+                  }}
+                    />  
+                }
             </View>
             <View
                 style={{
@@ -40,7 +51,7 @@ const ProductCheckout = (props) => {
                         {props.name}
                     </Text>
                     <Text style={{...FONTS.h4, color: 'black', fontSize: 20}}>
-                        Price: {`${formatCurrency(props.price)}`}đ
+                        {`${formatCurrency(props.price)}`}đ
                     </Text>
                 </View>
 

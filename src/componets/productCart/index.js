@@ -40,14 +40,26 @@ const ProductCart = (props) => {
                     width: width * 0.3,
                 }}
             >
-                <Image
-                    source={{uri: `${imgport}${props.imagesProduct}.png`}}
+                {props.imagesProduct&&<Image
+                   source={{
+                    uri: `${imgport}${props.imagesProduct}.png`,
+                    }}
                     style={{
                         width: width * 0.2,
                         height: height * 0.1,
                         marginLeft:10
                     }}
-                />
+                />}
+                {props.imagesProductAdd&&<Image
+                   source={{
+                    uri: `${imgport}${props.imagesProductAdd}.png`,
+                    }}
+                    style={{
+                        width: width * 0.2,
+                        height: height * 0.1,
+                        marginLeft:10
+                    }}
+                />}
             </View>
             {/* infomation item */}
             <View
@@ -71,7 +83,7 @@ const ProductCart = (props) => {
                 }}
                 onPress={() => props.ondeleteProduct()}
             >
-                <Icon name="highlight-remove" type="MaterialIcons" />
+                <Icon name="highlight-remove" type="MaterialIcons" style={{color:'#EB9239'}} />
             </TouchableOpacity>
 
             {/* button + -  */}

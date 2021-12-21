@@ -63,7 +63,8 @@ const Payment01 = (props) => {
                     fullName:valueFullName,
                     phoneNumber:valuePhoneNumber, 
                     products: prolistorder, 
-                    totalAmount:props.totalprice
+                    totalAmount:props.totalprice, 
+                    status:"PENDING"
                 })         
             }) 
             .then ((response) => response.json())
@@ -158,6 +159,7 @@ const Payment01 = (props) => {
                     name={item.name} 
                     price={item.price} 
                     quantity={item.quantity}
+                    imagesProductAdd={item.imagesProduct}
                     imagesProduct={item.image}
                 />
             </ScrollView>    

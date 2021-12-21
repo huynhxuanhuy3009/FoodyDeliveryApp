@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
     btn_tru: {
         width: 30,      
-        backgroundColor: COLORS.darkgray,
+        backgroundColor: "#EB9239",
         alignItems: "center",
         justifyContent: "center",
         borderTopLeftRadius: 25,
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     },
     btn_cong: {
         width: 30,   
-        backgroundColor: COLORS.darkgray,
+        backgroundColor: "#EB9239",
         alignItems: "center",
         justifyContent: "center",
         borderTopRightRadius: 25,
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     },
     valQuantity: {
         width: 30,      
-        backgroundColor: COLORS.secondary,
+        backgroundColor: "#ffb460",
         alignItems: "center",
         justifyContent: "center",
     },

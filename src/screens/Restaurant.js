@@ -8,8 +8,9 @@ import {
     Image,
     Dimensions,
     Animated,
+    ScrollView
 } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList,  } from "react-native-gesture-handler";
 import { isIphoneX } from "react-native-iphone-x-helper";
 import { icons, COLORS, SIZES, FONTS } from "../constants";
 
@@ -109,14 +110,7 @@ const Restaurant = (props) => {
                         justifyContent: "center",
                     }}
                 >
-                    {/* <Image
-                        source={icons.list}
-                        resizeMode="contain"
-                        style={{
-                            width: 30,
-                            height: 30,
-                        }}
-                    /> */}
+                    
                 </TouchableOpacity>
             </View>
         );
@@ -149,42 +143,7 @@ const Restaurant = (props) => {
                             flexDirection: "row",
                         }}
                     >
-                        {/* <TouchableOpacity
-                            style={{
-                                width: 50,
-                                backgroundColor: COLORS.white,
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderTopLeftRadius: 25,
-                                borderBottomLeftRadius: 25,
-                            }}
-                        >
-                            <Text style={{ ...FONTS.body1 }}>-</Text>
-                        </TouchableOpacity>
-
-                        <View
-                            style={{
-                                width: 50,
-                                backgroundColor: COLORS.white,
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <Text style={{ ...FONTS.h2 }}></Text>
-                        </View>
-
-                        <TouchableOpacity
-                            style={{
-                                width: 50,
-                                backgroundColor: COLORS.white,
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderTopRightRadius: 25,
-                                borderBottomRightRadius: 25,
-                            }}
-                        >
-                            <Text style={{ ...FONTS.body1 }}>+</Text>
-                        </TouchableOpacity> */}
+                        
                     </View>
                 </View>
                 {/* Name & Description */}
@@ -209,17 +168,16 @@ const Restaurant = (props) => {
                             .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
                         đ
                     </Text>
-                    <View
+                    <ScrollView
                         style={{
                             marginTop:20, 
                             borderRadius:20, 
                             width:width*0.9,
                             height:height*0.15,
                             borderWidth:1, 
-                            backgroundColor:COLORS.lightGray3, 
-                            justifyContent:'center',
-                            alignItems:'center', 
-                            paddingHorizontal:width*0.02
+                            backgroundColor:COLORS.lightGray3,  
+                            paddingHorizontal:width*0.02, 
+                            paddingVertical:height*0.02,
 
 
                         }}
@@ -227,32 +185,9 @@ const Restaurant = (props) => {
                         <Text style={{ ...FONTS.h4, color:COLORS.darkgray}}>
                             {`Description: ${props.route.params.description}`}
                         </Text>
-                    </View>
+                    </ScrollView>
                     
                 </View>
-                {/* Calories */}
-                {/* <View
-                    style={{
-                        flexDirection: "row",
-                        marginTop: 10,
-                    }}
-                >
-                    <Image
-                        source={icons.fire}
-                        style={{
-                            width: 20,
-                            height: 20,
-                            marginRight: 10,
-                        }}
-                    />
-
-                    <Text
-                        style={{
-                            ...FONTS.body3,
-                            color: COLORS.darygray,
-                        }}
-                    ></Text>
-                </View> */}
             </View>
         );
     }

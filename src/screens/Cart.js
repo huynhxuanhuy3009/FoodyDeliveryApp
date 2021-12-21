@@ -62,7 +62,7 @@ const Cart = (props) => {
     }, []);
   
     
-    //lưu giỏ hàng dưới api 
+    // lưu giỏ hàng dưới api 
     useEffect(async() => {
         console.log("chay vao")
         userToken1 = await AsyncStorage.getItem("userToken");
@@ -80,13 +80,8 @@ const Cart = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
+                console.log("res>>", responseJson)
                 setcartGet(responseJson)
-              //   {
-              //       responseJson?.products.map((pr) => {
-              //           // console.log(">>name",pr.name)
-              //           // console.log(">>price", pr.price)
-              //       })
-              //   }
                 if(responseJson._id){
                     setcartID(responseJson._id);
                 }
@@ -101,6 +96,8 @@ const Cart = (props) => {
         const apiURL = "https://foody-store-server.herokuapp.com/carts";
         let productlistpost = productlist;
         productlistpost.map((pro)=>pro.productID = pro.id);
+        productlistpost.map((pro) => {delete pro.id})
+        console.log(">>productlistpost",productlistpost)
         fetch(apiURL, {
             method: "POST",
             headers: {
@@ -150,7 +147,7 @@ const Cart = (props) => {
             .then((response) => response.json())
             .then((responseJson) => {
                 // console.log(responseJson);
-                // setUpdate(responseJson)
+                setUpdate(responseJson)
                 
             })
             .catch((error) => {
@@ -183,10 +180,11 @@ const Cart = (props) => {
             userToken = await AsyncStorage.getItem("userToken");
             setUsertoken(userToken);
             if(cartID === ""){
-                
+                console.log(">Create Cart")
                 apiPostCarts(userToken,props.cart);     
             }
-            else {        
+            else {      
+                console.log(">update Cart")    
                 apiUpdateCarts(userToken,props.cart,cartID)
             }
              
@@ -344,12 +342,14 @@ const Cart = (props) => {
     }
     //body cart
     function renderItemsCart(item, index) {
+        console.log(">>imagepro", item.imagesProduct)
         return (
             <View key={item.id}>
                 <ProductCart
                     name={item.name}
                     price={item.price}
                     quantity={item.quantity}
+                    imagesProductAdd={item.imagesProduct}
                     imagesProduct={item?.image}
                     ondecreaseProduct={() => props.decreaseProduct(item)}
                     onincreaseProduct={() => props.increaseProduct(item)}
@@ -415,7 +415,7 @@ const Cart = (props) => {
             </View>
         );
     }
-
+    console.log(">>prod", props.cart)
     return (
         <SafeAreaView style={styles.container}>
            
@@ -431,11 +431,11 @@ const Cart = (props) => {
                         style={{ height: height * 0.6 , marginTop:20}}
                     >
                         {props.cart.map((prod, index) =>
-                        <View key={prod._id}>
+                        <View key={prod._id}>                         
                             {renderItemsCart(prod)}
                         </View>
                        
-                            )}
+                        )}
                     </ScrollView>
                     <View style={{ height: height * 0.3 }}>
                         {renderTotalCart()}

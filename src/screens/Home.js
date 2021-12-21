@@ -23,6 +23,7 @@ import {
     increaseProduct,
     delallProduct,
     getCart,
+    buyProduct,
 } from "../../src/componets/productTag/action/index";
 import ProductTag from "../componets/productTag/index";
 
@@ -51,51 +52,46 @@ const Home = (props) => {
 
     // Hook category
     const [data, setData] = useState([]);
+    const [dataImage, setDataImage] = useState([]);
     const [selectCategories, setSelectCategories] = useState(null);
     const [restaurants01, setRrestaurants01] = useState([]);
     const [usertoken, setUsertoken] = useState("");
     const [cartget, setcartGet] = useState("");
     const [cartID, setcartID] = useState("");
+    const [totalCart, setTotalCart] = useState("");
+    // const productID = props.route.params._id;
+    // const dataProduct = { ...props.route.params, id: productID };
     useEffect(() => {
         getListItem();
         let userToken;
+        // let {item} = props.route.params;
         async function getTokenOpenCart() {
             userToken = await AsyncStorage.getItem("userToken");
             setUsertoken(userToken);
             //getuserProfile(userToken);
             getCartOpenApp(userToken);
-           
         }
         getTokenOpenCart();
-        
+
         return () => {};
     }, []);
-    const getuserProfile = (utoken) => {
-        const apiURL = "https://foody-store-server.herokuapp.com/users/me";
-        fetch(apiURL, {
-            method: "GET",
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-                Authorization: `Bearer ${utoken}`,
-            },
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                // console.log(">>email", responseJson.email);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+    
+    useEffect(() => {
+        async function getListImage(){
+            console.log("responseJson.products", responseJson.products)
+        }
+        getListImage()
+    }, [])
 
     const getListItem = () => {
-        const apiURL =
-            "https://foody-store-server.herokuapp.com/categories";
+        
+        const apiURL = "https://foody-store-server.herokuapp.com/categories";
         fetch(apiURL)
             .then((response) => response.json())
-            .then((responseJson) => {
+            .then((responseJson) => {             
                 setData(responseJson);
                 setRrestaurants01(responseJson[0].products);
+                
             })
             .catch((error) => {
                 console.log(error);
@@ -112,19 +108,24 @@ const Home = (props) => {
                 Authorization: `Bearer ${utoken}`,
             },
         })
-        .then((response)=> response.json())
-        .then((responseJson)=>{
-              setcartGet(responseJson)
-              if(responseJson._id){
-                 setcartID(responseJson._id)
-              }
-              return dispatch(getCart(responseJson));
-              //console.log(">>cart luc moi vao app",responseJson)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-    }
+            .then((response) => response.json())
+            .then((responseJsonCart) => {
+                // console.log("res1>>", responseJson);
+                setcartGet(responseJsonCart);
+                if (responseJsonCart._id) {
+                    setcartID(responseJsonCart._id);
+                }
+                let tong;
+                tong = responseJsonCart.products.reduce(
+                    (total, pro) => total + pro.price,
+                    0
+                );
+                setTotalCart(tong);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
     function renderHeader() {
         return (
@@ -200,7 +201,7 @@ const Home = (props) => {
                             height: 100,
                             backgroundColor:
                                 selectCategories?.id === item.id
-                                    ? COLORS.primary
+                                    ? "#F5AA60"
                                     : COLORS.white,
                         }}
                         onPress={() => checkSelectCategories(item)}
@@ -220,7 +221,7 @@ const Home = (props) => {
                         >
                             <Image
                                 source={{
-                                    uri: `${imgport}${item.image}.png`
+                                    uri: `${imgport}${item.image}.png`,
                                 }}
                                 resizeMode="contain"
                                 style={{
@@ -266,12 +267,10 @@ const Home = (props) => {
     }
 
     function renderListProduct(productlist) {
-        const renderItem = ({ item}) => {
-             
-            // console.log(">>pro",item.description)
+        const renderItem = ({ item }) => {
+            // console.log(">>pro",item?.image)
             return (
                 <View key={item.id}>
-                   
                     <ProductTag
                         onclickProduct={() => onclickProduct(item)}
                         key={item.id}
@@ -279,6 +278,7 @@ const Home = (props) => {
                         imagesProduct={item?.image}
                         name={item.name}
                         price={item.price}
+                    
                     />
                 </View>
             );
@@ -292,7 +292,7 @@ const Home = (props) => {
 
         return (
             <ScrollView nestedScrollEnabled={true}>
-                <View style={{ paddingHorizontal: SIZES.padding * 2 }}>
+                <View style={{ paddingHorizontal: SIZES.padding * 1}}>
                     <FlatList
                         data={productlist}
                         showsHorizontalScrollIndicator={false}
@@ -311,12 +311,13 @@ const Home = (props) => {
     }
 
     function addToBasket() {
+        // console.log(">>dasda", totalCart);
         return (
             <TouchableOpacity
                 style={{
                     height: 50,
                     width: width * 1,
-                    backgroundColor: "#ffa07a",
+                    backgroundColor: "#d2691e",
                     marginBottom: height * 0.09,
                     paddingHorizontal: width * 0.07,
                     flexDirection: "row",
@@ -338,18 +339,26 @@ const Home = (props) => {
                         style={{
                             width: 25,
                             height: 25,
-                            color: "#696969",
+                            color: COLORS.lightGray3 ,
                             marginRight: 10,
                         }}
                     />
-                    <Text style={{ ...FONTS.body2, color: "#696969" }}>
+                    <Text style={{ ...FONTS.body2, color: COLORS.lightGray3 }}>
                         Add To Basket
                     </Text>
                 </View>
 
+                {/* {props.totalprice>0? */}
+                {/* <View> */}
+                    <Text style={{ ...FONTS.body2, color: COLORS.lightGray3  }}>
+                        {`${formatCurrency(props.totalprice)}`}đ
+                        {/* {totalCart} */}
+                    </Text>
+                {/* </View>:
                 <Text style={{ ...FONTS.body2, color: "#696969" }}>
-                    {`${formatCurrency(props.totalprice)}`}đ
+                    Loading.......
                 </Text>
+                } */}
             </TouchableOpacity>
         );
     }
@@ -368,8 +377,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // backgroundColor: COLORS.lightGray4,
-        backgroundColor:"#ffe4e1",
-        
+        backgroundColor: "#ffe4e1",
     },
     shadow: {
         shadowColor: "#000",
@@ -385,14 +393,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        cart :state.cart.cartAr,
+        cart: state.cart.cartAr,
         totalprice: state.cart.totalprice,
     };
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCart: (product_current) => dispatch(getCart(product_current))
-    }
-}
+        getCart: (product_current) => dispatch(getCart(product_current)),
+        
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

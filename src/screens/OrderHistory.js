@@ -116,7 +116,7 @@ const OrderHistory = (props) => {
     }
     function body(){
         return (
-            <View style={{ paddingHorizontal: width * 0.05 ,marginTop:25}}>
+            <View style={{ marginHorizontal: width * 0.08 ,marginTop:25}}>
                 <Text style={{ ...FONTS.h3 }}>The order has been completed</Text>
             </View>
         )
@@ -127,7 +127,9 @@ const OrderHistory = (props) => {
             const renderItem = (itemPro) => {
                 console.log("itemPro",itemPro.item?.products.name)
             return (
-                <View>                     
+                <View
+                    style={{marginHorizontal: width * 0.05}} 
+                >                     
                         <ListItem>                                                       
                                 <ProductOrders
                                     onclickOrder={()=>navigation.navigate("OrderDetail",{idDetailOrder:itemPro?.item._id})}
@@ -181,7 +183,7 @@ const OrderHistory = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#ffe4e1",
+        backgroundColor: COLORS.lightGray2,
     },
 });
 

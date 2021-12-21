@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-import { View, StyleSheet, Text, SafeAreaView,TouchableOpacity, Image, Dimensions, FlatList} from "react-native";
+import { View, StyleSheet, Text, SafeAreaView,TouchableOpacity, Image, Dimensions, FlatList, ScrollView} from "react-native";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ProductDetail from "../componets/productDetail/index";
 import { useNavigation } from "@react-navigation/native";
+import { ListItem } from "react-native-elements/dist/list/ListItem";
 
 const {width, height} = Dimensions.get("window");
 const line = () => {
@@ -17,7 +18,17 @@ const line = () => {
         </View>
     );
 }
+const formatCurrency = (monney) => {
+    const mn = String(monney);
+    return mn
+        .split("")
+        .reverse()
+        .reduce((prev, next, index) => {
+            return (index % 3 ? next : next + ".") + prev;
+        });
+};
 const OrderDetail = (props, route) => {
+    
     const navigation = useNavigation();
     const [data, setData] = useState('');
     const [userToken, setUserToken] = useState('')
@@ -127,31 +138,76 @@ const OrderDetail = (props, route) => {
                     status={data.status}
                     _id= {data._id}
                 />
-                <View style={{marginHorizontal: width * 0.05, marginBottom:10}}> 
-                <FlatList
-                    data={data.products}
-                    keyExtractor={(item) => item.id}
-                    renderItem={renderItem}
-                />
-                </View>
-                
+                <ScrollView>
+                    <View style={{marginHorizontal: width * 0.05, marginBottom:10}}> 
+                        <Text style={{...FONTS.h3, color:"black "}}>Selected products</Text>
+                        <FlatList
+                            data={data.products}
+                            keyExtractor={(item) => item.id}
+                            renderItem={renderItem}
+                        />
+                    </View>
+                    {/* đường line chia cắt */}
+                    <View style={{
+                        backgroundColor: COLORS.lightGray3,
+                        height:5,
+                        marginTop:10,
+                        marginBottom:10
+                    }}>
+                    </View>
+                    {/* đường line chia cắt */}
+                    <View style={{marginHorizontal:width*0.05}}>
+                        <Text style={{...FONTS.h3, color:"black "}}>Total</Text>
+                        <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:15}}>
+                            <Text style={{...FONTS.h4, color:COLORS.darkgray}}>Total</Text>
+                            <Text style={{...FONTS.h4, color:COLORS.darkgray}}>{`${formatCurrency(data.totalAmount)}`}đ</Text>
+                        </View>
+                    </View> 
+                    {/* đường line chia cắt */}
+                    <View style={{
+                        backgroundColor: COLORS.lightGray3,
+                        height:5,
+                        marginTop:10,
+                        marginBottom:10
+                    }}>
+                    </View>
+                    {/* đường line chia cắt */}
+                    <View style={{flexDirection:'row', justifyContent:'space-between', marginHorizontal:width*0.05}}>
+                            <Text style={{...FONTS.h4, color:COLORS.darkgray}}>Payment amount</Text>
+                            <Text style={{...FONTS.h4, color:COLORS.darkgray}}>{`${formatCurrency(data.totalAmount)}`}đ</Text>
+                    </View>
+                </ScrollView>
+                    
             </View>
         );
     };
-    const renderItem = ({item}) => (
-            <View>
-                {/* <ProductDetail
-                    fullName = {infoItem.item.fullName}
-                    phoneNumber = {infoItem.item.phoneNumber}
-                    address = {infoItem.item.address}
-                    status = {infoItem.item.status}
-                    _id = {infoItem.item.id}
-                /> */}
-                <Text>{item.name}</Text>
+     const renderItem = ({item}) => (
+            <View 
+                style={{
+                    marginTop:30,
+                    flexDirection: "row",
+                    alignItems:'center',
+                    justifyContent:'space-between',   
+                }}
+            >
+                <View 
+                    style={{
+                        flexDirection:"row",
+                        // backgroundColor:"red", 
+                        width:width*0.3,
+                        
+                    }}
+                >
+                    <Text style={{...FONTS.h4, color:"black"}}>{item.quantity}</Text>
+                    <Text style={{...FONTS.h4, color:"black", marginLeft:30}}>{item.name}</Text>
+                </View>
+                    
+                <View>
+                    <Text style={{...FONTS.h4, color:COLORS.darkgray}}>{`${formatCurrency(item.price)}`}đ</Text>
+                </View>
+            </View>  
                 
-            </View>
-            
-        
+
     )
     const infomation = () => {
         const renderItem = (infoItem) => {
@@ -185,8 +241,11 @@ const OrderDetail = (props, route) => {
     return(
         <SafeAreaView style={styles.container}>
             {renderHeader()}
+            <ScrollView style={{marginBottom:30}}>
             {hoantat()}
-            {line()}
+           
+            </ScrollView>
+            
             {/* {infomation()} */}
            
         </SafeAreaView>

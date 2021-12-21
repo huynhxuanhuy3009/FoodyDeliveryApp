@@ -11,6 +11,7 @@ import {
 import { icons, images, SIZES, COLORS, FONTS } from "../../constants";
 import { Icon } from "native-base";
 import { imgport } from "../../config/port";
+import styles from "./style";
 
 import { connect } from "react-redux";
 import { buyProduct } from "./action/index";
@@ -28,14 +29,17 @@ const ProductTag = (props) => {
     };
 
     return (
-        
         <View
             key={props.id}
-            style={{
-                marginBottom: SIZES.padding * 2,
-                flexDirection: "column",
-                paddingHorizontal: 10,
-            }}
+            style={
+                styles.product_box
+                // marginBottom: SIZES.padding * 2,
+                // flexDirection: "column",
+                // paddingHorizontal: 10,
+                // // borderWidth:0.5,
+                // borderRadius:10,
+                // backgroundColor:"",
+            }
         >
             <View
                 style={{
@@ -43,48 +47,96 @@ const ProductTag = (props) => {
                 }}
             >
                 <Image
-                    source={{
-                        uri: `${imgport}${props.imagesProduct}.png`,
-                    }}
+                    source={{ uri: `${imgport}${props.imagesProduct}.png` }}
                     resizeMode="cover"
                     style={{
-                        width: width * 0.41,
-                        height: 150,
-                        borderRadius: SIZES.radius,
+                        
+                        height: 160,
+                        width: 175,
+                        resizeMode: "cover",
+                        borderTopRightRadius: 13,
+                        borderTopLeftRadius: 13,
                     }}
                 />
-                {/* info product */}
-                <TouchableOpacity onPress={() => props.onclickProduct()}>
-                    <Text style={{ ...FONTS.body2 }}>{props.name}</Text>
-                </TouchableOpacity>
-
-                <View
-                    style={{
-                        flexDirection: "row",
-                        marginTop: SIZES.padding,
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <Text style={{ ...FONTS.body3, color: COLORS.darkgray }}>
-                        {`${formatCurrency(props.price)}`}đ
-                    </Text>
-                    <TouchableOpacity
-                        onPress={() => {
-                            props.buyProduct(props);
+                
+                    <View
+                        style={{
+                            width: width*0.27,
+                            height: 40,
+                            backgroundColor: "#ffb460",
+                            borderBottomLeftRadius: 13,
+                            borderBottomRightRadius: 13,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            // justifyContent: "center",
                         }}
                     >
-                        <Icon
-                            name="pluscircle"
-                            type="AntDesign"
-                            style={{ color: COLORS.primary, fontSize: 30 }}
-                        />
-                    </TouchableOpacity>
-                </View>
+                        <TouchableOpacity
+                            onPress={() => props.onclickProduct()}
+                        >
+                            <Text
+                                style={{
+                                    // textAlign: "center",
+                                    color: "white",
+                                    fontFamily: "Oswald-VariableFont_wght",
+                                    fontSize: 18,
+                                    paddingLeft: 10,
+                                    textShadowColor: "rgba(0, 0, 0, 0.8)",
+                                    textShadowOffset: { width: 1, height: 1 },
+                                    textShadowRadius: 5,
+                                }}
+                            >
+                                {props.name}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            padding: 10,
+                            justifyContent: "space-between",
+                            alignItems:'center'
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color: "white",
+                                fontFamily: "Oswald-VariableFont_wght",
+                                fontSize: 18,
+                            }}
+                        >
+                            {`${formatCurrency(props.price)}`}đ
+                        </Text>
+                        <View
+                            style={{
+                                paddingTop: 6,
+                                color: "white",
+                                fontFamily: "Oswald-VariableFont_wght",
+                                fontSize: 15,
+                            }}
+                        >
+                            <TouchableOpacity
+                                onPress={() => {
+                                    props.buyProduct(props);
+                                }}
+                            >
+                                <Icon
+                                    name="plus"
+                                    type="Entypo"
+                                    style={{
+                                        color: COLORS.lightGray3,
+                                        fontSize: 20,
+                                    }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                
             </View>
 
             {/* })} */}
         </View>
-       
     );
 };
 

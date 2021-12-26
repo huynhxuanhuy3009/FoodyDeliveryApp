@@ -79,7 +79,7 @@ const ProductTag = (props) => {
                                     // textAlign: "center",
                                     color: "white",
                                     fontFamily: "Oswald-VariableFont_wght",
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     paddingLeft: 10,
                                     textShadowColor: "rgba(0, 0, 0, 0.8)",
                                     textShadowOffset: { width: 1, height: 1 },

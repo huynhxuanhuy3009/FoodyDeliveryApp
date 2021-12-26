@@ -16,6 +16,8 @@ import { Restaurant,
          Search,
          OrderHistory,
          OrderDetail,
+         Success,
+         SuccessOff,
         Login, Register,ForgotPassword} from './src/screens';
 import RootStackScreen from './src/screens/RootStackScreen';
 import { AuthContext } from './src/componets/context';
@@ -148,6 +150,9 @@ const App = () => {
                         <Stack.Screen name="Search" component={Search}/>
                         <Stack.Screen name="OrderHistory" component={OrderHistory}/>
                         <Stack.Screen name="OrderDetail" component={OrderDetail}/>
+
+                        <Stack.Screen name="Success" component={Success}/>
+                        <Stack.Screen name="SuccessOff" component={SuccessOff}/>
                     </Stack.Navigator>
                 )
             :

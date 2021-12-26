@@ -13,7 +13,8 @@ import EditProfile from './EditProfile'
 import Search from './Search'
 import OrderHistory from './OrderHistory'
 import OrderDetail from './OrderDetail'
-
+import Success from './Success'
+import SuccessOff from './SuccessOff'
 
 export {
     Login,
@@ -29,6 +30,8 @@ export {
     EditProfile, 
     Search,
     OrderHistory,
-    OrderDetail
+    OrderDetail, 
+    Success,
+    SuccessOff
 
 }

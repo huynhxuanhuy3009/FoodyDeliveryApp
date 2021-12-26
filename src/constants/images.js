@@ -1,7 +1,7 @@
 
 const logo = require("../assets/images/logo.jpg")
 const logo_payment = require("../assets/images/logo_payment.jpg")
-const kl = require("../assets/images/kl.jpg")
+const logoSuccess = require("../assets/images/25794993.jpg")
 const avatar_1 = require("../assets/images/avatar-1.jpg");
 const avatar_2 = require("../assets/images/avatar-2.jpg");
 const avatar_3 = require("../assets/images/avatar-3.jpg");
@@ -35,7 +35,8 @@ const tomato_pasta = require("../assets/images/tomato-pasta.jpg");
 export default {
     logo_payment,
     logo,
-    kl,
+    logoSuccess, 
+    
     avatar_1,
     avatar_2,
     avatar_3,

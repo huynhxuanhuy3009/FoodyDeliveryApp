@@ -21,10 +21,10 @@ import { connect } from "react-redux";
 import ProductCheckout from "../componets/productCheckout/index";
 const { width, height } = Dimensions.get("window");
 const Payment01 = (props) => {
-    
-    const [valueAddress, setValueAddress] = useState("")
-    const [valuePhoneNumber, setValuePhoneNumber] = useState("")
-    const [valueFullName, setValueFullName] = useState("")
+    const [valueAddress, setValueAddress] = useState("");
+    const [valuePhoneNumber, setValuePhoneNumber] = useState("");
+    const [valueFullName, setValueFullName] = useState("");
+    const [valuePaymentType, setValuePaymentType] = useState("")
 
     const navigation = useNavigation();
     const formatCurrency = (monney) => {
@@ -36,49 +36,73 @@ const Payment01 = (props) => {
                 return (index % 3 ? next : next + ".") + prev;
             });
     };
-
-    const handleContinue = () => {
-        postApiOrder(props.cart);
-        navigation.navigate("Paypal");
+    const checkValue = () => {
+        if (valueAddress && valuePhoneNumber && valueFullName)
+            return true ;
+        else 
+            return false ;
     }
+    // console.log(">>checkValue",checkValue())
+    const handleContinue = () => {
+        const paymentTypeApi = "ONLINE";
+        setValuePaymentType(paymentTypeApi)
+        postApiOrder(props.cart, paymentTypeApi);
+        navigation.navigate("Paypal");
+    };
+ 
+    const handleContinueOffline = () => {
+        const paymentTypeApi = "DIRECT";
+        setValuePaymentType(paymentTypeApi)
+        postApiOrder(props.cart, paymentTypeApi);
+        navigation.navigate("SuccessOff",  {
+            valueAddress: valueAddress,
+            valuePhoneNumber: valuePhoneNumber,
+            valueFullName: valueFullName,
+        });
+    };
+    // console.log(">>paymentType1",valuePaymentType)
 
-    const postApiOrder = (utoken,phoneNumber,email, productList, address, status, paymentType) => {
+    const postApiOrder = (
+        cart,
+        paymentType1
+    ) => {
+        
         let userToken;
         let prolistorder = props.cart;
         // console.log(">>cart", props.cart);
-        
-        prolistorder.map((pro) => {delete pro.id})
-        console.log(">>prolistorderid", prolistorder);
-        userToken = AsyncStorage.getItem("userToken")      
-            .then((res) => {
-                const apiURL = "https://foody-store-server.herokuapp.com/orders";
-                fetch (apiURL, {
-                method:"POST",
-                headers: {
-                    'Content-Type' : 'application/json; charset=UTF-8',
-                    Authorization:`Bearer ${res}`
-                },
-                body : JSON.stringify({  
-                    address:valueAddress, 
-                    fullName:valueFullName,
-                    phoneNumber:valuePhoneNumber, 
-                    products: prolistorder, 
-                    totalAmount:props.totalprice, 
-                    status:"PENDING"
-                })         
-            }) 
-            .then ((response) => response.json())
-                .then ((responseJson => {
-                    // console.log(responseJson);
-                }))
-                .catch((e) => {console.log(e)}) 
-        });    
-    }   
-    
-    
-    
 
- 
+        prolistorder.map((pro) => {
+            delete pro.id;
+        });
+        
+        userToken = AsyncStorage.getItem("userToken").then((res) => {
+            const apiURL = "https://foody-store-server.herokuapp.com/orders";
+            fetch(apiURL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8",
+                    Authorization: `Bearer ${res}`,
+                },
+                body: JSON.stringify({
+                    address: valueAddress,
+                    fullName: valueFullName,
+                    phoneNumber: valuePhoneNumber,
+                    products: prolistorder,
+                    totalAmount: props.totalprice,
+                    status: "PENDING",
+                    paymentType:valuePaymentType
+                }),
+            })
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    // console.log(responseJson);
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        });
+    };
+
     function renderHeader() {
         return (
             <View
@@ -138,50 +162,60 @@ const Payment01 = (props) => {
             </View>
         );
     }
-    
+
     function renderTypePro() {
-        return(
-            <View style={[styles.rowFront, { height: 50, backgroundColor:COLORS.lightGray2 }]}>
-                 <Text style={{ ...FONTS.h3 , fontStyle: 'italic'}}>Types of products : {props.cart.length} </Text>
+        return (
+            <View
+                style={[
+                    styles.rowFront,
+                    { height: 50, backgroundColor: COLORS.lightGray2 },
+                ]}
+            >
+                <Text style={{ ...FONTS.h3, fontStyle: "italic" }}>
+                    Types of products : {props.cart.length}{" "}
+                </Text>
             </View>
         );
     }
     function renderProductCheck(item, index) {
-        return ( 
+        return (
             // style={styles.rowFront}
-            <ScrollView 
-                
+            <ScrollView
                 nestedScrollEnabled={true}
                 key={item.id}
-                style={[styles.rowFront], {height:100}}
+                style={([styles.rowFront], { height: 100 })}
             >
-                <ProductCheckout                  
-                    name={item.name} 
-                    price={item.price} 
+                <ProductCheckout
+                    name={item.name}
+                    price={item.price}
                     quantity={item.quantity}
                     imagesProductAdd={item.imagesProduct}
                     imagesProduct={item.image}
                 />
-            </ScrollView>    
+            </ScrollView>
         );
     }
     function renderBody() {
-        
         return (
-            <View style={{ paddingHorizontal: width * 0.05 , }}>
-
+            <View style={{ paddingHorizontal: width * 0.05 }}>
                 {/* Delivery to */}
                 <View
                     style={[
                         styles.rowFront,
-                        { justifyContent: "space-evenly", height: 250, backgroundColor:COLORS.lightGray2 },
+                        {
+                            justifyContent: "space-evenly",
+                            height: 250,
+                            backgroundColor: COLORS.lightGray2,
+                        },
                     ]}
                 >
                     <Text style={{ ...FONTS.h3 }}>DELIVERY TO</Text>
                     <TextInput
                         placeholder="Full name"
                         value={valueFullName}
-                        onChangeText={(val) => {setValueFullName(val)}}
+                        onChangeText={(val) => {
+                            setValueFullName(val);
+                        }}
                         style={{
                             borderWidth: 0.5,
                             borderRadius: 5,
@@ -192,7 +226,9 @@ const Payment01 = (props) => {
                     <TextInput
                         placeholder="Phone number"
                         value={valuePhoneNumber}
-                        onChangeText={(val) => {setValuePhoneNumber(val)}}
+                        onChangeText={(val) => {
+                            setValuePhoneNumber(val);
+                        }}
                         keyboardType={"phone-pad"}
                         style={{
                             borderWidth: 0.5,
@@ -204,7 +240,9 @@ const Payment01 = (props) => {
                     <TextInput
                         placeholder="Address..."
                         value={valueAddress}
-                        onChangeText={(val) => {setValueAddress(val)}}
+                        onChangeText={(val) => {
+                            setValueAddress(val);
+                        }}
                         style={{
                             borderWidth: 0.5,
                             borderRadius: 5,
@@ -213,11 +251,12 @@ const Payment01 = (props) => {
                         }}
                     />
                 </View>
-                <View   style={[
+                <View
+                    style={[
                         styles.rowFront,
-                        { justifyContent: "space-evenly", height: 75},
-                    ]}>
-                   
+                        { justifyContent: "space-evenly", height: 75 },
+                    ]}
+                >
                     <View
                         style={{
                             flexDirection: "row",
@@ -226,11 +265,13 @@ const Payment01 = (props) => {
                             paddingHorizontal: SIZES.padding * 1,
                             borderBottomColor: COLORS.lightGray2,
                             borderBottomWidth: 1,
-                            backgroundColor:COLORS.lightGray2
+                            backgroundColor: COLORS.lightGray2,
                         }}
                     >
                         <Text style={{ ...FONTS.h2 }}>Total</Text>
-                        <Text style={{ ...FONTS.h2 }}>{`${formatCurrency(props.totalprice)}`}đ</Text>
+                        <Text style={{ ...FONTS.h2 }}>
+                            {`${formatCurrency(props.totalprice)}`}đ
+                        </Text>
                     </View>
                 </View>
             </View>
@@ -238,24 +279,76 @@ const Payment01 = (props) => {
     }
     function renderFooter() {
         return (
-            <View style={[styles.rowFront, { height: 60, backgroundColor:"#ffe4e1",}]}>
-                
-                <TouchableOpacity
+            <View
+                style={[
+                    styles.rowFront,
+                    {
+                        height: 60,
+                        backgroundColor: "#ffe4e1",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                    },
+                ]}
+            >
+                {checkValue()?<TouchableOpacity
                     onPress={() => handleContinue()}
                     style={{
-                        marginHorizontal: width * 0.15,
+                        // marginHorizontal: width * 0.15,
+                        width: 120,
                         height: 40,
-                        backgroundColor:COLORS.primary,
+                        backgroundColor: COLORS.primary,
                         justifyContent: "center",
                         alignItems: "center",
                         borderWidth: 0.5,
                         borderRadius: 20,
                     }}
                 >
-                    <Text style={{ color: "white", ...FONTS.h4 }}>
-                        Continue
-                    </Text>
-                </TouchableOpacity>
+                    <Text style={{ color: "white", ...FONTS.h4 }}>online</Text>
+                </TouchableOpacity>:<View
+                    
+                    style={{
+                        // marginHorizontal: width * 0.15,
+                        width: 120,
+                        height: 40,
+                        backgroundColor: COLORS.darkgray,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderWidth: 0.5,
+                        borderRadius: 20,
+                    }}
+                >
+                    <Text style={{ color: "white", ...FONTS.h4 }}>online</Text>
+                </View>}
+                {checkValue()?<TouchableOpacity
+                    onPress={() =>handleContinueOffline()}
+                    style={{
+                        // marginHorizontal: width * 0.15,
+                        width: 120,
+                        height: 40,
+                        backgroundColor: COLORS.primary,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderWidth: 0.5,
+                        borderRadius: 20,
+                    }}
+                >
+                    <Text style={{ color: "white", ...FONTS.h4 }}>offline</Text>
+                </TouchableOpacity>:
+                <View
+                // onPress={() =>handleContinueOffline()}
+                style={{
+                    // marginHorizontal: width * 0.15,
+                    width: 120,
+                    height: 40,
+                    backgroundColor: COLORS.darkgray,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderWidth: 0.5,
+                    borderRadius: 20,
+                }}
+                >
+                <Text style={{ color: "white", ...FONTS.h4 }}>offline</Text>
+                </View>}
             </View>
         );
     }
@@ -264,13 +357,10 @@ const Payment01 = (props) => {
             {renderHeader()}
             {/* {renderStepPayHeader()} */}
             {renderTypePro()}
-            <ScrollView         
-                nestedScrollEnabled={true}
-            >
-               
+            <ScrollView nestedScrollEnabled={true}>
                 {props.cart.map((item) => renderProductCheck(item))}
             </ScrollView>
-            
+
             {renderBody()}
             {renderFooter()}
         </SafeAreaView>
@@ -281,7 +371,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // backgroundColor: COLORS.lightGray2,
-        backgroundColor:"#ffe4e1",
+        backgroundColor: "#ffe4e1",
     },
     rowFront: {
         backgroundColor: "#FFF",

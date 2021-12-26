@@ -31,6 +31,15 @@ const Restaurant = (props) => {
     const productID = props.route.params._id;
     const dataProduct = { ...props.route.params, id: productID };
 
+    const formatCurrency = (monney) => {
+        const mn = String(monney);
+        return mn
+            .split("")
+            .reverse()
+            .reduce((prev, next, index) => {
+                return (index % 3 ? next : next + ".") + prev;
+            });
+    };
     // const {name, price, imagesProduct} = props.route.params
     React.useEffect(() => {
         let { item, currentLocation } = props.route.params;
@@ -163,12 +172,11 @@ const Restaurant = (props) => {
                         }}
                     >
                         {props.route.params.name} -{" "}
-                        {props.route.params.price
-                            .toFixed()
-                            .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}
+                        {formatCurrency(props.route.params.price)}
                         đ
                     </Text>
                     <ScrollView
+                        showsVerticalScrollIndicator={true}
                         style={{
                             marginTop:20, 
                             borderRadius:20, 
@@ -177,7 +185,7 @@ const Restaurant = (props) => {
                             borderWidth:1, 
                             backgroundColor:COLORS.lightGray3,  
                             paddingHorizontal:width*0.02, 
-                            paddingVertical:height*0.02,
+                            paddingVertical:height*0.01,
 
 
                         }}

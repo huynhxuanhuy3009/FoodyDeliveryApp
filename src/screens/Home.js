@@ -43,7 +43,7 @@ const Home = (props) => {
     // Dummy Datas
     const navigation = useNavigation();
     const initialCurrentLocation = {
-        streetName: "Kuching",
+        streetName: "Foodiez",
     };
     const [selectedCategory, setSelectedCategory] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(
@@ -88,7 +88,10 @@ const Home = (props) => {
         const apiURL = "https://foody-store-server.herokuapp.com/categories";
         fetch(apiURL)
             .then((response) => response.json())
-            .then((responseJson) => {             
+            .then((responseJson) => {  
+                responseJson.map((pro)=>{
+                    console.log("product", pro.products)
+                })           
                 setData(responseJson);
                 setRrestaurants01(responseJson[0].products);
                 
@@ -291,8 +294,11 @@ const Home = (props) => {
             props.navigation.navigate("Restaurant", prod);
 
         return (
-            <ScrollView nestedScrollEnabled={true}>
-                <View style={{ paddingHorizontal: SIZES.padding * 1}}>
+            <ScrollView 
+                // nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}
+            >
+                <View style={{ paddingHorizontal: SIZES.padding * 1.4}}>
                     <FlatList
                         data={productlist}
                         showsHorizontalScrollIndicator={false}

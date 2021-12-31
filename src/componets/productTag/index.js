@@ -46,7 +46,19 @@ const ProductTag = (props) => {
                     marginBottom: SIZES.padding,
                 }}
             >
-                <Image
+                {props.imagesProductAdd&&<Image
+                    source={{ uri: `${imgport}${props.imagesProductAdd}.png` }}
+                    resizeMode="cover"
+                    style={{
+                        
+                        height: 160,
+                        width: 175,
+                        resizeMode: "cover",
+                        borderTopRightRadius: 13,
+                        borderTopLeftRadius: 13,
+                    }}
+                />}
+                {props.imagesProduct&&<Image
                     source={{ uri: `${imgport}${props.imagesProduct}.png` }}
                     resizeMode="cover"
                     style={{
@@ -57,7 +69,7 @@ const ProductTag = (props) => {
                         borderTopRightRadius: 13,
                         borderTopLeftRadius: 13,
                     }}
-                />
+                />}
                 
                     <View
                         style={{

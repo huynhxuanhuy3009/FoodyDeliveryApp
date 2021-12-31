@@ -24,7 +24,7 @@ const Payment01 = (props) => {
     const [valueAddress, setValueAddress] = useState("");
     const [valuePhoneNumber, setValuePhoneNumber] = useState("");
     const [valueFullName, setValueFullName] = useState("");
-    const [valuePaymentType, setValuePaymentType] = useState("")
+    const [valuePaymentType, setValuePaymentType] = useState("");
 
     const navigation = useNavigation();
     const formatCurrency = (monney) => {
@@ -45,15 +45,15 @@ const Payment01 = (props) => {
     // console.log(">>checkValue",checkValue())
     const handleContinue = () => {
         const paymentTypeApi = "ONLINE";
-        setValuePaymentType(paymentTypeApi)
+        setValuePaymentType(paymentTypeApi);
         postApiOrder(props.cart, paymentTypeApi);
         navigation.navigate("Paypal");
     };
  
     const handleContinueOffline = () => {
-        const paymentTypeApi = "DIRECT";
-        setValuePaymentType(paymentTypeApi)
-        postApiOrder(props.cart, paymentTypeApi);
+        const paymentTypeApi01 = "DIRECT";
+        setValuePaymentType(paymentTypeApi01);
+        postApiOrder(props.cart, paymentTypeApi01);
         navigation.navigate("SuccessOff",  {
             valueAddress: valueAddress,
             valuePhoneNumber: valuePhoneNumber,
@@ -90,7 +90,7 @@ const Payment01 = (props) => {
                     products: prolistorder,
                     totalAmount: props.totalprice,
                     status: "PENDING",
-                    paymentType:valuePaymentType
+                    paymentType:paymentType1
                 }),
             })
                 .then((response) => response.json())
@@ -294,7 +294,7 @@ const Payment01 = (props) => {
                     onPress={() => handleContinue()}
                     style={{
                         // marginHorizontal: width * 0.15,
-                        width: 120,
+                        width: 150,
                         height: 40,
                         backgroundColor: COLORS.primary,
                         justifyContent: "center",
@@ -303,27 +303,27 @@ const Payment01 = (props) => {
                         borderRadius: 20,
                     }}
                 >
-                    <Text style={{ color: "white", ...FONTS.h4 }}>online</Text>
+                    <Text style={{ color: "white", ...FONTS.h4 }}>Online Payment</Text>
                 </TouchableOpacity>:<View
                     
                     style={{
                         // marginHorizontal: width * 0.15,
-                        width: 120,
+                        width: 150,
                         height: 40,
-                        backgroundColor: COLORS.darkgray,
+                        backgroundColor: "#c0c0c0",
                         justifyContent: "center",
                         alignItems: "center",
                         borderWidth: 0.5,
                         borderRadius: 20,
                     }}
                 >
-                    <Text style={{ color: "white", ...FONTS.h4 }}>online</Text>
+                    <Text style={{ color: "white", ...FONTS.h4 }}>Online Payment</Text>
                 </View>}
                 {checkValue()?<TouchableOpacity
                     onPress={() =>handleContinueOffline()}
                     style={{
                         // marginHorizontal: width * 0.15,
-                        width: 120,
+                        width: 150,
                         height: 40,
                         backgroundColor: COLORS.primary,
                         justifyContent: "center",
@@ -332,22 +332,22 @@ const Payment01 = (props) => {
                         borderRadius: 20,
                     }}
                 >
-                    <Text style={{ color: "white", ...FONTS.h4 }}>offline</Text>
+                    <Text style={{ color: "white", ...FONTS.h4 }}>Direct Payment</Text>
                 </TouchableOpacity>:
                 <View
                 // onPress={() =>handleContinueOffline()}
                 style={{
                     // marginHorizontal: width * 0.15,
-                    width: 120,
+                    width: 150,
                     height: 40,
-                    backgroundColor: COLORS.darkgray,
+                    backgroundColor: "#c0c0c0",
                     justifyContent: "center",
                     alignItems: "center",
                     borderWidth: 0.5,
                     borderRadius: 20,
                 }}
                 >
-                <Text style={{ color: "white", ...FONTS.h4 }}>offline</Text>
+                <Text style={{ color: "white", ...FONTS.h4 }}>Direct Payment</Text>
                 </View>}
             </View>
         );
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         height: 220,
         margin: 3,
-        marginBottom: 15,
+        marginBottom: 10,
         paddingHorizontal: 10,
         paddingVertical: 15,
         // justifyContent: "space-around",

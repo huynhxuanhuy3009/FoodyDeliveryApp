@@ -7,9 +7,8 @@ const styles = StyleSheet.create({
     height: 240,
     borderRadius: 13,
     paddingHorizontal: 5,
-    // paddingTop: 10,
-    marginHorizontal:7, 
-    marginBottom:10,
+    marginHorizontal:9, 
+    marginBottom:15,
     alignItems:'center',
   },
 });

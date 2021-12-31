@@ -278,6 +278,7 @@ const Home = (props) => {
                         onclickProduct={() => onclickProduct(item)}
                         key={item.id}
                         id={item._id}
+                        imagesProductAdd={item.imagesProduct}
                         imagesProduct={item?.image}
                         name={item.name}
                         price={item.price}
@@ -298,7 +299,7 @@ const Home = (props) => {
                 // nestedScrollEnabled={true}
                 showsVerticalScrollIndicator={false}
             >
-                <View style={{ paddingHorizontal: SIZES.padding * 1.4}}>
+                <View style={{ paddingHorizontal: SIZES.padding * 1.5}}>
                     <FlatList
                         data={productlist}
                         showsHorizontalScrollIndicator={false}

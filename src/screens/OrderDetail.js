@@ -114,9 +114,8 @@ const OrderDetail = (props, route) => {
         );
     };
     const hoantat = () => {
-
         return(
-            <View style={{marginHorizontal: width * 0.05}}>
+            <View>
                 <TouchableOpacity 
                     onPress={() => navigation.navigate('Home')}
                     style={{
@@ -136,52 +135,16 @@ const OrderDetail = (props, route) => {
                     phoneNumber = {data.phoneNumber}
                     address = {data.address}
                     status={data.status}
+                    paymentType={data.paymentType}
                     _id= {data._id}
-                />
-                <ScrollView>
-                    <View style={{marginHorizontal: width * 0.05, marginBottom:10}}> 
-                        <Text style={{...FONTS.h3, color:"black "}}>Selected products</Text>
-                        <FlatList
-                            data={data.products}
-                            keyExtractor={(item) => item.id}
-                            renderItem={renderItem}
-                        />
-                    </View>
-                    {/* đường line chia cắt */}
-                    <View style={{
-                        backgroundColor: COLORS.lightGray3,
-                        height:5,
-                        marginTop:10,
-                        marginBottom:10
-                    }}>
-                    </View>
-                    {/* đường line chia cắt */}
-                    <View style={{marginHorizontal:width*0.05}}>
-                        <Text style={{...FONTS.h3, color:"black "}}>Total</Text>
-                        <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:15}}>
-                            <Text style={{...FONTS.h4, color:COLORS.darkgray}}>Total</Text>
-                            <Text style={{...FONTS.h4, color:COLORS.darkgray}}>{`${formatCurrency(data.totalAmount)}`}đ</Text>
-                        </View>
-                    </View> 
-                    {/* đường line chia cắt */}
-                    <View style={{
-                        backgroundColor: COLORS.lightGray3,
-                        height:5,
-                        marginTop:10,
-                        marginBottom:10
-                    }}>
-                    </View>
-                    {/* đường line chia cắt */}
-                    <View style={{flexDirection:'row', justifyContent:'space-between', marginHorizontal:width*0.05}}>
-                            <Text style={{...FONTS.h4, color:COLORS.darkgray}}>Payment amount</Text>
-                            <Text style={{...FONTS.h4, color:COLORS.darkgray}}>{`${formatCurrency(data.totalAmount)}`}đ</Text>
-                    </View>
-                </ScrollView>
-                    
+                />   
+                <Text style={{...FONTS.h3, color:"black "}}>Selected products</Text> 
             </View>
         );
     };
-     const renderItem = ({item}) => (
+
+    const renderItemProduct = () => {
+        const renderItem = ({item}) => (
             <View 
                 style={{
                     marginTop:30,
@@ -206,47 +169,68 @@ const OrderDetail = (props, route) => {
                     <Text style={{...FONTS.h4, color:COLORS.darkgray}}>{`${formatCurrency(item.price)}`}đ</Text>
                 </View>
             </View>  
-                
-
     )
-    const infomation = () => {
-        const renderItem = (infoItem) => {
-            // console.log(infoItem)
-            return(
-                <View>
-                    {/* <ProductDetail
-                        fullName = {infoItem.item.fullName}
-                        phoneNumber = {infoItem.item.phoneNumber}
-                        address = {infoItem.item.address}
-                        status = {infoItem.item.status}
-                        _id = {infoItem.item.id}
-                    /> */}
-                    <Text>{infoItem.name}</Text>
-                    
-                </View>
-                
-            );
-        }
-        return (
-            <View style={{marginHorizontal: width * 0.05, marginBottom:10}}> 
-                <FlatList
-                    data={data.products}
-                    keyExtractor={(item) => item.id}
-                    renderItem={renderItem}
-                />
+        return(
+            <View>
+                    <View style={{marginHorizontal: width * 0.05, marginBottom:10}}> 
+                        <FlatList
+                            data={data.products}
+                            keyExtractor={(item) => item.id}
+                            renderItem={renderItem}
+                        />
+                    </View>
+                    {/* đường line chia cắt */}
+                    <View style={{
+                        backgroundColor: COLORS.lightGray3,
+                        height:5,
+                        marginTop:10,
+                        marginBottom:10
+                    }}>
+                    </View>
             </View>
-
         );
     }
+     
+    const footer = () => {
+        return(
+        <View style={{marginBottom:15}}>
+            <Text style={{...FONTS.h3, color:"black "}}>Total</Text>
+            {/* đường line chia cắt */}
+            <View style={{marginHorizontal:width*0.05}}> 
+            <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:15}}>
+                <Text style={{...FONTS.h4, color:COLORS.darkgray}}>Total</Text>
+                <Text style={{...FONTS.h4, color:COLORS.darkgray}}>{`${formatCurrency(data.totalAmount)}`}đ</Text>
+            </View>
+            </View> 
+            {/* đường line chia cắt */}
+            <View style={{
+                backgroundColor: COLORS.lightGray3,
+                height:5,
+                marginTop:10,
+                marginBottom:10
+            }}>
+            </View>
+            {/* đường line chia cắt */}
+            <View style={{flexDirection:'row', justifyContent:'space-between', marginHorizontal:width*0.05}}>
+                    <Text style={{...FONTS.h4, color:COLORS.darkgray}}>Payment amount</Text>
+                    <Text style={{...FONTS.h4, color:COLORS.darkgray}}>{`${formatCurrency(data.totalAmount)}`}đ</Text>
+            </View>
+        </View>
+        )
+          
+    }
+    
     return(
         <SafeAreaView style={styles.container}>
             {renderHeader()}
-            <ScrollView style={{marginBottom:30}}>
-            {hoantat()}
            
+            {hoantat()}
+            <ScrollView 
+                showsVerticalScrollIndicator={false}
+                style={{marginBottom:30}}>
+                {renderItemProduct()}
             </ScrollView>
-            
-            {/* {infomation()} */}
+            {footer()}
            
         </SafeAreaView>
     );
@@ -257,6 +241,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.lightGray2,
+        marginHorizontal: width * 0.05
     },
 });
 

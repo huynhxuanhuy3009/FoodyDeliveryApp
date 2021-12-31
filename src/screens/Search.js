@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, SafeAreaView, TouchableOpacity,FlatList, TextInput } from 'react-native';
+import {View, StyleSheet, Text, SafeAreaView, TouchableOpacity,FlatList, TextInput, ScrollView } from 'react-native';
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 
 import ProductSearch from '../componets/productSearch/index';

@@ -64,7 +64,7 @@ const Cart = (props) => {
     
     // lưu giỏ hàng dưới api 
     useEffect(async() => {
-        console.log("chay vao")
+        // console.log("chay vao")
         userToken1 = await AsyncStorage.getItem("userToken");
         apiUpdateCarts(userToken1,props.cart,cartID)     
     }, [props.totalprice]);
@@ -80,7 +80,7 @@ const Cart = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log("res>>", responseJson)
+                // console.log("res>>", responseJson)
                 setcartGet(responseJson)
                 if(responseJson._id){
                     setcartID(responseJson._id);
@@ -97,7 +97,7 @@ const Cart = (props) => {
         let productlistpost = productlist;
         productlistpost.map((pro)=>pro.productID = pro.id);
         productlistpost.map((pro) => {delete pro.id})
-        console.log(">>productlistpost",productlistpost)
+        // console.log(">>productlistpost",productlistpost)
         fetch(apiURL, {
             method: "POST",
             headers: {
@@ -167,7 +167,7 @@ const Cart = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                // console.log(responseJson.totalAmount);
+                console.log(">>responseJsonDelete",responseJson);
                 props.delallProduct();
             })
             .catch((error) => {
@@ -200,6 +200,7 @@ const Cart = (props) => {
              
         }
         deletecart();
+        props.delallProduct();
     }
      
     // header của cart
@@ -342,7 +343,6 @@ const Cart = (props) => {
     }
     //body cart
     function renderItemsCart(item, index) {
-        console.log(">>imagepro", item.imagesProduct)
         return (
             <View key={item.id}>
                 <ProductCart
@@ -415,7 +415,7 @@ const Cart = (props) => {
             </View>
         );
     }
-    console.log(">>prod", props.cart)
+    // console.log(">>prod", props.cart)
     return (
         <SafeAreaView style={styles.container}>
            

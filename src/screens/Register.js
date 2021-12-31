@@ -132,10 +132,10 @@ const Register = ({navigation}) => {
     const checkPassword = ()=>{
         if (data.password === data.confirmPassword)
         {
-            alert('thanh cong');
+            alert('');
         }
         else {
-            alert('that bai')
+            alert('You have successfully registered')
         }
     }
     const updateSecureTextEntry01 = () => {

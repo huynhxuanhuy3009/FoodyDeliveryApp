@@ -31,7 +31,7 @@ const Success = () => {
                         color: "#ffb460",
                     }}
                 >
-                    {"CẢM ƠN BẠN ĐÃ ỦNG HỘ COFFEE SHOP"}
+                    {"Thank you for shopping in our store"}
                 </Text>
             </View>
         </SafeAreaView>

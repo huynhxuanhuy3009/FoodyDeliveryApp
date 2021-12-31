@@ -17,6 +17,7 @@ import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import ProductOrders from "../componets/productOrders/index";
 import { ListItem } from "native-base";
 import { connect } from "react-redux";
+import Moment from "moment";
 
 
 const { height, width } = Dimensions.get("window");
@@ -34,6 +35,24 @@ const OrderHistory = (props) => {
     //     getUserToken()
 
     // }
+    const formatIsoStringToDate = (data) => {
+        const date = new Date(data);
+        const year = date.getFullYear();
+        const time = date.toLocaleTimeString(
+          ('en', { timeStyle: 'short', hour12: false, timeZone: 'UTC' })
+        );
+        let month = date.getMonth() + 1;
+        let dt = date.getDate();
+    
+        if (dt < 10) {
+          dt = `0${dt}`;
+        }
+        if (month < 10) {
+          month = `0${month}`;
+        }
+        const object = { year, month, dt, time };
+        return object;
+      };
     useEffect(() => {
         let userToken;
         async function getUserToken() {
@@ -56,7 +75,7 @@ const OrderHistory = (props) => {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                // console.log(">>respon",responseJson)
+                console.log(">>respon",responseJson)
                 setData(responseJson);
             })
             .catch((e) => console.log(e));
@@ -126,7 +145,9 @@ const OrderHistory = (props) => {
     function renderListOrders() {
             const renderItem = (itemPro) => {
                 console.log("itemPro",itemPro.item?.products.name)
+                Moment.locale('en');
             return (
+                
                 <View
                     style={{marginHorizontal: width * 0.05}} 
                 >                     
@@ -135,7 +156,7 @@ const OrderHistory = (props) => {
                                     onclickOrder={()=>navigation.navigate("OrderDetail",{idDetailOrder:itemPro?.item._id})}
                                     fullName={itemPro?.item?.fullName}
                                     phoneNumber={itemPro?.item?.phoneNumber}
-                                    updatedAt={itemPro?.item?.updatedAt}
+                                    updatedAt={Moment(itemPro?.item?.updatedAt).format('d MMM')}
                                     address={itemPro?.item?.address}
                                     total={itemPro?.item?.totalAmount}
                                     // name = {itemPro?.item.products.name}

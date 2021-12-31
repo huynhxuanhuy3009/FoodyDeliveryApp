@@ -13,6 +13,7 @@ import {
 import { FlatList,  } from "react-native-gesture-handler";
 import { isIphoneX } from "react-native-iphone-x-helper";
 import { icons, COLORS, SIZES, FONTS } from "../constants";
+import { Icon } from "native-base";
 
 import {connect} from 'react-redux'
 import { buyProduct } from "../componets/productTag/action";
@@ -71,7 +72,7 @@ const Restaurant = (props) => {
     // header
     function renderHeader() {
         return (
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", height:45, alignItems:'center' }}>
                 <TouchableOpacity
                     style={{
                         width: 50,
@@ -98,7 +99,7 @@ const Restaurant = (props) => {
                         justifyContent: "center",
                     }}
                 >
-                    <View
+                    {/* <View
                         style={{
                             height: 50,
                             alignItems: "center",
@@ -109,18 +110,29 @@ const Restaurant = (props) => {
                         }}
                     >
                         <Text style={{ ...FONTS.h3 }}>Product Details</Text>
-                    </View>
+                    </View> */}
                 </View>
 
-                <TouchableOpacity
+                <View
                     style={{
-                        width: 50,
+                        width: 120,
                         paddingRight: SIZES.padding * 2,
                         justifyContent: "center",
+                        flexDirection:'row'
                     }}
                 >
-                    
-                </TouchableOpacity>
+                    <Icon
+                        name="shoppingcart"
+                        type="AntDesign"
+                        style={{
+                            width: 25,
+                            height: 25,
+                            // color: COLORS.lightGray3 ,
+                            marginRight: 10,
+                        }}
+                    />
+                    <Text style={{fontSize:20}}>{formatCurrency(props.totalprice)}đ</Text>
+                </View>
             </View>
         );
     }

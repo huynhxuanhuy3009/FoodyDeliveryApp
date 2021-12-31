@@ -14,7 +14,10 @@ import { WebView } from "react-native-webview";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 import {connect} from 'react-redux'
-
+import {
+   
+    delallProduct,
+} from "../componets/productTag/action/index";
 const { width, height } = Dimensions.get("window");
 const Paypal = (props) => {
     let myWebView;
@@ -25,6 +28,7 @@ const Paypal = (props) => {
     const posttotal = (props.totalprice*0.00004356823).toFixed(2);
     
     const showSuccess = () => {
+        props.delallProduct();
         props.navigation.navigate('Success')
     }
  
@@ -132,23 +136,6 @@ const Paypal = (props) => {
                     Pay with paypal
                 </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-                style={{
-                    marginHorizontal: width * 0.05,
-                    height: 50,
-                    backgroundColor: COLORS.darkgray,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderWidth: 0.5,
-                    borderRadius: 20,
-                }}
-            >
-                <Text style={{ color: "white", ...FONTS.h4 }}>
-                    Pay on delivery
-                </Text>
-            </TouchableOpacity>
-
-            
         </SafeAreaView>
     );
 };
@@ -168,7 +155,13 @@ const mapStatesToProps = (state) => {
     };
 };
 
-export default connect (mapStatesToProps, {})(Paypal);
+const mapDispatchToProps = (dispatch) => {
+    return {
+      delallProduct: (product_current) => dispatch(delallProduct(product_current)),
+    };
+  };
+
+export default connect (mapStatesToProps,mapDispatchToProps )(Paypal);
 
  // const [status, setStatus] = useState("pending");
 //  const handleResponse = (data) => {

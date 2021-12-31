@@ -18,8 +18,6 @@ const formatCurrency = (monney) => {
         });
 };
 const SuccessOff = (props, route) => {
-    // console.log("id>>",props.route.params.valueAddress, props.route.params.valuePhoneNumber, props.route.params.valueFullName)
-    // console.log("props.cart1",props.cart.name)
     const navigation = useNavigation();
     const [data, setData] = useState('');
     const [userToken, setUserToken] = useState('')
@@ -90,7 +88,7 @@ const SuccessOff = (props, route) => {
                             borderRadius: SIZES.radius,
                         }}
                     >
-                        <Text style={{ ...FONTS.h3}}>Order Status</Text>
+                        <Text style={{ ...FONTS.h3}}>Success order</Text>
                     </View>
                 </View>
 
@@ -126,11 +124,12 @@ const SuccessOff = (props, route) => {
                     phoneNumber = {props.route.params.valuePhoneNumber}
                     address = {props.route.params.valueAddress}
                     status={data.status}
+                    paymentType={data.paymentType}
                     _id= {data._id}
                 />
                 <ScrollView>
                     <View style={{marginHorizontal: width * 0.05, marginBottom:10}}> 
-                        <Text style={{...FONTS.h3, color:"black "}}>Selected products</Text>
+                        <Text style={{...FONTS.h3}}>Selected products</Text>
                         <FlatList
                             data={props.cart}
                             keyExtractor={(item) => item.id}

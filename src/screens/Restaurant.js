@@ -302,7 +302,7 @@ const Restaurant = (props) => {
                     }}
                 >
                     <Text style={{ color: "grey", fontSize: 17 }}>
-                        {"Đánh giá"}
+                        {"Evaluate"}
                     </Text>
 
                     <TouchableOpacity
@@ -385,7 +385,7 @@ const Restaurant = (props) => {
                                     defaultRating={5}
                                 />
                                 <Input
-                                    placeholder="Bình luận"
+                                    placeholder="Comment..."
                                     leftIcon={{
                                         type: "font-awesome",
                                         name: "comments",

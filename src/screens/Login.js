@@ -9,18 +9,17 @@ import {
     TouchableOpacity,
     TextInput,
     Dimensions,
+    ImageBackground,
 } from "react-native";
 import { Icon } from "native-base";
-import {
-    getCart
-} from "../componets/productTag/action/index";
+import { getCart } from "../componets/productTag/action/index";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import Users from "../model/Users";
 import { AuthContext } from "../componets/context";
 import { connect } from "react-redux";
 
 const { width, height } = Dimensions.get("window");
-const Login = ({ navigation,getCart }) => {
+const Login = ({ navigation, getCart }) => {
     const { signIn } = React.useContext(AuthContext);
     const [usertoken, setUsertoken] = useState("");
     const [data, setData] = React.useState({
@@ -49,17 +48,21 @@ const Login = ({ navigation,getCart }) => {
                 if (responseJson?.statusCode != 400) {
                     setUsertoken(responseJson.jwt);
                     console.log(responseJson);
-                    const foundUser = [{username: responseJson.user.username,userToken:responseJson.jwt }]
+                    const foundUser = [
+                        {
+                            username: responseJson.user.username,
+                            userToken: responseJson.jwt,
+                        },
+                    ];
                     signIn(foundUser);
                     getCart(responseJson.jwt);
-                }
-                else{
+                } else {
                     Alert.alert(
                         "Wrong Input!",
                         "Username or password field cannot be empty.",
                         [{ text: "Okay" }]
-                    );  
-                }     
+                    );
+                }
             })
             .catch((error) => {
                 // Alert.alert(
@@ -67,10 +70,9 @@ const Login = ({ navigation,getCart }) => {
                 //     "Username or password is incorrect.",
                 //     [{ text: "Okay" }]
                 // );
-              console.log(error);
+                console.log(error);
             });
     };
-
 
     const textInputChange = (val) => {
         if (val.lenght != 0) {
@@ -102,8 +104,19 @@ const Login = ({ navigation,getCart }) => {
         });
     };
     function renderMainLogin() {
+        
         return (
-            <View style={{ alignItems: "center" }}>
+            <ImageBackground
+                style={{
+                    flex: 1, 
+                    width: '100%',
+                    height: '100%',
+                    opacity: 0.9,
+                    alignItems: 'center',
+                  }}
+                  source={require("../assets/images/background-menu-quan-an_090706866.jpg")}
+            >
+                <View style={{ alignItems: "center" }}>
                 <Text
                     style={{
                         ...FONTS.h1,
@@ -112,7 +125,7 @@ const Login = ({ navigation,getCart }) => {
                         fontSize: 50,
                     }}
                 >
-                    Foodiez
+                    
                 </Text>
 
                 {/* nhập email pass */}
@@ -189,21 +202,18 @@ const Login = ({ navigation,getCart }) => {
                         SIGN UP
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("ForgotPassword")}
-                >
-                    <Text style={{ color: "#E8883E", paddingTop: 15 }}>
-                        Forgot Password ?
-                    </Text>
-                </TouchableOpacity>
+                
             </View>
-        );
+            </ImageBackground>
+            
+      );
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
+            
             {renderMainLogin()}
-        </SafeAreaView>
+        </View>
     );
 };
 
@@ -246,9 +256,15 @@ const mapStatesToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCart : (usertoken) => dispatch(getCart(usertoken))
+        getCart: (usertoken) => dispatch(getCart(usertoken)),
     };
 };
 
 export default connect(mapStatesToProps, mapDispatchToProps)(Login);
-
+{/* <TouchableOpacity
+                    onPress={() => navigation.navigate("ForgotPassword")}
+                >
+                    <Text style={{ color: "#E8883E", paddingTop: 15 }}>
+                        Forgot Password ?
+                    </Text>
+                </TouchableOpacity> */}

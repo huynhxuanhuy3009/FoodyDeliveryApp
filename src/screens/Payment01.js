@@ -18,6 +18,7 @@ import { Avatar, Card, Input, Overlay } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { icons, images, SIZES, COLORS, FONTS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
+import Moment from "moment";
 import { connect } from "react-redux";
 
 import ProductCheckout from "../componets/productCheckout/index";
@@ -50,7 +51,9 @@ const Payment01 = (props) => {
     const handleContinue = () => {
         const paymentTypeApi = "ONLINE";
         setValuePaymentType(paymentTypeApi);
-        postApiOrder(props.cart, paymentTypeApi);
+        postApiOrder(props.cart, paymentTypeApi, {
+            totalAmount :price
+        });
         navigation.navigate("Paypal", {
             price:price
         });
@@ -59,12 +62,16 @@ const Payment01 = (props) => {
     const handleContinueOffline = () => {
         const paymentTypeApi01 = "DIRECT";
         setValuePaymentType(paymentTypeApi01);
-        postApiOrder(props.cart, paymentTypeApi01);
+        postApiOrder(props.cart, paymentTypeApi01, {
+            totalAmount:price
+        });
         navigation.navigate("SuccessOff", {
             valueAddress: valueAddress,
             valuePhoneNumber: valuePhoneNumber,
             valueFullName: valueFullName,
-            price:price
+            price:price, 
+            // status:"PENDING",
+            paymentType : paymentTypeApi01,
         });
     };
 
@@ -95,7 +102,7 @@ const Payment01 = (props) => {
                     fullName: valueFullName,
                     phoneNumber: valuePhoneNumber,
                     products: prolistorder,
-                    totalAmount: props.totalprice,
+                    totalAmount: price,
                     status: "PENDING",
                     paymentType: paymentType1,
                 }),
@@ -135,14 +142,15 @@ const Payment01 = (props) => {
         else{
             console.log("khong thanh toan dc");
             Alert.alert(
-                "Alert Title",
-                "Vocher khong ap dung duoc cho hoa don nay",
+                "Không áp dụng",
+                "Vocher không được áp dụng cho hóa đơn này !",
+                
                 [
-                  {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                  },
+                //   {
+                //     text: "Cancel",
+                //     onPress: () => console.log("Cancel Pressed"),
+                //     style: "cancel"
+                //   },
                   { text: "OK", onPress: () => console.log("OK Pressed") }
                 ]
               );
@@ -242,6 +250,7 @@ const Payment01 = (props) => {
         );
     }
     function renderBody() {
+        Moment.locale('en');
         return (
             <View style={{ paddingHorizontal: width * 0.05 }}>
                 {/* Delivery to */}
@@ -404,7 +413,7 @@ const Payment01 = (props) => {
                                                         paddingTop: 5,
                                                     }}
                                                 >
-                                                    {coupon.published_at}
+                                                    HSD: {Moment(coupon.published_at).format('d MMM')}
                                                 </Text>
                                             </View>
                                         </View>
@@ -444,7 +453,7 @@ const Payment01 = (props) => {
                                                         fontWeight: "bold",
                                                     }}
                                                 >
-                                                    chon
+                                                    {"choose"}
                                                 </Text>
                                             </View>
                                         </TouchableOpacity>

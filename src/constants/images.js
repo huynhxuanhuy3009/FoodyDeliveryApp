@@ -1,5 +1,6 @@
 
 const logo = require("../assets/images/logo.jpg")
+const backgroundMain = require("../assets/images/background-menu-quan-an_090706866.jpg")
 const logo_payment = require("../assets/images/logo_payment.jpg")
 const logoSuccess = require("../assets/images/25794993.jpg")
 const avatar_1 = require("../assets/images/avatar-1.jpg");
@@ -36,6 +37,7 @@ export default {
     logo_payment,
     logo,
     logoSuccess, 
+    backgroundMain,
     
     avatar_1,
     avatar_2,

@@ -123,8 +123,8 @@ const SuccessOff = (props, route) => {
                     fullName = {props.route.params.valueFullName}
                     phoneNumber = {props.route.params.valuePhoneNumber}
                     address = {props.route.params.valueAddress}
-                    status={data.status}
-                    paymentType={data.paymentType}
+                    status={"PENDING"}
+                    paymentType={props.route.params.paymentType}
                     _id= {data._id}
                 />
                 <ScrollView>
